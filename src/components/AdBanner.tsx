@@ -82,10 +82,8 @@ export default function AdBanner() {
 
   return (
     <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
+      position: 'relative',
+      width: '100%',
       zIndex: 999,
       height: `${BANNER_HEIGHT}px`,
       background: theme.bg,

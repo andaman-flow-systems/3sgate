@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { donationsDB, type DonationRecord } from '@/lib/db';
+import { sbDonationsDB } from '@/lib/supabase-db';
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { Heart, Loader } from 'lucide-react';
 
 const TYPES = [
   { id: 'support-me', label: 'Support Me', color: '#a855f7' },
@@ -11,16 +14,29 @@ const TYPES = [
 
 export default function AdminDonate() {
   const [records, setRecords] = useState<DonationRecord[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const all = donationsDB.getAll().sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-    setRecords(all);
+    async function load() {
+      try {
+        setLoading(true);
+        if (isSupabaseConfigured()) {
+          const data = await sbDonationsDB.getAll();
+          setRecords(data);
+        } else {
+          setRecords(donationsDB.getAll());
+        }
+      } catch {
+        setRecords(donationsDB.getAll());
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
 
   const totalByType = (type: DonationRecord['type']) =>
-    donationsDB.getTotalByType(type);
+    records.filter(r => r.type === type).reduce((sum, r) => sum + r.amount, 0);
 
   const getTypeLabel = (type: DonationRecord['type']) =>
     TYPES.find(t => t.id === type)?.label ?? type;
@@ -33,7 +49,7 @@ export default function AdminDonate() {
     <div>
       <div style={{ marginBottom: '24px' }}>
         <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, marginBottom: '4px' }}>Donation Management</h2>
-        <p style={{ color: '#6b7280', fontSize: '0.88rem' }}>View all donations received through the platform.</p>
+        <p style={{ color: '#6b7280', fontSize: '0.88rem' }}>View all donations received through PromptPay and Bank Transfer.</p>
       </div>
 
       {/* Stats */}
@@ -58,8 +74,14 @@ export default function AdminDonate() {
         <div style={{ padding: '16px 20px', borderBottom: '1px solid #2a2a2a' }}>
           <h3 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600 }}>All Donation Records</h3>
         </div>
-        {records.length === 0 ? (
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px 0', color: '#6b7280' }}>
+            <Loader size={24} style={{ animation: 'spin 1s linear infinite' }} />
+            <p style={{ marginTop: '8px', fontSize: '0.85rem' }}>Loading records...</p>
+          </div>
+        ) : records.length === 0 ? (
           <div style={{ padding: '60px', textAlign: 'center', color: '#6b7280' }}>
+            <Heart size={36} style={{ margin: '0 auto 12px', opacity: 0.4 }} />
             <p>No donations received yet. They will appear here once visitors donate.</p>
           </div>
         ) : (
@@ -101,6 +123,10 @@ export default function AdminDonate() {
           </table>
         )}
       </div>
+
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+      `}</style>
     </div>
   );
 }

@@ -171,12 +171,10 @@ export default function Navbar() {
   return (
     <>
       <nav style={{
-        position: 'fixed',
-        top: '52px', // below ad banner
-        left: 0,
-        right: 0,
+        position: 'relative',
+        width: '100%',
         zIndex: 900,
-        background: 'rgba(11,11,11,0.95)',
+        background: 'rgba(11,11,11,0.98)',
         backdropFilter: 'blur(16px)',
         borderBottom: '1px solid #2a2a2a',
       }}>

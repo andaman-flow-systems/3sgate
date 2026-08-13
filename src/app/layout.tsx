@@ -31,13 +31,11 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={inter.variable}>
       <body>
-        {/* Sliding ad banner – fixed at very top */}
-        <AdBanner />
-        {/* Sticky navbar – below ad banner */}
-        <Navbar />
-        {/* Page content */}
+        <div style={{ position: 'sticky', top: '-52px', zIndex: 1000, background: '#0b0b0b' }}>
+          <AdBanner />
+          <Navbar />
+        </div>
         <main className="page-wrapper">{children}</main>
-        {/* Footer */}
         <Footer />
       </body>
     </html>

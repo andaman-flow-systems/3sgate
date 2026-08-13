@@ -1,28 +1,48 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { sbProductsDB } from '@/lib/supabase-db';
 import { productsDB, type Product } from '@/lib/db';
-import { ShoppingBag } from 'lucide-react';
-import type { Metadata } from 'next';
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { ShoppingBag, X, ExternalLink, CheckCircle, AlertTriangle, Search, Filter } from 'lucide-react';
 
-const CATEGORIES = ['All', 'Electronics', 'Fashion', 'Clothing', 'Crafts'];
+const CATEGORIES = ['All', 'Electronics', 'Fashion', 'Clothing', 'Crafts', 'Accessories'];
 
 export default function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filtered, setFiltered] = useState<Product[]>([]);
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const all = productsDB.getAll();
-    setProducts(all);
-    setFiltered(all);
+  const loadProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      if (isSupabaseConfigured()) {
+        const data = await sbProductsDB.getAll();
+        setProducts(data);
+        setFiltered(data);
+      } else {
+        const data = productsDB.getAll();
+        setProducts(data);
+        setFiltered(data);
+      }
+    } catch {
+      const data = productsDB.getAll();
+      setProducts(data);
+      setFiltered(data);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => { loadProducts(); }, [loadProducts]);
 
   useEffect(() => {
     let result = products;
     if (category !== 'All') result = result.filter((p) => p.category === category);
-    if (search) result = result.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()));
+    if (search) result = result.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase()));
     setFiltered(result);
   }, [category, search, products]);
 
@@ -39,10 +59,10 @@ export default function ShopPage() {
             <div style={{ width: '44px', height: '44px', background: '#D4A01720', border: '1px solid #D4A01750', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <ShoppingBag size={22} color="#D4A017" />
             </div>
-            <h1 style={{ color: '#D4A017', fontSize: '2rem', fontWeight: 800 }}>Our Shop</h1>
+            <h1 style={{ color: '#D4A017', fontSize: '2rem', fontWeight: 800 }}>Our Shop Marketplace</h1>
           </div>
           <p style={{ color: '#9ca3af', fontSize: '0.92rem' }}>
-            Discover unique products from our Myanmar community marketplace
+            Discover unique products from our Myanmar community marketplace. All prices in Thai Baht (THB).
           </p>
         </div>
       </div>
@@ -52,19 +72,24 @@ export default function ShopPage() {
         <div style={{
           display: 'flex', alignItems: 'center', gap: '12px',
           flexWrap: 'wrap', marginBottom: '28px',
+          justifyContent: 'space-between'
         }}>
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{
-              background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '8px',
-              padding: '9px 14px', color: '#fff', fontSize: '0.88rem', width: '240px',
-              fontFamily: 'Inter, sans-serif', outline: 'none',
-            }}
-          />
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div style={{ position: 'relative', width: '280px' }}>
+            <Search size={16} color="#6b7280" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '8px',
+                padding: '9px 14px 9px 36px', color: '#fff', fontSize: '0.88rem', width: '100%',
+                fontFamily: 'Inter, sans-serif', outline: 'none',
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Filter size={14} color="#6b7280" style={{ marginRight: '4px' }} />
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
@@ -84,114 +109,166 @@ export default function ShopPage() {
           </div>
         </div>
 
-        {/* Products grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-          gap: '20px',
-        }}>
-          {filtered.map((product) => (
-            <div
-              key={product.id}
-              style={{
-                background: '#111111',
-                border: '1px solid #2a2a2a',
-                borderRadius: '14px',
-                overflow: 'hidden',
-                transition: 'all 0.2s',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.borderColor = '#D4A017';
-                el.style.transform = 'translateY(-4px)';
-                el.style.boxShadow = '0 8px 24px rgba(212,160,23,0.15)';
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.borderColor = '#2a2a2a';
-                el.style.transform = 'translateY(0)';
-                el.style.boxShadow = 'none';
-              }}
-            >
-              <div style={{ height: '180px', overflow: 'hidden', background: '#1a1a1a', position: 'relative' }}>
-                <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                {!product.inStock && (
-                  <div style={{
-                    position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <span style={{ background: '#ef4444', color: '#fff', padding: '4px 12px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700 }}>
-                      OUT OF STOCK
-                    </span>
+        {/* Loading state */}
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
+            <p>Loading items from database...</p>
+          </div>
+        ) : (
+          /* Products grid */
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+            gap: '20px',
+          }}>
+            {filtered.map((product) => (
+              <div
+                key={product.id}
+                onClick={() => setSelectedProduct(product)}
+                style={{
+                  background: '#111111',
+                  border: '1px solid #2a2a2a',
+                  borderRadius: '14px',
+                  overflow: 'hidden',
+                  transition: 'all 0.2s',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLDivElement;
+                  el.style.borderColor = '#D4A017';
+                  el.style.transform = 'translateY(-4px)';
+                  el.style.boxShadow = '0 8px 24px rgba(212,160,23,0.15)';
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLDivElement;
+                  el.style.borderColor = '#2a2a2a';
+                  el.style.transform = 'translateY(0)';
+                  el.style.boxShadow = 'none';
+                }}
+              >
+                <div>
+                  <div style={{ height: '180px', overflow: 'hidden', background: '#1a1a1a', position: 'relative' }}>
+                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    {!product.inStock && (
+                      <div style={{
+                        position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        <span style={{ background: '#ef4444', color: '#fff', padding: '4px 12px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700 }}>
+                          OUT OF STOCK
+                        </span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <div style={{ padding: '16px' }}>
-                <span style={{
-                  fontSize: '0.7rem', color: '#D4A017', fontWeight: 600,
-                  background: '#D4A01715', padding: '2px 8px', borderRadius: '4px',
-                }}>
-                  {product.category}
-                </span>
-                <h3 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600, margin: '8px 0 6px' }}>
-                  {product.name}
-                </h3>
-                <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '14px', lineHeight: 1.5 }}>
-                  {product.description}
-                </p>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                  <div style={{ padding: '16px' }}>
+                    <span style={{
+                      fontSize: '0.7rem', color: '#D4A017', fontWeight: 600,
+                      background: '#D4A01715', padding: '2px 8px', borderRadius: '4px',
+                    }}>
+                      {product.category}
+                    </span>
+                    <h3 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600, margin: '8px 0 6px' }}>
+                      {product.name}
+                    </h3>
+                    <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '14px', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {product.description}
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ padding: '0 16px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ color: '#D4A017', fontSize: '1.1rem', fontWeight: 700 }}>
                     ฿{product.price.toLocaleString()}
                   </span>
-                  <a
-                    href="https://www.facebook.com/share/1JAoQ7KMHx/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      background: '#1877f2',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '7px 14px',
-                      fontSize: '0.8rem',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      fontFamily: 'Inter,sans-serif',
-                      textDecoration: 'none',
-                      transition: 'background 0.2s, transform 0.15s',
-                      whiteSpace: 'nowrap',
-                    }}
-                    onMouseEnter={e => {
-                      (e.currentTarget as HTMLAnchorElement).style.background = '#1464d8';
-                      (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1.04)';
-                    }}
-                    onMouseLeave={e => {
-                      (e.currentTarget as HTMLAnchorElement).style.background = '#1877f2';
-                      (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1)';
-                    }}
-                  >
-                    {/* Facebook icon */}
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
-                    </svg>
-                    Click Here
-                  </a>
+                  <span style={{ color: '#a78bfa', fontSize: '0.78rem', fontWeight: 600 }}>
+                    View Details →
+                  </span>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
-        {filtered.length === 0 && (
+        {!loading && filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p style={{ fontSize: '1.1rem' }}>No products found.</p>
+            <p style={{ fontSize: '1.1rem' }}>No products found matching your search.</p>
           </div>
         )}
       </div>
+
+      {/* Product Detail Modal */}
+      {selectedProduct && (
+        <div className="modal-overlay" onClick={() => setSelectedProduct(null)}>
+          <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '640px', padding: '0', overflow: 'hidden' }}>
+            <div style={{ position: 'relative', height: '260px', background: '#1a1a1a' }}>
+              <img src={selectedProduct.image} alt={selectedProduct.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <button
+                onClick={() => setSelectedProduct(null)}
+                style={{
+                  position: 'absolute', top: '16px', right: '16px',
+                  background: 'rgba(0,0,0,0.7)', border: 'none', color: '#fff',
+                  width: '36px', height: '36px', borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+                }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div style={{ padding: '28px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                <div>
+                  <span style={{
+                    fontSize: '0.75rem', color: '#D4A017', fontWeight: 700,
+                    background: '#D4A01715', padding: '4px 10px', borderRadius: '6px',
+                  }}>
+                    {selectedProduct.category}
+                  </span>
+                  <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, marginTop: '8px' }}>
+                    {selectedProduct.name}
+                  </h2>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ color: '#D4A017', fontSize: '1.5rem', fontWeight: 800 }}>
+                    ฿{selectedProduct.price.toLocaleString()}
+                  </span>
+                  <span style={{ display: 'block', color: selectedProduct.inStock ? '#22c55e' : '#ef4444', fontSize: '0.78rem', fontWeight: 700, marginTop: '4px' }}>
+                    {selectedProduct.inStock ? '✓ In Stock' : '✕ Out of Stock'}
+                  </span>
+                </div>
+              </div>
+
+              <p style={{ color: '#9ca3af', fontSize: '0.92rem', lineHeight: 1.7, marginBottom: '24px' }}>
+                {selectedProduct.description}
+              </p>
+
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <a
+                  href="https://www.facebook.com/share/1JAoQ7KMHx/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    flex: 1, padding: '14px', borderRadius: '10px', background: '#1877f2', color: '#fff',
+                    textAlign: 'center', fontWeight: 700, fontSize: '0.95rem', textDecoration: 'none',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+                  }}
+                >
+                  <ExternalLink size={18} /> Buy / Inquire on Facebook Page
+                </a>
+                <button
+                  onClick={() => setSelectedProduct(null)}
+                  style={{ padding: '14px 20px', borderRadius: '10px', background: '#1a1a1a', border: '1px solid #333', color: '#fff', cursor: 'pointer' }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
