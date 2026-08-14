@@ -32,14 +32,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#0B0B0B' }}>
       <Sidebar />
-      <div style={{ flex: 1, marginLeft: '260px', padding: '32px' }}>
-        <header style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
-          <h1 style={{ color: '#a855f7', fontSize: '1.2rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+      {/* Main content — margin-left only on desktop (1025px+) */}
+      <div
+        className="admin-main"
+        style={{ flex: 1, padding: '24px', minWidth: 0, overflowX: 'hidden' }}
+      >
+        <header style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+          <h1
+            className="admin-panel-title"
+            style={{ color: '#a855f7', fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}
+          >
             ADMIN PANEL
           </h1>
         </header>
         {children}
       </div>
+
+      <style>{`
+        @media (min-width: 1025px) {
+          .admin-main { margin-left: 240px !important; }
+        }
+        @media (max-width: 1024px) {
+          .admin-main { margin-left: 0 !important; padding-top: 56px !important; }
+        }
+      `}</style>
     </div>
   );
 }

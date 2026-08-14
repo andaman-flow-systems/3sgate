@@ -18,11 +18,7 @@ export default function FeaturedShops() {
         <Link href="/shop" className="view-all">View All</Link>
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '12px',
-      }}>
+      <div className="grid-4" style={{ gap: '12px' }}>
         {products.map((p) => (
           <Link key={p.id} href="/shop" style={{ textDecoration: 'none' }}>
             <div style={{
@@ -45,22 +41,10 @@ export default function FeaturedShops() {
             }}
             >
               <div style={{ height: '100px', overflow: 'hidden', background: '#1a1a1a' }}>
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
+                <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ padding: '10px' }}>
-                <p style={{
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
-                  color: '#fff',
-                  marginBottom: '4px',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                }}>
+                <p style={{ fontSize: '0.78rem', fontWeight: 600, color: '#fff', marginBottom: '4px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                   {p.name}
                 </p>
                 <p style={{ fontSize: '0.82rem', color: '#D4A017', fontWeight: 700 }}>
@@ -71,12 +55,6 @@ export default function FeaturedShops() {
           </Link>
         ))}
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          div[style*="repeat(4, 1fr)"] { grid-template-columns: repeat(2,1fr) !important; }
-        }
-      `}</style>
     </div>
   );
 }

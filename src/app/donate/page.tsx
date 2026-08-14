@@ -345,138 +345,72 @@ export default function DonatePage() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
+              <div className="cards-grid-2" style={{ alignItems: 'start' }}>
                 
-                {/* PromptPay QR Code Box */}
+                {/* Exact Thai QR Payment Photo */}
                 <div style={{
-                  background: '#0d0d0d', border: '1px solid #2a2a2a', borderRadius: '14px',
-                  padding: '24px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center'
+                  background: '#ffffff', borderRadius: '16px',
+                  overflow: 'hidden', boxShadow: '0 12px 36px rgba(0,0,0,0.5)',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center',
+                  padding: '8px'
                 }}>
-                  <div style={{
-                    background: '#003d6b', color: '#fff', padding: '6px 14px', borderRadius: '6px',
-                    fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.05em', marginBottom: '16px',
-                    display: 'flex', alignItems: 'center', gap: '6px'
-                  }}>
-                    <QrCode size={16} /> PROMPTPAY QR
-                  </div>
-
-                  {/* QR Code SVG / Frame */}
-                  <div style={{
-                    background: '#fff', padding: '16px', borderRadius: '12px',
-                    border: '2px solid #003d6b', boxShadow: '0 8px 24px #00000060',
-                    marginBottom: '16px'
-                  }}>
-                    <svg width="180" height="180" viewBox="0 0 100 100" fill="none">
-                      {/* Outer Frame */}
-                      <rect width="100" height="100" fill="white" />
-                      
-                      {/* Top Left Finder */}
-                      <rect x="5" y="5" width="30" height="30" fill="#003d6b" />
-                      <rect x="10" y="10" width="20" height="20" fill="white" />
-                      <rect x="15" y="15" width="10" height="10" fill="#003d6b" />
-
-                      {/* Top Right Finder */}
-                      <rect x="65" y="5" width="30" height="30" fill="#003d6b" />
-                      <rect x="70" y="10" width="20" height="20" fill="white" />
-                      <rect x="75" y="15" width="10" height="10" fill="#003d6b" />
-
-                      {/* Bottom Left Finder */}
-                      <rect x="5" y="65" width="30" height="30" fill="#003d6b" />
-                      <rect x="10" y="70" width="20" height="20" fill="white" />
-                      <rect x="15" y="75" width="10" height="10" fill="#003d6b" />
-
-                      {/* Data dots pattern */}
-                      <rect x="40" y="10" width="8" height="8" fill="#111" />
-                      <rect x="50" y="10" width="8" height="8" fill="#111" />
-                      <rect x="40" y="22" width="8" height="8" fill="#111" />
-                      <rect x="10" y="40" width="8" height="8" fill="#111" />
-                      <rect x="22" y="40" width="8" height="8" fill="#111" />
-                      <rect x="40" y="40" width="20" height="20" fill="#003d6b" />
-                      <rect x="65" y="40" width="10" height="10" fill="#111" />
-                      <rect x="80" y="40" width="10" height="10" fill="#111" />
-                      <rect x="45" y="65" width="8" height="8" fill="#111" />
-                      <rect x="55" y="75" width="8" height="8" fill="#111" />
-                      <rect x="65" y="65" width="15" height="15" fill="#111" />
-                      <rect x="82" y="82" width="12" height="12" fill="#003d6b" />
-                    </svg>
-                  </div>
-
-                  <p style={{ color: '#9ca3af', fontSize: '0.78rem', marginBottom: '12px' }}>
-                    Scan with any Thai mobile banking app (KPlus, SCB Easy, Krungthai, Bangkok Bank, etc.)
-                  </p>
-
-                  <div style={{
-                    width: '100%', background: '#1a1a1a', padding: '10px 14px', borderRadius: '8px',
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                  }}>
-                    <div style={{ textAlign: 'left' }}>
-                      <span style={{ color: '#6b7280', fontSize: '0.7rem', display: 'block' }}>PromptPay ID</span>
-                      <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 700, fontFamily: 'monospace' }}>081-234-5678</span>
-                    </div>
-                    <button
-                      onClick={() => copyToClipboard('0812345678', 'promptpay')}
-                      style={{
-                        background: copiedPromptPay ? '#22c55e20' : '#2a2a2a',
-                        border: `1px solid ${copiedPromptPay ? '#22c55e' : '#444'}`,
-                        color: copiedPromptPay ? '#22c55e' : '#fff',
-                        padding: '6px 10px', borderRadius: '6px', cursor: 'pointer',
-                        fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '4px'
-                      }}
-                    >
-                      {copiedPromptPay ? <Check size={12} /> : <Copy size={12} />}
-                      {copiedPromptPay ? 'Copied' : 'Copy'}
-                    </button>
-                  </div>
+                  <img
+                    src="/promptpay-qr.jpg"
+                    alt="Thai QR Payment - MR. HEIN THANT"
+                    style={{ width: '100%', maxWidth: '340px', height: 'auto', borderRadius: '12px', display: 'block' }}
+                  />
                 </div>
 
-                {/* Bank Account Details */}
+                {/* Bank Account Transfer Card */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div style={{
-                    background: '#0d0d0d', border: '1px solid #2a2a2a', borderRadius: '14px',
-                    padding: '20px'
+                    background: '#0d0d0d', border: '1px solid #2a2a2a', borderRadius: '16px',
+                    padding: '24px'
                   }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
                       <div style={{
-                        width: '36px', height: '36px', borderRadius: '8px', background: '#10b98120',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        width: '40px', height: '40px', borderRadius: '10px', background: '#10b98120',
+                        border: '1px solid #10b98140', display: 'flex', alignItems: 'center', justifyContent: 'center'
                       }}>
-                        <Building2 size={18} color="#10b981" />
+                        <Building2 size={20} color="#10b981" />
                       </div>
                       <div>
-                        <h4 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 700 }}>Bank Transfer</h4>
-                        <p style={{ color: '#6b7280', fontSize: '0.75rem' }}>Kasikorn Bank (KBank)</p>
+                        <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: 700 }}>Direct Bank Transfer</h4>
+                        <p style={{ color: '#22c55e', fontSize: '0.78rem', fontWeight: 600 }}>Kasikornbank (KBank)</p>
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                       <div>
-                        <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block' }}>Account Name</span>
-                        <span style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>3SGate Enterprise Co., Ltd.</span>
+                        <span style={{ color: '#6b7280', fontSize: '0.75rem', display: 'block', marginBottom: '2px' }}>Account Holder Name</span>
+                        <span style={{ color: '#fff', fontSize: '1.05rem', fontWeight: 700 }}>MR. HEIN THANT</span>
                       </div>
 
+                      {/* Bank Acc Number box with copy */}
                       <div style={{
-                        background: '#1a1a1a', padding: '12px 14px', borderRadius: '8px',
+                        background: '#1a1a1a', padding: '14px 16px', borderRadius: '10px',
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                         border: '1px solid #2a2a2a'
                       }}>
                         <div>
-                          <span style={{ color: '#6b7280', fontSize: '0.7rem', display: 'block' }}>Account Number</span>
-                          <span style={{ color: '#22c55e', fontSize: '1.05rem', fontWeight: 800, fontFamily: 'monospace' }}>
-                            123-4-56789-0
+                          <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block', marginBottom: '2px' }}>KBank Account Number</span>
+                          <span style={{ color: '#22c55e', fontSize: '1.25rem', fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.05em' }}>
+                            7014952040
                           </span>
                         </div>
                         <button
-                          onClick={() => copyToClipboard('123-4-56789-0', 'bank')}
+                          onClick={() => copyToClipboard('7014952040', 'bank')}
                           style={{
-                            background: copiedBank ? '#22c55e20' : '#2a2a2a',
-                            border: `1px solid ${copiedBank ? '#22c55e' : '#444'}`,
-                            color: copiedBank ? '#22c55e' : '#fff',
-                            padding: '6px 12px', borderRadius: '6px', cursor: 'pointer',
-                            fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '4px'
+                            background: copiedBank ? '#22c55e' : '#22c55e20',
+                            border: `1px solid ${copiedBank ? '#22c55e' : '#22c55e60'}`,
+                            color: copiedBank ? '#000' : '#22c55e',
+                            padding: '8px 14px', borderRadius: '8px', cursor: 'pointer',
+                            fontSize: '0.85rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px',
+                            transition: 'all 0.2s', fontFamily: 'Inter, sans-serif'
                           }}
                         >
-                          {copiedBank ? <Check size={14} /> : <Copy size={14} />}
-                          {copiedBank ? 'Copied' : 'Copy'}
+                          {copiedBank ? <Check size={16} /> : <Copy size={16} />}
+                          {copiedBank ? 'Copied!' : 'Copy Acc'}
                         </button>
                       </div>
                     </div>

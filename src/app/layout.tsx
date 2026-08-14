@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import AdBanner from '@/components/AdBanner';
 import Footer from '@/components/Footer';
+import AnalyticsTracker from '@/components/AnalyticsTracker';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={inter.variable}>
       <body>
+        <AnalyticsTracker />
         <div style={{ position: 'sticky', top: '-52px', zIndex: 1000, background: '#0b0b0b' }}>
           <AdBanner />
           <Navbar />

@@ -35,10 +35,7 @@ export default function GalleryPage() {
 
       <div className="container section-sm">
         {/* Masonry Grid */}
-        <div style={{
-          columnCount: 3,
-          columnGap: '20px',
-        }}>
+        <div className="gallery-masonry">
           {artworks.map((art) => (
             <div
               key={art.id}
@@ -98,14 +95,7 @@ export default function GalleryPage() {
           ))}
         </div>
 
-        <style>{`
-          @media (max-width: 900px) {
-            div[style*="columnCount: 3"] { column-count: 2 !important; }
-          }
-          @media (max-width: 600px) {
-            div[style*="columnCount: 3"] { column-count: 1 !important; }
-          }
-        `}</style>
+
       </div>
 
       {/* Lightbox Modal */}
@@ -130,10 +120,10 @@ export default function GalleryPage() {
                 }}
               >×</button>
             </div>
-            <div style={{
+            <div className="lightbox-content" style={{
               background: '#111111', borderRadius: '16px', overflow: 'hidden',
-              display: 'flex', flexDirection: 'row', border: '1px solid #2a2a2a',
-            }} className="lightbox-content">
+              border: '1px solid #2a2a2a',
+            }}>
               <div style={{ flex: '1.5', background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src={selected.image} alt={selected.title} style={{ maxHeight: '70vh', objectFit: 'contain' }} />
               </div>
@@ -158,7 +148,7 @@ export default function GalleryPage() {
                     </p>
                   )}
                   <a
-                    href="https://www.facebook.com/share/1JAoQ7KMHx/"
+                    href="https://www.facebook.com/share/1BZMe1KVPk/"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -201,11 +191,7 @@ export default function GalleryPage() {
         </div>
       )}
       
-      <style>{`
-        @media (max-width: 768px) {
-          .lightbox-content { flex-direction: column !important; }
-        }
-      `}</style>
+
     </div>
   );
 }

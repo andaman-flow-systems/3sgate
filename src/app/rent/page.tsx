@@ -219,7 +219,7 @@ export default function RentPage() {
               </p>
 
               <a
-                href={selectedSpace.ownerUrl || "https://www.facebook.com/share/1JAoQ7KMHx/"}
+                href={selectedSpace.ownerUrl || "https://www.facebook.com/share/1BZMe1KVPk/"}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

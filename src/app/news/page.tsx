@@ -103,7 +103,7 @@ export default function NewsPage() {
             <p>Loading news articles from database...</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
+          <div className="news-grid">
             {filtered.map(post => (
               <div
                 key={post.id}

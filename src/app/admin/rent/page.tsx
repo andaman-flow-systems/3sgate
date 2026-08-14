@@ -31,7 +31,7 @@ export default function AdminRent() {
       size: formData.get('size') as string,
       isAvailable: formData.get('isAvailable') === 'on',
       renterName: formData.get('renterName') as string || undefined,
-      ownerUrl: (formData.get('ownerUrl') as string) || 'https://www.facebook.com/share/1JAoQ7KMHx/',
+      ownerUrl: (formData.get('ownerUrl') as string) || 'https://www.facebook.com/share/1BZMe1KVPk/',
     };
 
     if (isEditing) {
@@ -54,7 +54,7 @@ export default function AdminRent() {
         </button>
       </div>
 
-      <div style={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px', overflow: 'hidden' }}>
+      <div className="admin-table-wrap">
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ background: '#1a1a1a', color: '#9ca3af', fontSize: '0.8rem', textTransform: 'uppercase' }}>
@@ -119,7 +119,7 @@ export default function AdminRent() {
                 <input name="name" defaultValue={isEditing?.name} className="input" required />
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-grid-2">
                 <div className="form-group">
                   <label className="label">Location</label>
                   <input name="location" defaultValue={isEditing?.location} className="input" required />
@@ -130,7 +130,7 @@ export default function AdminRent() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-grid-2">
                 <div className="form-group">
                   <label className="label">Price per Month (฿ THB)</label>
                   <input name="price" type="number" step="0.01" defaultValue={isEditing?.price} className="input" required />
@@ -145,7 +145,7 @@ export default function AdminRent() {
                 <label className="label">Owner / Contact Redirect URL</label>
                 <input
                   name="ownerUrl"
-                  defaultValue={isEditing?.ownerUrl || 'https://www.facebook.com/share/1JAoQ7KMHx/'}
+                  defaultValue={isEditing?.ownerUrl || 'https://www.facebook.com/share/1BZMe1KVPk/'}
                   className="input"
                   placeholder="https://facebook.com/your-profile-or-page"
                   required

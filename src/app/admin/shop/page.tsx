@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, DragEvent, ChangeEvent } from 'react';
 import { sbProductsDB } from '@/lib/supabase-db';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import type { Product } from '@/lib/db';
-import { Package, AlertCircle, Loader, CheckCircle } from 'lucide-react';
+import { Package, AlertCircle, Loader, CheckCircle, Upload, Link as LinkIcon, X, ImageIcon } from 'lucide-react';
 
 // ─── Not-configured banner ─────────────────────────────────────────────────────
 function SetupBanner() {
@@ -33,6 +33,202 @@ function SetupBanner() {
   );
 }
 
+// ─── Image Input Component (URL + Drag & Drop) ────────────────────────────────
+interface ImageInputProps {
+  value: string;
+  onChange: (url: string) => void;
+}
+
+function ImageInput({ value, onChange }: ImageInputProps) {
+  const [mode, setMode] = useState<'url' | 'upload'>('url');
+  const [dragOver, setDragOver] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFile = useCallback(async (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      setUploadError('Please select an image file (JPG, PNG, WebP, GIF)');
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setUploadError('File must be under 10 MB');
+      return;
+    }
+    setUploadError(null);
+    setUploading(true);
+
+    try {
+      // Convert to base64 data URL for preview (works without Supabase storage bucket)
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        onChange(dataUrl);
+        setUploading(false);
+      };
+      reader.onerror = () => {
+        setUploadError('Failed to read file');
+        setUploading(false);
+      };
+      reader.readAsDataURL(file);
+    } catch {
+      setUploadError('Upload failed. Try using a URL instead.');
+      setUploading(false);
+    }
+  }, [onChange]);
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
+
+  const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFile(file);
+  };
+
+  return (
+    <div>
+      {/* Tab switcher */}
+      <div style={{ display: 'flex', gap: '0', marginBottom: '12px', background: '#1a1a1a', borderRadius: '8px', padding: '4px', border: '1px solid #2a2a2a' }}>
+        <button
+          type="button"
+          onClick={() => setMode('url')}
+          style={{
+            flex: 1, padding: '8px', borderRadius: '6px', border: 'none', cursor: 'pointer',
+            background: mode === 'url' ? '#a855f7' : 'transparent',
+            color: mode === 'url' ? '#fff' : '#9ca3af',
+            fontWeight: 600, fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+            transition: 'all 0.2s',
+          }}
+        >
+          <LinkIcon size={14} /> Image URL
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode('upload')}
+          style={{
+            flex: 1, padding: '8px', borderRadius: '6px', border: 'none', cursor: 'pointer',
+            background: mode === 'upload' ? '#a855f7' : 'transparent',
+            color: mode === 'upload' ? '#fff' : '#9ca3af',
+            fontWeight: 600, fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
+            transition: 'all 0.2s',
+          }}
+        >
+          <Upload size={14} /> Drag & Drop / Upload
+        </button>
+      </div>
+
+      {mode === 'url' ? (
+        <input
+          name="image"
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          className="input"
+          placeholder="https://example.com/photo.jpg"
+        />
+      ) : (
+        <>
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleFileInput}
+          />
+
+          {/* Drop zone */}
+          <div
+            onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+            style={{
+              border: `2px dashed ${dragOver ? '#a855f7' : '#3a3a3a'}`,
+              borderRadius: '10px',
+              padding: '32px 20px',
+              textAlign: 'center',
+              cursor: 'pointer',
+              background: dragOver ? '#a855f710' : '#1a1a1a',
+              transition: 'all 0.2s',
+            }}
+          >
+            {uploading ? (
+              <div>
+                <Loader size={28} color="#a855f7" style={{ animation: 'spin 1s linear infinite', marginBottom: '8px' }} />
+                <p style={{ color: '#9ca3af', margin: 0, fontSize: '0.85rem' }}>Processing image…</p>
+              </div>
+            ) : (
+              <div>
+                <Upload size={28} color="#6b7280" style={{ marginBottom: '8px' }} />
+                <p style={{ color: '#fff', margin: '0 0 4px', fontWeight: 600, fontSize: '0.9rem' }}>
+                  Drag & drop your photo here
+                </p>
+                <p style={{ color: '#6b7280', margin: 0, fontSize: '0.8rem' }}>
+                  or <span style={{ color: '#a855f7', fontWeight: 600 }}>click to browse</span> — JPG, PNG, WebP up to 10 MB
+                </p>
+              </div>
+            )}
+          </div>
+
+          {uploadError && (
+            <p style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '6px' }}>{uploadError}</p>
+          )}
+
+          {/* Also show a URL input below for convenience */}
+          <div style={{ marginTop: '12px' }}>
+            <p style={{ color: '#6b7280', fontSize: '0.75rem', marginBottom: '6px' }}>Or paste a URL directly:</p>
+            <input
+              value={value.startsWith('data:') ? '' : value}
+              onChange={e => onChange(e.target.value)}
+              className="input"
+              placeholder="https://example.com/photo.jpg"
+              style={{ fontSize: '0.85rem' }}
+            />
+          </div>
+        </>
+      )}
+
+      {/* Preview */}
+      {value && (
+        <div style={{ marginTop: '12px', position: 'relative', display: 'inline-block' }}>
+          <p style={{ color: '#6b7280', fontSize: '0.75rem', marginBottom: '6px' }}>Preview:</p>
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <img
+              src={value}
+              alt="Preview"
+              style={{
+                width: '120px', height: '90px', objectFit: 'cover',
+                borderRadius: '8px', border: '1px solid #3a3a3a', display: 'block',
+              }}
+              onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+            />
+            <button
+              type="button"
+              onClick={() => onChange('')}
+              style={{
+                position: 'absolute', top: '-8px', right: '-8px',
+                background: '#ef4444', border: 'none', borderRadius: '50%',
+                width: '22px', height: '22px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#fff',
+              }}
+            >
+              <X size={12} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Hidden input to carry the value for form submission */}
+      <input type="hidden" name="image" value={value} />
+    </div>
+  );
+}
+
 // ─── Main component ────────────────────────────────────────────────────────────
 export default function AdminShop() {
   const [products, setProducts]     = useState<Product[]>([]);
@@ -42,6 +238,7 @@ export default function AdminShop() {
   const [saving, setSaving]         = useState(false);
   const [error, setError]           = useState<string | null>(null);
   const [toast, setToast]           = useState<string | null>(null);
+  const [imageUrl, setImageUrl]     = useState('');
   const configured = isSupabaseConfigured();
 
   // ── show toast for 3s then hide ──
@@ -67,6 +264,23 @@ export default function AdminShop() {
 
   useEffect(() => { loadProducts(); }, [loadProducts]);
 
+  // ── open modal helpers ──
+  const openAdd = () => {
+    setImageUrl('');
+    setIsAdding(true);
+  };
+
+  const openEdit = (p: Product) => {
+    setImageUrl(p.image);
+    setIsEditing(p);
+  };
+
+  const closeModal = () => {
+    setIsAdding(false);
+    setIsEditing(null);
+    setImageUrl('');
+  };
+
   // ── delete ──
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this product?')) return;
@@ -85,14 +299,22 @@ export default function AdminShop() {
     setSaving(true);
     setError(null);
     const formData = new FormData(e.currentTarget);
+
+    // imageUrl state holds the resolved value (could be data URL or https URL)
     const product: Omit<Product, 'id' | 'createdAt'> = {
       name:        formData.get('name') as string,
       description: formData.get('description') as string,
       price:       Number(formData.get('price')),
-      image:       formData.get('image') as string,
+      image:       imageUrl,
       category:    formData.get('category') as string,
       inStock:     formData.get('inStock') === 'on',
     };
+
+    if (!product.image) {
+      setError('Please provide a product image (URL or upload).');
+      setSaving(false);
+      return;
+    }
 
     try {
       if (isEditing) {
@@ -102,8 +324,7 @@ export default function AdminShop() {
         await sbProductsDB.create(product);
         showToast('Product added ✓');
       }
-      setIsEditing(null);
-      setIsAdding(false);
+      closeModal();
       loadProducts();
     } catch (err) {
       setError((err as Error).message);
@@ -141,7 +362,7 @@ export default function AdminShop() {
         </div>
         {configured && (
           <button
-            onClick={() => setIsAdding(true)}
+            onClick={openAdd}
             className="btn btn-purple"
             disabled={loading}
           >
@@ -196,10 +417,16 @@ export default function AdminShop() {
                 {products.map(p => (
                   <tr key={p.id} style={{ borderBottom: '1px solid #1a1a1a' }}>
                     <td style={{ padding: '14px 16px' }}>
-                      <img
-                        src={p.image} alt={p.name}
-                        style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #2a2a2a' }}
-                      />
+                      {p.image ? (
+                        <img
+                          src={p.image} alt={p.name}
+                          style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #2a2a2a' }}
+                        />
+                      ) : (
+                        <div style={{ width: '48px', height: '48px', borderRadius: '8px', border: '1px solid #2a2a2a', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1a1a1a' }}>
+                          <ImageIcon size={20} color="#4b5563" />
+                        </div>
+                      )}
                     </td>
                     <td style={{ padding: '14px 16px', color: '#fff', fontWeight: 600 }}>{p.name}</td>
                     <td style={{ padding: '14px 16px', color: '#9ca3af' }}>{p.category}</td>
@@ -216,7 +443,7 @@ export default function AdminShop() {
                     </td>
                     <td style={{ padding: '14px 16px', textAlign: 'right' }}>
                       <button
-                        onClick={() => setIsEditing(p)}
+                        onClick={() => openEdit(p)}
                         style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 14px', borderRadius: '6px', marginRight: '8px', cursor: 'pointer', fontSize: '0.8rem' }}
                       >
                         Edit
@@ -239,11 +466,20 @@ export default function AdminShop() {
       {/* Add / Edit Modal */}
       {(isAdding || isEditing) && (
         <div className="modal-overlay">
-          <div className="modal" style={{ maxWidth: '600px' }}>
-            <h2 style={{ color: '#fff', marginBottom: '6px' }}>
-              {isEditing ? 'Edit Product' : 'Add New Product'}
-            </h2>
-            <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '20px' }}>
+          <div className="modal" style={{ maxWidth: '640px', maxHeight: '90vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
+              <h2 style={{ color: '#fff', margin: 0 }}>
+                {isEditing ? 'Edit Product' : 'Add New Product'}
+              </h2>
+              <button
+                type="button"
+                onClick={closeModal}
+                style={{ background: 'transparent', border: 'none', color: '#9ca3af', cursor: 'pointer', padding: '4px' }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '24px' }}>
               Saved directly to Supabase cloud database
             </p>
 
@@ -264,9 +500,10 @@ export default function AdminShop() {
                 </div>
               </div>
 
+              {/* Image section — URL or Drag & Drop */}
               <div className="form-group">
-                <label className="label">Image URL</label>
-                <input name="image" defaultValue={isEditing?.image} className="input" required />
+                <label className="label">Product Image</label>
+                <ImageInput value={imageUrl} onChange={setImageUrl} />
               </div>
 
               <div className="form-group">
@@ -279,10 +516,16 @@ export default function AdminShop() {
                 <label htmlFor="inStock" style={{ color: '#fff' }}>Product is In Stock</label>
               </div>
 
+              {error && (
+                <div style={{ color: '#ef4444', fontSize: '0.85rem', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <AlertCircle size={15} /> {error}
+                </div>
+              )}
+
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '8px' }}>
                 <button
                   type="button"
-                  onClick={() => { setIsAdding(false); setIsEditing(null); }}
+                  onClick={closeModal}
                   className="btn"
                   style={{ background: '#1a1a1a', color: '#fff' }}
                 >

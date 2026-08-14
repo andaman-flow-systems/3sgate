@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { bannersDB, type Banner } from '@/lib/db';
 
 const colorMap: Record<string, { bg: string; glow: string; text: string; badge: string; dot: string }> = {
@@ -52,6 +53,7 @@ const typeLabel: Record<string, string> = {
 export const BANNER_HEIGHT = 52;
 
 export default function AdBanner() {
+  const pathname = usePathname();
   const [banners, setBanners] = useState<Banner[]>([]);
   const [current, setCurrent]  = useState(0);
   const [dismissed, setDismissed] = useState(false);
@@ -74,7 +76,7 @@ export default function AdBanner() {
     return () => clearInterval(interval);
   }, [banners.length]);
 
-  if (banners.length === 0 || dismissed) return null;
+  if (pathname?.startsWith('/admin') || banners.length === 0 || dismissed) return null;
 
   const banner = banners[current];
   const theme  = colorMap[banner.color] ?? colorMap.gold;

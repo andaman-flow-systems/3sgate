@@ -69,12 +69,8 @@ export default function ShopPage() {
 
       <div className="container section-sm">
         {/* Filters */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '12px',
-          flexWrap: 'wrap', marginBottom: '28px',
-          justifyContent: 'space-between'
-        }}>
-          <div style={{ position: 'relative', width: '280px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '360px' }}>
             <Search size={16} color="#6b7280" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
@@ -89,13 +85,13 @@ export default function ShopPage() {
             />
           </div>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-            <Filter size={14} color="#6b7280" style={{ marginRight: '4px' }} />
+            <Filter size={14} color="#6b7280" />
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
                 style={{
-                  padding: '8px 16px', borderRadius: '8px',
+                  padding: '7px 14px', borderRadius: '8px',
                   border: `1px solid ${category === cat ? '#D4A017' : '#2a2a2a'}`,
                   background: category === cat ? '#D4A01720' : '#111111',
                   color: category === cat ? '#D4A017' : '#9ca3af',
@@ -116,11 +112,7 @@ export default function ShopPage() {
           </div>
         ) : (
           /* Products grid */
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-            gap: '20px',
-          }}>
+          <div className="product-grid">
             {filtered.map((product) => (
               <div
                 key={product.id}
@@ -247,7 +239,7 @@ export default function ShopPage() {
 
               <div style={{ display: 'flex', gap: '12px' }}>
                 <a
-                  href="https://www.facebook.com/share/1JAoQ7KMHx/"
+                  href="https://www.facebook.com/share/1BZMe1KVPk/"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{

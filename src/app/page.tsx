@@ -16,13 +16,8 @@ export default function HomePage() {
 
   return (
     <div className="container section-sm">
-      {/* Main 3-column grid layout */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 280px 220px',
-        gap: '20px',
-        marginBottom: '32px',
-      }}>
+      {/* Main 3-column grid layout — responsive via .home-grid CSS class */}
+      <div className="home-grid">
         {/* Left: Hero + Quick Access */}
         <div>
           <HeroSlider />
@@ -62,25 +57,6 @@ export default function HomePage() {
       }}>
         <FeaturedShops />
       </div>
-
-      <style>{`
-        @media (max-width: 1100px) {
-          div[style*="1fr 280px 220px"] {
-            grid-template-columns: 1fr 260px !important;
-          }
-          div[style*="1fr 280px 220px"] > div:last-child {
-            display: none;
-          }
-        }
-        @media (max-width: 768px) {
-          div[style*="1fr 280px 220px"] {
-            grid-template-columns: 1fr !important;
-          }
-          div[style*="1fr 280px 220px"] > div:nth-child(2) {
-            display: none;
-          }
-        }
-      `}</style>
     </div>
   );
 }

@@ -1,11 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import Logo from '@/components/Logo';
 import { Mail, MapPin, Globe } from 'lucide-react';
 
 export default function Footer() {
+  const pathname = usePathname();
   const year = new Date().getFullYear();
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
   return (
     <footer style={{
       background: '#0d0d0d',
@@ -77,7 +83,7 @@ export default function Footer() {
           <div>
             <h5 style={{ color: '#22c55e', marginBottom: '16px', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Contact</h5>
             <p style={{ color: '#9ca3af', fontSize: '0.88rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Mail size={15} color="#6b7280" /> contact@3sgate.com
+              <Mail size={15} color="#6b7280" /> admin.3sgates2026@gmail.com
             </p>
             <p style={{ color: '#9ca3af', fontSize: '0.88rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <MapPin size={15} color="#6b7280" /> Bangkok, Thailand

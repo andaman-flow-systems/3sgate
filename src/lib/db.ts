@@ -294,7 +294,7 @@ function defaultSettings(): SiteSettings {
   return {
     siteName: '3SGate',
     tagline: 'Social Enterprise Platform',
-    contactEmail: 'contact@3sgate.com',
+    contactEmail: 'admin.3sgates2026@gmail.com',
     maintenanceMode: false,
   };
 }
@@ -302,26 +302,113 @@ function defaultSettings(): SiteSettings {
 // ─── Stats ─────────────────────────────────────────────────────────────────────
 export const statsDB = {
   getAll: () => getAll<VisitorStat>(KEYS.stats),
+  
+  recordPageView: () => {
+    if (typeof window === 'undefined') return;
+    const todayStr = new Date().toISOString().split('T')[0];
+    let all = getAll<VisitorStat>(KEYS.stats);
+    
+    if (!all || all.length === 0) {
+      const stats: VisitorStat[] = [];
+      const baseDate = new Date();
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(baseDate);
+        d.setDate(d.getDate() - i);
+        stats.push({
+          date: d.toISOString().split('T')[0],
+          visitors: Math.floor(Math.random() * 40) + 120,
+          pageViews: Math.floor(Math.random() * 150) + 380,
+        });
+      }
+      setAll(KEYS.stats, stats);
+      all = stats;
+    }
+
+    const todayIndex = all.findIndex((s) => s.date === todayStr);
+    const isNewSession = !sessionStorage.getItem('3s_visited_today');
+    if (isNewSession) {
+      sessionStorage.setItem('3s_visited_today', 'true');
+    }
+
+    if (todayIndex >= 0) {
+      all[todayIndex].pageViews += 1;
+      if (isNewSession) all[todayIndex].visitors += 1;
+    } else {
+      all.push({
+        date: todayStr,
+        visitors: 1,
+        pageViews: 1,
+      });
+    }
+
+    if (all.length > 30) all = all.slice(-30);
+    setAll(KEYS.stats, all);
+  },
+
+  getChartData: (): VisitorStat[] => {
+    if (typeof window === 'undefined') return [];
+    let all = getAll<VisitorStat>(KEYS.stats);
+    if (!all || all.length === 0) {
+      statsDB.recordPageView();
+      all = getAll<VisitorStat>(KEYS.stats);
+    }
+    
+    const result: VisitorStat[] = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split('T')[0];
+      const found = all.find((s) => s.date === dateStr);
+      result.push(found ? { ...found } : { date: dateStr, visitors: 0, pageViews: 0 });
+    }
+    return result;
+  },
+
   getSummary: () => {
-    const all = getAll<VisitorStat>(KEYS.stats);
-    const today = all[all.length - 1];
-    const weekTotal = all.slice(-7).reduce((s, d) => s + d.pageViews, 0);
+    const chartData = statsDB.getChartData();
+    const today = chartData[chartData.length - 1] ?? { visitors: 0, pageViews: 0 };
+    const yesterday = chartData[chartData.length - 2] ?? { visitors: 0, pageViews: 0 };
+    
+    const weekTotalViews = chartData.reduce((sum, item) => sum + item.pageViews, 0);
+    const weekTotalVisitors = chartData.reduce((sum, item) => sum + item.visitors, 0);
+
+    const visitorGrowth = yesterday.visitors > 0
+      ? (((today.visitors - yesterday.visitors) / yesterday.visitors) * 100).toFixed(1)
+      : '0.0';
+
+    const pageViewGrowth = yesterday.pageViews > 0
+      ? (((today.pageViews - yesterday.pageViews) / yesterday.pageViews) * 100).toFixed(1)
+      : '0.0';
+
     return {
-      todayVisitors: today?.visitors ?? 0,
-      weekPageViews: weekTotal,
+      todayVisitors: today.visitors,
+      todayPageViews: today.pageViews,
+      yesterdayVisitors: yesterday.visitors,
+      weekPageViews: weekTotalViews,
+      weekVisitors: weekTotalVisitors,
+      visitorGrowth: parseFloat(visitorGrowth),
+      pageViewGrowth: parseFloat(pageViewGrowth),
     };
   },
 };
 
 // ─── Dashboard Stats ───────────────────────────────────────────────────────────
 export function getDashboardStats() {
+  const summary = statsDB.getSummary();
   return {
     totalPosts: getAll(KEYS.news).length + getAll(KEYS.gallery).length,
     newsPosts:  getAll(KEYS.news).length,
     galleryItems: getAll(KEYS.gallery).length,
     jobListings: getAll(KEYS.jobs).length,
-    todayVisitors: statsDB.getSummary().todayVisitors,
-    weekPageViews: statsDB.getSummary().weekPageViews,
+    rentListings: getAll(KEYS.rentals).length,
+    foodPlaces: getAll(KEYS.food).length,
+    todayVisitors: summary.todayVisitors,
+    todayPageViews: summary.todayPageViews,
+    weekPageViews: summary.weekPageViews,
+    weekVisitors: summary.weekVisitors,
+    visitorGrowth: summary.visitorGrowth,
+    pageViewGrowth: summary.pageViewGrowth,
     activeBanners: getAll<Banner>(KEYS.banners).filter((b) => b.isActive).length,
   };
 }
@@ -395,12 +482,12 @@ export function seedIfEmpty(): void {
 
   // Rentals (6 spaces — THB prices)
   setAll(KEYS.rentals, [
-    { id: 'r1', name: 'Shop Space A1', location: 'Chiang Mai Central Market', price: 4500, size: '20 sqm', image: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80', description: 'Prime location shop space at the entrance of Chiang Mai Central Market. High foot traffic. Ideal for retail or fashion.', isAvailable: false, renterName: 'Mg Mg Clothing', ownerUrl: 'https://www.facebook.com/share/1JAoQ7KMHx/', createdAt: '2024-05-01T00:00:00Z' },
-    { id: 'r2', name: 'Shop Space A2', location: 'Chiang Mai Central Market', price: 4500, size: '20 sqm', image: 'https://images.unsplash.com/photo-1604719312566-8912e9c8a213?w=600&q=80', description: 'Available space adjacent to main entrance. Comes with basic shelving and overhead lighting.', isAvailable: true, ownerUrl: 'https://www.facebook.com/share/1JAoQ7KMHx/', createdAt: '2024-05-01T00:00:00Z' },
-    { id: 'r3', name: 'Corner Space B1', location: 'Bangkok Myanmar Plaza', price: 6200, size: '30 sqm', image: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&q=80', description: 'Large corner shop space with maximum visibility in the Myanmar community plaza in Bangkok.', isAvailable: true, ownerUrl: 'https://www.facebook.com/share/1JAoQ7KMHx/', createdAt: '2024-04-20T00:00:00Z' },
-    { id: 'r4', name: 'Shop Space C3', location: 'Chiang Rai Weekend Market', price: 3000, size: '15 sqm', image: 'https://images.unsplash.com/photo-1572032023143-82929e48e636?w=600&q=80', description: 'Affordable space in the growing Chiang Rai weekend market. Popular with crafts, clothing, and food sellers.', isAvailable: false, renterName: 'Daw Aye Fashion House', ownerUrl: 'https://www.facebook.com/share/1JAoQ7KMHx/', createdAt: '2024-04-15T00:00:00Z' },
-    { id: 'r5', name: 'Food Court Stall D2', location: 'Mae Sot Border Market', price: 2500, size: '10 sqm', image: 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=600&q=80', description: 'Compact food court stall in the busy Mae Sot border market. Running water and electricity included.', isAvailable: true, ownerUrl: 'https://www.facebook.com/share/1JAoQ7KMHx/', createdAt: '2024-04-08T00:00:00Z' },
-    { id: 'r6', name: 'Showroom Space E1', location: 'Chiang Mai Central Market', price: 9800, size: '60 sqm', image: 'https://images.unsplash.com/photo-1614113489855-66422ad300a4?w=600&q=80', description: 'Spacious showroom ideal for furniture, clothing wholesale, or multi-product displays. CCTV and storage room included.', isAvailable: true, ownerUrl: 'https://www.facebook.com/share/1JAoQ7KMHx/', createdAt: '2024-04-01T00:00:00Z' },
+    { id: 'r1', name: 'Shop Space A1', location: 'Chiang Mai Central Market', price: 4500, size: '20 sqm', image: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&q=80', description: 'Prime location shop space at the entrance of Chiang Mai Central Market. High foot traffic. Ideal for retail or fashion.', isAvailable: false, renterName: 'Mg Mg Clothing', ownerUrl: 'https://www.facebook.com/share/1BZMe1KVPk/', createdAt: '2024-05-01T00:00:00Z' },
+    { id: 'r2', name: 'Shop Space A2', location: 'Chiang Mai Central Market', price: 4500, size: '20 sqm', image: 'https://images.unsplash.com/photo-1604719312566-8912e9c8a213?w=600&q=80', description: 'Available space adjacent to main entrance. Comes with basic shelving and overhead lighting.', isAvailable: true, ownerUrl: 'https://www.facebook.com/share/1BZMe1KVPk/', createdAt: '2024-05-01T00:00:00Z' },
+    { id: 'r3', name: 'Corner Space B1', location: 'Bangkok Myanmar Plaza', price: 6200, size: '30 sqm', image: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&q=80', description: 'Large corner shop space with maximum visibility in the Myanmar community plaza in Bangkok.', isAvailable: true, ownerUrl: 'https://www.facebook.com/share/1BZMe1KVPk/', createdAt: '2024-04-20T00:00:00Z' },
+    { id: 'r4', name: 'Shop Space C3', location: 'Chiang Rai Weekend Market', price: 3000, size: '15 sqm', image: 'https://images.unsplash.com/photo-1572032023143-82929e48e636?w=600&q=80', description: 'Affordable space in the growing Chiang Rai weekend market. Popular with crafts, clothing, and food sellers.', isAvailable: false, renterName: 'Daw Aye Fashion House', ownerUrl: 'https://www.facebook.com/share/1BZMe1KVPk/', createdAt: '2024-04-15T00:00:00Z' },
+    { id: 'r5', name: 'Food Court Stall D2', location: 'Mae Sot Border Market', price: 2500, size: '10 sqm', image: 'https://images.unsplash.com/photo-1567521464027-f127ff144326?w=600&q=80', description: 'Compact food court stall in the busy Mae Sot border market. Running water and electricity included.', isAvailable: true, ownerUrl: 'https://www.facebook.com/share/1BZMe1KVPk/', createdAt: '2024-04-08T00:00:00Z' },
+    { id: 'r6', name: 'Showroom Space E1', location: 'Chiang Mai Central Market', price: 9800, size: '60 sqm', image: 'https://images.unsplash.com/photo-1614113489855-66422ad300a4?w=600&q=80', description: 'Spacious showroom ideal for furniture, clothing wholesale, or multi-product displays. CCTV and storage room included.', isAvailable: true, ownerUrl: 'https://www.facebook.com/share/1BZMe1KVPk/', createdAt: '2024-04-01T00:00:00Z' },
   ] as RentalSpace[]);
 
   // Jobs (8 listings — THB salary)

@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const ICONS = [
   {
-    href: '/shop',    label: 'SHOP',       sub: 'Online Shop',    color: '#D4A017',
+    href: '/shop',    label: 'SHOP',       sub: 'Online Shop',       color: '#D4A017',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
@@ -19,7 +19,7 @@ const ICONS = [
     ),
   },
   {
-    href: '/news',    label: 'NEWS',       sub: 'Latest News',    color: '#3b82f6',
+    href: '/news',    label: 'NEWS',       sub: 'Latest News',       color: '#3b82f6',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
@@ -28,7 +28,7 @@ const ICONS = [
     ),
   },
   {
-    href: '/gallery', label: 'ART GALLERY',sub: 'Creative Works', color: '#a855f7',
+    href: '/gallery', label: 'ART',        sub: 'Creative Works',    color: '#a855f7',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/>
@@ -37,7 +37,7 @@ const ICONS = [
     ),
   },
   {
-    href: '/donate',  label: 'DONATE',     sub: 'Make Impact',    color: '#ef4444',
+    href: '/donate',  label: 'DONATE',     sub: 'Make Impact',       color: '#ef4444',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none">
         <path d="M12 21.593c-.525-.445-8.53-6.77-8.53-11.594C3.47 6.19 5.862 4 9 4c1.818 0 3.442.905 4.5 2.284C14.558 4.905 16.182 4 18 4c3.138 0 5.53 2.19 5.53 5.999 0 4.824-8.005 11.15-8.53 11.594h-3z"/>
@@ -45,7 +45,7 @@ const ICONS = [
     ),
   },
   {
-    href: '/jobs',    label: 'JOBS',       sub: 'Find Jobs',      color: '#22c55e',
+    href: '/jobs',    label: 'JOBS',       sub: 'Find Jobs',         color: '#22c55e',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
@@ -53,7 +53,7 @@ const ICONS = [
     ),
   },
   {
-    href: '/food',    label: 'FOOD GUIDE', sub: 'Food & Places',  color: '#22c55e',
+    href: '/food',    label: 'FOOD',       sub: 'Food & Places',     color: '#f97316',
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
@@ -65,90 +65,67 @@ const ICONS = [
 
 export default function QuickAccess() {
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(7, 1fr)',
-      gap: '8px',
-      marginTop: '12px',
-    }}>
-      {ICONS.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          style={{ textDecoration: 'none' }}
-        >
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '16px 8px 12px',
-            background: '#111111',
-            border: '1px solid #2a2a2a',
-            borderRadius: '12px',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-          }}
-          onMouseEnter={e => {
-            const el = e.currentTarget as HTMLDivElement;
-            el.style.background = '#1a1a1a';
-            el.style.borderColor = item.color;
-            el.style.transform = 'translateY(-2px)';
-          }}
-          onMouseLeave={e => {
-            const el = e.currentTarget as HTMLDivElement;
-            el.style.background = '#111111';
-            el.style.borderColor = '#2a2a2a';
-            el.style.transform = 'translateY(0)';
-          }}
-          >
-            {/* Icon circle */}
-            <div style={{
-              width: '52px',
-              height: '52px',
-              borderRadius: '50%',
-              background: item.color + '20',
-              border: `2px solid ${item.color}40`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: item.color,
-            }}>
-              {item.icon}
+    <>
+      <div className="quick-access-grid" style={{ marginTop: '12px' }}>
+        {ICONS.map((item) => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div
+              className="quick-access-item"
+              style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+                padding: '16px 8px 12px',
+                background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px',
+                cursor: 'pointer', transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.background = '#1a1a1a';
+                el.style.borderColor = item.color;
+                el.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.background = '#111111';
+                el.style.borderColor = '#2a2a2a';
+                el.style.transform = 'translateY(0)';
+              }}
+            >
+              <div style={{
+                width: '48px', height: '48px', borderRadius: '50%',
+                background: item.color + '20', border: `2px solid ${item.color}40`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: item.color,
+              }}>
+                {item.icon}
+              </div>
+              <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#fff', letterSpacing: '0.04em', textAlign: 'center', lineHeight: 1.2 }}>
+                {item.label}
+              </span>
+              <span style={{ fontSize: '0.62rem', color: '#6b7280', textAlign: 'center', lineHeight: 1.2 }}>
+                {item.sub}
+              </span>
             </div>
-            <span style={{
-              fontSize: '0.7rem',
-              fontWeight: 700,
-              color: '#fff',
-              letterSpacing: '0.04em',
-              textAlign: 'center',
-              lineHeight: 1.2,
-            }}>
-              {item.label}
-            </span>
-            <span style={{
-              fontSize: '0.66rem',
-              color: '#6b7280',
-              textAlign: 'center',
-            }}>
-              {item.sub}
-            </span>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        ))}
+      </div>
 
       <style>{`
-        @media (max-width: 900px) {
-          div[style*="repeat(7, 1fr)"] {
-            grid-template-columns: repeat(4, 1fr) !important;
-          }
+        .quick-access-grid {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          gap: 8px;
+        }
+        @media (max-width: 1100px) {
+          .quick-access-grid { grid-template-columns: repeat(4, 1fr); }
         }
         @media (max-width: 600px) {
-          div[style*="repeat(7, 1fr)"] {
-            grid-template-columns: repeat(3, 1fr) !important;
-          }
+          .quick-access-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+          .quick-access-item { padding: 12px 6px 10px !important; }
+        }
+        @media (max-width: 400px) {
+          .quick-access-grid { grid-template-columns: repeat(4, 1fr); gap: 5px; }
         }
       `}</style>
-    </div>
+    </>
   );
 }

@@ -53,7 +53,7 @@ export default function AdminDonate() {
       </div>
 
       {/* Stats */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '32px' }}>
+      <div className="admin-stat-4" style={{ marginBottom: '32px' }}>
         <div style={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px', padding: '20px' }}>
           <p style={{ color: '#6b7280', fontSize: '0.8rem', marginBottom: '6px' }}>Total Donations</p>
           <p style={{ color: '#fff', fontSize: '1.6rem', fontWeight: 700 }}>฿{grandTotal.toLocaleString()}</p>
@@ -70,8 +70,8 @@ export default function AdminDonate() {
       </div>
 
       {/* Table */}
-      <div style={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px', overflow: 'hidden' }}>
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid #2a2a2a' }}>
+      <div className="admin-table-wrap">
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid #2a2a2a', background: '#111111' }}>
           <h3 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600 }}>All Donation Records</h3>
         </div>
         {loading ? (
