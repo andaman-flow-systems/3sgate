@@ -6,7 +6,7 @@ import { foodDB, type FoodPlace } from '@/lib/db';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { Utensils, MapPin, Star, Phone, Clock, Search, X, PhoneCall } from 'lucide-react';
 
-const CATEGORIES = ['All', 'Myanmar Cuisine', 'Shan Cuisine', 'Myanmar-Thai Fusion', 'Street Food', 'Café and Drinks', 'Barbecue', 'Bakery and Sweets'];
+const CATEGORIES = ['All', 'Thai Cuisine', 'Seafood & BBQ', 'Street Food', 'Shan & Northern', 'Myanmar Cuisine', 'Asian & Japanese', 'Cafés & Drinks', 'Desserts & Bakery'];
 
 export default function FoodPage() {
   const [places, setPlaces] = useState<FoodPlace[]>([]);
@@ -70,10 +70,10 @@ export default function FoodPage() {
             }}>
               <Utensils size={22} color="#f59e0b" />
             </div>
-            <h1 style={{ color: '#f59e0b', fontSize: '2rem', fontWeight: 800 }}>Myanmar Food Guide</h1>
+            <h1 style={{ color: '#f59e0b', fontSize: '2rem', fontWeight: 800 }}>Best Food & Dining Guide</h1>
           </div>
           <p style={{ color: '#9ca3af', fontSize: '0.92rem' }}>
-            Discover authentic Myanmar restaurants, Shan noodle shops, and cafés across Thailand.
+            Discover top-rated restaurants, authentic street food stalls, cafés, seafood spots, and regional delicacies across Thailand.
           </p>
         </div>
       </div>

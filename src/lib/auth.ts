@@ -4,8 +4,8 @@
 // Credentials are stored hashed in localStorage
 
 const SESSION_KEY = '3sg_admin_session';
-const DEFAULT_USERNAME = 'admin';
-const DEFAULT_PASSWORD_HASH = btoa('3sgate2024'); // base64 – good enough for demo
+const DEFAULT_USERNAME = '0idadmin';
+const DEFAULT_PASSWORD_HASH = btoa('Suser@3sgates#01l');
 
 export interface AdminSession {
   userId: string;
@@ -18,11 +18,22 @@ export interface AdminSession {
 export function login(username: string, password: string): boolean {
   if (typeof window === 'undefined') return false;
 
-  // Check against seeded admin or any user in localStorage
   const usersRaw = localStorage.getItem('3sg_users');
-  const users = usersRaw ? JSON.parse(usersRaw) : [];
+  let users = usersRaw ? JSON.parse(usersRaw) : [];
 
-  // Also check default hardcoded admin
+  // Migrate old 'admin' user to new '0idadmin' username & password
+  let migrated = false;
+  users = users.map((u: { id: string; username: string; passwordHash: string }) => {
+    if (u.id === 'admin-001' || u.username === 'admin') {
+      migrated = true;
+      return { ...u, username: DEFAULT_USERNAME, passwordHash: DEFAULT_PASSWORD_HASH };
+    }
+    return u;
+  });
+  if (migrated) {
+    localStorage.setItem('3sg_users', JSON.stringify(users));
+  }
+
   let user = users.find((u: { username: string; passwordHash: string }) => u.username === username);
   if (!user && username === DEFAULT_USERNAME && btoa(password) === DEFAULT_PASSWORD_HASH) {
     user = { id: 'admin-001', username: DEFAULT_USERNAME, displayName: 'Admin User', role: 'super-admin', passwordHash: DEFAULT_PASSWORD_HASH };

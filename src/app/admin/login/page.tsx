@@ -6,8 +6,8 @@ import { login } from '@/lib/auth';
 import Logo from '@/components/Logo';
 
 export default function AdminLogin() {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('3sgate2024');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
 
@@ -57,6 +57,7 @@ export default function AdminLogin() {
             <label className="label">Username</label>
             <input
               type="text"
+              placeholder="Enter username"
               value={username}
               onChange={e => setUsername(e.target.value)}
               className="input"
@@ -69,6 +70,7 @@ export default function AdminLogin() {
             <label className="label">Password</label>
             <input
               type="password"
+              placeholder="Enter password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               className="input"
@@ -81,10 +83,6 @@ export default function AdminLogin() {
             Login to Dashboard
           </button>
         </form>
-        
-        <p style={{ color: '#6b7280', fontSize: '0.8rem', textAlign: 'center', marginTop: '24px' }}>
-          Default: admin / 3sgate2024
-        </p>
       </div>
     </div>
   );

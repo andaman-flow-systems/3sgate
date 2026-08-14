@@ -110,7 +110,7 @@ export default function AdminFood() {
                 </div>
                 <div className="form-group">
                   <label className="label">Category</label>
-                  <input name="category" defaultValue={isEditing?.category} className="input" placeholder="e.g. Myanmar Cuisine" required />
+                  <input name="category" defaultValue={isEditing?.category} className="input" placeholder="e.g. Thai Cuisine, Seafood & BBQ" required />
                 </div>
               </div>
 
