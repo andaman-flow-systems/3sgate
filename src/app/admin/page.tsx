@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getDashboardStats, newsDB, statsDB, type NewsPost, type VisitorStat } from '@/lib/db';
-import { sbNewsDB, sbGalleryDB, sbJobsDB, sbRentalsDB, sbFoodDB, sbBannersDB } from '@/lib/supabase-db';
+import { sbNewsDB, sbGalleryDB, sbJobsDB, sbRentalsDB, sbFoodDB, sbBannersDB, sbStatsDB } from '@/lib/supabase-db';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { FileText, Newspaper, Image as ImageIcon, Briefcase, Folder, TrendingUp, Users, Eye } from 'lucide-react';
 
@@ -32,13 +32,15 @@ export default function AdminDashboard() {
       }
 
       try {
-        const [newsList, galleryList, jobsList, rentList, foodList, bannerList] = await Promise.all([
+        const [newsList, galleryList, jobsList, rentList, foodList, bannerList, realStatsSummary, realChartData] = await Promise.all([
           sbNewsDB.getAll().catch(() => null),
           sbGalleryDB.getAll().catch(() => null),
           sbJobsDB.getAll().catch(() => null),
           sbRentalsDB.getAll().catch(() => null),
           sbFoodDB.getAll().catch(() => null),
           sbBannersDB.getAll().catch(() => null),
+          sbStatsDB.getSummary().catch(() => null),
+          sbStatsDB.getChartData().catch(() => null),
         ]);
 
         const newsCount = newsList ? newsList.length : localStats.newsPosts;
@@ -49,7 +51,6 @@ export default function AdminDashboard() {
         const bannerCount = bannerList ? bannerList.filter(b => b.isActive).length : localStats.activeBanners;
 
         setStats({
-          ...localStats,
           newsPosts: newsCount,
           galleryItems: galleryCount,
           jobListings: jobsCount,
@@ -57,7 +58,17 @@ export default function AdminDashboard() {
           foodPlaces: foodCount,
           totalPosts: newsCount + galleryCount + jobsCount + rentCount + foodCount,
           activeBanners: bannerCount,
+          todayVisitors: realStatsSummary ? realStatsSummary.todayVisitors : localStats.todayVisitors,
+          todayPageViews: realStatsSummary ? realStatsSummary.todayPageViews : localStats.todayPageViews,
+          weekPageViews: realStatsSummary ? realStatsSummary.weekPageViews : localStats.weekPageViews,
+          weekVisitors: realStatsSummary ? realStatsSummary.weekVisitors : localStats.weekVisitors,
+          visitorGrowth: realStatsSummary ? realStatsSummary.visitorGrowth : localStats.visitorGrowth,
+          pageViewGrowth: realStatsSummary ? realStatsSummary.pageViewGrowth : localStats.pageViewGrowth,
         });
+
+        if (realChartData && realChartData.length > 0) {
+          setChartData(realChartData);
+        }
 
         if (newsList && newsList.length > 0) {
           setRecentNews(newsList.slice(0, 5));

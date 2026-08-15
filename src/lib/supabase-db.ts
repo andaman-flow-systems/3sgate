@@ -20,6 +20,7 @@ import type {
   FoodPlace,
   Banner,
   DonationRecord,
+  VisitorStat,
 } from './db';
 
 // ─── Helper: map DB row → TypeScript shape ─────────────────────────────────────
@@ -664,3 +665,80 @@ export const sbDonationsDB = {
     return (data ?? []).reduce((sum, d) => sum + (d.amount as number), 0);
   },
 };
+
+// ─── Stats / Analytics ────────────────────────────────────────────────────────
+export const sbStatsDB = {
+  recordPageView: async (isNewVisitor: boolean): Promise<void> => {
+    try {
+      const { error } = await supabase.rpc('increment_page_view', {
+        is_new_visitor: isNewVisitor,
+      });
+      if (error) {
+        console.error('Supabase RPC increment_page_view error:', error);
+      }
+    } catch (err) {
+      console.error('Failed to record page view:', err);
+    }
+  },
+
+  getChartData: async (): Promise<VisitorStat[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('daily_stats')
+        .select('date, visitors, page_views')
+        .order('date', { ascending: false })
+        .limit(7);
+
+      if (error) throw error;
+
+      const rawStats = (data ?? []).map((row: Record<string, unknown>) => ({
+        date: String(row.date),
+        visitors: Number(row.visitors || 0),
+        pageViews: Number(row.page_views || 0),
+      }));
+
+      // Ensure we return the last 7 calendar days chronologically
+      const result: VisitorStat[] = [];
+      const now = new Date();
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().split('T')[0];
+        const found = rawStats.find((s) => s.date === dateStr);
+        result.push(found ? { ...found } : { date: dateStr, visitors: 0, pageViews: 0 });
+      }
+      return result;
+    } catch (err) {
+      console.error('Failed to fetch chart data from Supabase:', err);
+      return [];
+    }
+  },
+
+  getSummary: async () => {
+    const chartData = await sbStatsDB.getChartData();
+    const today = chartData[chartData.length - 1] ?? { visitors: 0, pageViews: 0 };
+    const yesterday = chartData[chartData.length - 2] ?? { visitors: 0, pageViews: 0 };
+
+    const weekTotalViews = chartData.reduce((sum, item) => sum + item.pageViews, 0);
+    const weekTotalVisitors = chartData.reduce((sum, item) => sum + item.visitors, 0);
+
+    const visitorGrowth = yesterday.visitors > 0
+      ? (((today.visitors - yesterday.visitors) / yesterday.visitors) * 100).toFixed(1)
+      : '0.0';
+
+    const pageViewGrowth = yesterday.pageViews > 0
+      ? (((today.pageViews - yesterday.pageViews) / yesterday.pageViews) * 100).toFixed(1)
+      : '0.0';
+
+    return {
+      todayVisitors: today.visitors,
+      todayPageViews: today.pageViews,
+      yesterdayVisitors: yesterday.visitors,
+      weekPageViews: weekTotalViews,
+      weekVisitors: weekTotalVisitors,
+      visitorGrowth: parseFloat(visitorGrowth),
+      pageViewGrowth: parseFloat(pageViewGrowth),
+    };
+  },
+};
+
