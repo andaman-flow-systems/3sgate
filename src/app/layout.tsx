@@ -15,7 +15,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: '3SGate – Social Enterprise Platform',
+    default: '3SGates – Social Enterprise Platform',
     template: '%s | 3SGate',
   },
   description:
