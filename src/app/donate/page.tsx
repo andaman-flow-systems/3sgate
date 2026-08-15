@@ -369,14 +369,14 @@ export default function DonatePage() {
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
                       <div style={{
-                        width: '40px', height: '40px', borderRadius: '10px', background: '#10b98120',
-                        border: '1px solid #10b98140', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        width: '40px', height: '40px', borderRadius: '10px', background: '#c8102e20',
+                        border: '1px solid #c8102e40', display: 'flex', alignItems: 'center', justifyContent: 'center'
                       }}>
-                        <Building2 size={20} color="#10b981" />
+                        <Building2 size={20} color="#c8102e" />
                       </div>
                       <div>
                         <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: 700 }}>Direct Bank Transfer</h4>
-                        <p style={{ color: '#22c55e', fontSize: '0.78rem', fontWeight: 600 }}>Kasikornbank (KBank)</p>
+                        <p style={{ color: '#c8102e', fontSize: '0.78rem', fontWeight: 600 }}>CIMB Thai</p>
                       </div>
                     </div>
 
@@ -393,7 +393,7 @@ export default function DonatePage() {
                         border: '1px solid #2a2a2a'
                       }}>
                         <div>
-                          <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block', marginBottom: '2px' }}>KBank Account Number</span>
+                          <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block', marginBottom: '2px' }}>CIMB Thai Account Number</span>
                           <span style={{ color: '#22c55e', fontSize: '1.25rem', fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.05em' }}>
                             7014952040
                           </span>

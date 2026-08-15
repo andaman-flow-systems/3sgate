@@ -1,117 +1,236 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { sbRentalsDB } from '@/lib/supabase-db';
 import { rentalsDB, type RentalSpace } from '@/lib/db';
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { Loader, CheckCircle, AlertCircle, X } from 'lucide-react';
+import ImageUploadInput from '@/components/admin/ImageUploadInput';
 
 export default function AdminRent() {
   const [spaces, setSpaces] = useState<RentalSpace[]>([]);
   const [isEditing, setIsEditing] = useState<RentalSpace | null>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const configured = isSupabaseConfigured();
+
+  const showToast = (msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const loadSpaces = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      if (configured) {
+        const data = await sbRentalsDB.getAll();
+        setSpaces(data);
+      } else {
+        setSpaces(rentalsDB.getAll());
+      }
+    } catch (err) {
+      setError((err as Error).message);
+      setSpaces(rentalsDB.getAll());
+    } finally {
+      setLoading(false);
+    }
+  }, [configured]);
 
   useEffect(() => {
-    setSpaces(rentalsDB.getAll());
-  }, []);
+    loadSpaces();
+  }, [loadSpaces]);
 
-  const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this space?')) {
-      rentalsDB.delete(id);
-      setSpaces(rentalsDB.getAll());
+  const openAdd = () => {
+    setImageUrl('');
+    setIsAdding(true);
+  };
+
+  const openEdit = (s: RentalSpace) => {
+    setImageUrl(s.image || '');
+    setIsEditing(s);
+  };
+
+  const closeModal = () => {
+    setIsAdding(false);
+    setIsEditing(null);
+    setImageUrl('');
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this space/listing?')) return;
+    try {
+      if (configured) {
+        await sbRentalsDB.delete(id);
+      } else {
+        rentalsDB.delete(id);
+      }
+      showToast('Listing deleted');
+      loadSpaces();
+    } catch (err) {
+      setError((err as Error).message);
     }
   };
 
-  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSaving(true);
+    setError(null);
     const formData = new FormData(e.currentTarget);
     const space: Omit<RentalSpace, 'id' | 'createdAt' | 'updatedAt'> = {
       name: formData.get('name') as string,
       description: formData.get('description') as string,
       price: Number(formData.get('price')),
-      image: formData.get('image') as string,
+      image: imageUrl,
       location: formData.get('location') as string,
       size: formData.get('size') as string,
       isAvailable: formData.get('isAvailable') === 'on',
-      renterName: formData.get('renterName') as string || undefined,
+      renterName: (formData.get('renterName') as string) || undefined,
       ownerUrl: (formData.get('ownerUrl') as string) || 'https://www.facebook.com/share/1BZMe1KVPk/',
     };
 
-    if (isEditing) {
-      rentalsDB.update(isEditing.id, space);
-    } else {
-      rentalsDB.create(space);
+    if (!space.image) {
+      setError('Please upload or select an image for this space listing.');
+      setSaving(false);
+      return;
     }
 
-    setSpaces(rentalsDB.getAll());
-    setIsEditing(null);
-    setIsAdding(false);
+    try {
+      if (isEditing) {
+        if (configured) {
+          await sbRentalsDB.update(isEditing.id, space);
+        } else {
+          rentalsDB.update(isEditing.id, space);
+        }
+        showToast('Listing updated ✓');
+      } else {
+        if (configured) {
+          await sbRentalsDB.create(space);
+        } else {
+          rentalsDB.create(space);
+        }
+        showToast('Listing added ✓');
+      }
+      closeModal();
+      loadSpaces();
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
-        <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700 }}>Manage Business Directory</h2>
-        <button onClick={() => setIsAdding(true)} className="btn btn-purple">
+      {/* Toast Notification */}
+      {toast && (
+        <div style={{
+          position: 'fixed', top: '24px', right: '24px', zIndex: 9999,
+          background: '#16a34a', color: '#fff', padding: '12px 20px',
+          borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '10px',
+          boxShadow: '0 4px 24px #00000080',
+        }}>
+          <CheckCircle size={16} /> {toast}
+        </div>
+      )}
+
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+        <div>
+          <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, marginBottom: '4px' }}>Manage Business Directory</h2>
+          <p style={{ color: '#6b7280', fontSize: '0.8rem', margin: 0 }}>
+            {configured ? `${spaces.length} listings in Supabase cloud database` : `${spaces.length} listings in local browser storage`}
+          </p>
+        </div>
+        <button onClick={openAdd} className="btn btn-purple">
           + Add Listing
         </button>
       </div>
 
-      <div className="admin-table-wrap">
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-          <thead>
-            <tr style={{ background: '#1a1a1a', color: '#9ca3af', fontSize: '0.8rem', textTransform: 'uppercase' }}>
-              <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Image</th>
-              <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Name / Location</th>
-              <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Size / Category</th>
-              <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Price/mo</th>
-              <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Owner Link</th>
-              <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Status</th>
-              <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a', textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {spaces.map(s => (
-              <tr key={s.id} style={{ borderBottom: '1px solid #2a2a2a' }}>
-                <td style={{ padding: '16px' }}>
-                  <img src={s.image} alt={s.name} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '6px' }} />
-                </td>
-                <td style={{ padding: '16px' }}>
-                  <p style={{ color: '#fff', fontWeight: 600 }}>{s.name}</p>
-                  <p style={{ color: '#9ca3af', fontSize: '0.8rem' }}>{s.location}</p>
-                </td>
-                <td style={{ padding: '16px', color: '#9ca3af' }}>{s.size}</td>
-                <td style={{ padding: '16px', color: '#fff' }}>฿{s.price.toLocaleString()}/mo</td>
-                <td style={{ padding: '16px', color: '#38bdf8', fontSize: '0.8rem' }}>
-                  {s.ownerUrl ? (
-                    <a href={s.ownerUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none' }}>
-                      View Link →
-                    </a>
-                  ) : '-'}
-                </td>
-                <td style={{ padding: '16px' }}>
-                  <span style={{ 
-                    padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700,
-                    background: s.isAvailable ? '#22c55e20' : '#ef444420',
-                    color: s.isAvailable ? '#22c55e' : '#ef4444'
-                  }}>
-                    {s.isAvailable ? 'Available' : 'Rented'}
-                  </span>
-                </td>
-                <td style={{ padding: '16px', textAlign: 'right' }}>
-                  <button onClick={() => setIsEditing(s)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', marginRight: '8px', cursor: 'pointer' }}>Edit</button>
-                  <button onClick={() => handleDelete(s.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
-                </td>
+      {error && (
+        <div style={{
+          background: '#2a0a0a', border: '1px solid #ef4444', borderRadius: '10px',
+          padding: '14px 18px', marginBottom: '20px', color: '#ef4444',
+          display: 'flex', gap: '10px', alignItems: 'center',
+        }}>
+          <AlertCircle size={16} /> {error}
+        </div>
+      )}
+
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: '60px 0', color: '#6b7280' }}>
+          <Loader size={32} color="#a855f7" style={{ animation: 'spin 1s linear infinite' }} />
+          <p style={{ marginTop: '12px' }}>Loading business listings...</p>
+        </div>
+      ) : (
+        <div className="admin-table-wrap">
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <thead>
+              <tr style={{ background: '#1a1a1a', color: '#9ca3af', fontSize: '0.8rem', textTransform: 'uppercase' }}>
+                <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Image</th>
+                <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Name / Location</th>
+                <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Size / Category</th>
+                <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Price/mo</th>
+                <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Owner Link</th>
+                <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a' }}>Status</th>
+                <th style={{ padding: '16px', borderBottom: '1px solid #2a2a2a', textAlign: 'right' }}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {spaces.map(s => (
+                <tr key={s.id} style={{ borderBottom: '1px solid #2a2a2a' }}>
+                  <td style={{ padding: '16px' }}>
+                    <img src={s.image} alt={s.name} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '6px' }} />
+                  </td>
+                  <td style={{ padding: '16px' }}>
+                    <p style={{ color: '#fff', fontWeight: 600 }}>{s.name}</p>
+                    <p style={{ color: '#9ca3af', fontSize: '0.8rem' }}>{s.location}</p>
+                  </td>
+                  <td style={{ padding: '16px', color: '#9ca3af' }}>{s.size}</td>
+                  <td style={{ padding: '16px', color: '#fff' }}>฿{s.price.toLocaleString()}/mo</td>
+                  <td style={{ padding: '16px', color: '#38bdf8', fontSize: '0.8rem' }}>
+                    {s.ownerUrl ? (
+                      <a href={s.ownerUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none' }}>
+                        View Link →
+                      </a>
+                    ) : '-'}
+                  </td>
+                  <td style={{ padding: '16px' }}>
+                    <span style={{ 
+                      padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700,
+                      background: s.isAvailable ? '#22c55e20' : '#ef444420',
+                      color: s.isAvailable ? '#22c55e' : '#ef4444'
+                    }}>
+                      {s.isAvailable ? 'Available' : 'Rented'}
+                    </span>
+                  </td>
+                  <td style={{ padding: '16px', textAlign: 'right' }}>
+                    <button onClick={() => openEdit(s)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', marginRight: '8px', cursor: 'pointer' }}>Edit</button>
+                    <button onClick={() => handleDelete(s.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Modal */}
       {(isAdding || isEditing) && (
         <div className="modal-overlay">
-          <div className="modal" style={{ maxWidth: '600px' }}>
-            <h2 style={{ color: '#fff', marginBottom: '20px' }}>
-              {isEditing ? 'Edit Listing' : 'Add New Business Listing'}
-            </h2>
+          <div className="modal" style={{ maxWidth: '640px', maxHeight: '90vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h2 style={{ color: '#fff', margin: 0 }}>
+                {isEditing ? 'Edit Listing' : 'Add New Business Listing'}
+              </h2>
+              <button onClick={closeModal} style={{ background: 'transparent', border: 'none', color: '#9ca3af', cursor: 'pointer' }}>
+                <X size={20} />
+              </button>
+            </div>
             
             <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div className="form-group">
@@ -130,15 +249,13 @@ export default function AdminRent() {
                 </div>
               </div>
 
-              <div className="form-grid-2">
-                <div className="form-group">
-                  <label className="label">Price per Month (฿ THB)</label>
-                  <input name="price" type="number" step="0.01" defaultValue={isEditing?.price} className="input" required />
-                </div>
-                <div className="form-group">
-                  <label className="label">Image URL</label>
-                  <input name="image" defaultValue={isEditing?.image} className="input" required />
-                </div>
+              <div className="form-group">
+                <label className="label">Price per Month (฿ THB)</label>
+                <input name="price" type="number" step="0.01" defaultValue={isEditing?.price} className="input" required />
+              </div>
+
+              <div className="form-group">
+                <ImageUploadInput label="Space / Listing Picture" value={imageUrl} onChange={setImageUrl} />
               </div>
 
               <div className="form-group">
@@ -171,8 +288,10 @@ export default function AdminRent() {
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '16px' }}>
-                <button type="button" onClick={() => { setIsAdding(false); setIsEditing(null); }} className="btn" style={{ background: '#1a1a1a', color: '#fff' }}>Cancel</button>
-                <button type="submit" className="btn btn-purple">Save Listing</button>
+                <button type="button" onClick={closeModal} className="btn" style={{ background: '#1a1a1a', color: '#fff' }}>Cancel</button>
+                <button type="submit" className="btn btn-purple" disabled={saving}>
+                  {saving ? 'Saving...' : 'Save Listing'}
+                </button>
               </div>
             </form>
           </div>

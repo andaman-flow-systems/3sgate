@@ -89,7 +89,7 @@ export default function Footer() {
               <MapPin size={15} color="#6b7280" /> Bangkok, Thailand
             </p>
             <p style={{ color: '#9ca3af', fontSize: '0.88rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Globe size={15} color="#6b7280" /> www.3sgate.com
+              <Globe size={15} color={"#6b7280"} /> www.3sgates.com
             </p>
           </div>
         </div>

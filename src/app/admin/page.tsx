@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getDashboardStats, newsDB, statsDB, type NewsPost, type VisitorStat } from '@/lib/db';
+import { sbNewsDB, sbGalleryDB, sbJobsDB, sbRentalsDB, sbFoodDB, sbBannersDB } from '@/lib/supabase-db';
+import { isSupabaseConfigured } from '@/lib/supabase';
 import { FileText, Newspaper, Image as ImageIcon, Briefcase, Folder, TrendingUp, Users, Eye } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -18,9 +20,57 @@ export default function AdminDashboard() {
   const [hoveredPoint, setHoveredPoint] = useState<{ x: number; y: number; data: VisitorStat } | null>(null);
 
   useEffect(() => {
-    setStats(getDashboardStats());
-    setRecentNews(newsDB.getAll().sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5));
-    setChartData(statsDB.getChartData());
+    const loadDashboardData = async () => {
+      const localStats = getDashboardStats();
+      const localNews = newsDB.getAll().sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
+      setChartData(statsDB.getChartData());
+
+      if (!isSupabaseConfigured()) {
+        setStats(localStats);
+        setRecentNews(localNews);
+        return;
+      }
+
+      try {
+        const [newsList, galleryList, jobsList, rentList, foodList, bannerList] = await Promise.all([
+          sbNewsDB.getAll().catch(() => null),
+          sbGalleryDB.getAll().catch(() => null),
+          sbJobsDB.getAll().catch(() => null),
+          sbRentalsDB.getAll().catch(() => null),
+          sbFoodDB.getAll().catch(() => null),
+          sbBannersDB.getAll().catch(() => null),
+        ]);
+
+        const newsCount = newsList ? newsList.length : localStats.newsPosts;
+        const galleryCount = galleryList ? galleryList.length : localStats.galleryItems;
+        const jobsCount = jobsList ? jobsList.length : localStats.jobListings;
+        const rentCount = rentList ? rentList.length : localStats.rentListings;
+        const foodCount = foodList ? foodList.length : localStats.foodPlaces;
+        const bannerCount = bannerList ? bannerList.filter(b => b.isActive).length : localStats.activeBanners;
+
+        setStats({
+          ...localStats,
+          newsPosts: newsCount,
+          galleryItems: galleryCount,
+          jobListings: jobsCount,
+          rentListings: rentCount,
+          foodPlaces: foodCount,
+          totalPosts: newsCount + galleryCount + jobsCount + rentCount + foodCount,
+          activeBanners: bannerCount,
+        });
+
+        if (newsList && newsList.length > 0) {
+          setRecentNews(newsList.slice(0, 5));
+        } else {
+          setRecentNews(localNews);
+        }
+      } catch {
+        setStats(localStats);
+        setRecentNews(localNews);
+      }
+    };
+
+    loadDashboardData();
   }, []);
 
   // Compute SVG chart coordinates dynamically from chartData

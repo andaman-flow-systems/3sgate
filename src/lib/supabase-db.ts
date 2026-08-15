@@ -10,6 +10,7 @@
  */
 
 import { supabase } from './supabase';
+import { deleteImageFromSupabase } from './supabase-storage';
 import type {
   Product,
   RentalSpace,
@@ -176,6 +177,12 @@ export const sbProductsDB = {
   },
 
   update: async (id: string, p: Partial<Product>): Promise<Product> => {
+    if (p.image !== undefined) {
+      const existing = await sbProductsDB.getById(id);
+      if (existing?.image && existing.image !== p.image) {
+        await deleteImageFromSupabase(existing.image);
+      }
+    }
     const patch: Record<string, unknown> = {};
     if (p.name        !== undefined) patch.name        = p.name;
     if (p.price       !== undefined) patch.price       = p.price;
@@ -195,6 +202,10 @@ export const sbProductsDB = {
   },
 
   delete: async (id: string): Promise<boolean> => {
+    const existing = await sbProductsDB.getById(id);
+    if (existing?.image) {
+      await deleteImageFromSupabase(existing.image);
+    }
     const { error } = await supabase.from('products').delete().eq('id', id);
     if (error) throw new Error(error.message);
     return true;
@@ -233,6 +244,12 @@ export const sbRentalsDB = {
   },
 
   update: async (id: string, r: Partial<RentalSpace>): Promise<RentalSpace> => {
+    if (r.image !== undefined) {
+      const { data: existing } = await supabase.from('rentals').select('image').eq('id', id).single();
+      if (existing?.image && existing.image !== r.image) {
+        await deleteImageFromSupabase(existing.image as string);
+      }
+    }
     const patch: Record<string, unknown> = {};
     if (r.name         !== undefined) patch.name         = r.name;
     if (r.location     !== undefined) patch.location     = r.location;
@@ -255,6 +272,10 @@ export const sbRentalsDB = {
   },
 
   delete: async (id: string): Promise<boolean> => {
+    const { data: existing } = await supabase.from('rentals').select('image').eq('id', id).single();
+    if (existing?.image) {
+      await deleteImageFromSupabase(existing.image as string);
+    }
     const { error } = await supabase.from('rentals').delete().eq('id', id);
     if (error) throw new Error(error.message);
     return true;
@@ -366,6 +387,12 @@ export const sbFoodDB = {
   },
 
   update: async (id: string, f: Partial<FoodPlace>): Promise<FoodPlace> => {
+    if (f.image !== undefined) {
+      const { data: existing } = await supabase.from('food_places').select('image').eq('id', id).single();
+      if (existing?.image && existing.image !== f.image) {
+        await deleteImageFromSupabase(existing.image as string);
+      }
+    }
     const patch: Record<string, unknown> = {};
     if (f.name        !== undefined) patch.name        = f.name;
     if (f.category    !== undefined) patch.category    = f.category;
@@ -389,6 +416,10 @@ export const sbFoodDB = {
   },
 
   delete: async (id: string): Promise<boolean> => {
+    const { data: existing } = await supabase.from('food_places').select('image').eq('id', id).single();
+    if (existing?.image) {
+      await deleteImageFromSupabase(existing.image as string);
+    }
     const { error } = await supabase.from('food_places').delete().eq('id', id);
     if (error) throw new Error(error.message);
     return true;
@@ -435,6 +466,12 @@ export const sbNewsDB = {
   },
 
   update: async (id: string, n: Partial<NewsPost>): Promise<NewsPost> => {
+    if (n.image !== undefined) {
+      const { data: existing } = await supabase.from('news').select('image').eq('id', id).single();
+      if (existing?.image && existing.image !== n.image) {
+        await deleteImageFromSupabase(existing.image as string);
+      }
+    }
     const patch: Record<string, unknown> = {};
     if (n.title       !== undefined) patch.title        = n.title;
     if (n.content     !== undefined) patch.content      = n.content;
@@ -455,6 +492,10 @@ export const sbNewsDB = {
   },
 
   delete: async (id: string): Promise<boolean> => {
+    const { data: existing } = await supabase.from('news').select('image').eq('id', id).single();
+    if (existing?.image) {
+      await deleteImageFromSupabase(existing.image as string);
+    }
     const { error } = await supabase.from('news').delete().eq('id', id);
     if (error) throw new Error(error.message);
     return true;
@@ -491,6 +532,12 @@ export const sbGalleryDB = {
   },
 
   update: async (id: string, a: Partial<ArtworkItem>): Promise<ArtworkItem> => {
+    if (a.image !== undefined) {
+      const { data: existing } = await supabase.from('gallery').select('image').eq('id', id).single();
+      if (existing?.image && existing.image !== a.image) {
+        await deleteImageFromSupabase(existing.image as string);
+      }
+    }
     const patch: Record<string, unknown> = {};
     if (a.title       !== undefined) patch.title       = a.title;
     if (a.artist      !== undefined) patch.artist      = a.artist;
@@ -511,6 +558,10 @@ export const sbGalleryDB = {
   },
 
   delete: async (id: string): Promise<boolean> => {
+    const { data: existing } = await supabase.from('gallery').select('image').eq('id', id).single();
+    if (existing?.image) {
+      await deleteImageFromSupabase(existing.image as string);
+    }
     const { error } = await supabase.from('gallery').delete().eq('id', id);
     if (error) throw new Error(error.message);
     return true;
