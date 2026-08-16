@@ -16,13 +16,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: {
     default: '3SGates – Social Enterprise Platform',
-    template: '%s | 3SGate',
+    template: '%s | 3SGates',
   },
   description:
     'A trusted gateway that connects Myanmar communities with opportunities, knowledge, businesses, and meaningful social impact.',
   keywords: ['Myanmar', 'Thailand', 'social enterprise', 'community', 'jobs', 'art', 'donations', 'food guide'],
   openGraph: {
-    title: '3SGate – Social Enterprise Platform',
+    title: '3SGates – Social Enterprise Platform',
     description: 'Connecting Communities. Creating Opportunities.',
     type: 'website',
   },
