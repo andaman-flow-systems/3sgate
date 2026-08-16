@@ -37,10 +37,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         className="admin-main"
         style={{ flex: 1, padding: '24px', minWidth: 0, overflowX: 'hidden' }}
       >
-        <header style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+        <header style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
           <h1
             className="admin-panel-title"
-            style={{ color: '#a855f7', fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}
+            style={{ color: '#a855f7', fontSize: '1.1rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}
           >
             ADMIN PANEL
           </h1>
@@ -50,10 +50,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       <style>{`
         @media (min-width: 1025px) {
-          .admin-main { margin-left: 240px !important; }
+          .admin-main { margin-left: 240px !important; padding: 24px !important; }
         }
         @media (max-width: 1024px) {
-          .admin-main { margin-left: 0 !important; padding-top: 56px !important; }
+          .admin-main { margin-left: 0 !important; padding: 16px 12px !important; padding-top: 56px !important; }
+        }
+        @media (max-width: 480px) {
+          .admin-main { padding: 14px 10px !important; padding-top: 52px !important; }
         }
       `}</style>
     </div>

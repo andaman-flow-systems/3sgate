@@ -57,7 +57,7 @@ export default function AdminUsers() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
+      <div className="admin-page-header">
         <div>
           <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700 }}>Admin Users</h2>
           <p style={{ color: '#6b7280', fontSize: '0.85rem', marginTop: '4px' }}>
@@ -75,7 +75,7 @@ export default function AdminUsers() {
         </div>
       )}
 
-      <div style={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px', overflow: 'hidden' }}>
+      <div className="admin-table-wrap">
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ background: '#1a1a1a', color: '#9ca3af', fontSize: '0.8rem', textTransform: 'uppercase' }}>
@@ -91,10 +91,12 @@ export default function AdminUsers() {
               <tr key={u.id} style={{ borderBottom: '1px solid #1e1e1e' }}>
                 <td style={{ padding: '16px', color: '#fff', fontWeight: 600 }}>{u.displayName}</td>
                 <td style={{ padding: '16px', color: '#9ca3af', fontFamily: 'monospace' }}>{u.username}</td>
-                <td style={{ padding: '16px' }}>
+                <td style={{ padding: '14px 16px' }}>
                   <span style={{
-                    padding: '3px 10px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700,
+                    display: 'inline-block', whiteSpace: 'nowrap',
+                    padding: '4px 10px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700,
                     color: ROLE_COLOR[u.role], background: ROLE_COLOR[u.role] + '20',
+                    border: `1px solid ${ROLE_COLOR[u.role]}40`,
                   }}>
                     {u.role}
                   </span>

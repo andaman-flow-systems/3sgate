@@ -136,78 +136,78 @@ export default function AdminDashboard() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
         {/* DASHBOARD Overview Cards */}
-        <div style={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px', padding: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h2 style={{ color: '#fff', fontSize: '1rem', fontWeight: 700, letterSpacing: '0.05em' }}>DASHBOARD OVERVIEW</h2>
-            <span style={{ fontSize: '0.75rem', color: '#22c55e', background: '#22c55e15', border: '1px solid #22c55e30', padding: '3px 10px', borderRadius: '6px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div className="admin-card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
+            <h2 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 700, letterSpacing: '0.05em', margin: 0 }}>DASHBOARD OVERVIEW</h2>
+            <span style={{ fontSize: '0.72rem', color: '#22c55e', background: '#22c55e15', border: '1px solid #22c55e30', padding: '3px 8px', borderRadius: '6px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
               <span className="dot-green" /> Live Real Data
             </span>
           </div>
           
           {/* Top 4 small stats */}
-          <div className="admin-stat-4" style={{ marginBottom: '20px' }}>
+          <div className="admin-stat-4" style={{ marginBottom: '16px' }}>
             {[
               { Icon: FileText, label: 'Total Content', val: stats.totalPosts, color: '#a855f7' },
               { Icon: Newspaper, label: 'News Posts', val: stats.newsPosts, color: '#3b82f6' },
               { Icon: ImageIcon, label: 'Gallery Items', val: stats.galleryItems, color: '#ec4899' },
               { Icon: Briefcase, label: 'Job Listings', val: stats.jobListings, color: '#22c55e' },
             ].map(s => (
-              <div key={s.label} style={{ background: '#1a1a1a', borderRadius: '10px', padding: '16px', border: '1px solid #2a2a2a' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                  <s.Icon size={16} color={s.color} />
-                  <span style={{ color: '#9ca3af', fontSize: '0.75rem', fontWeight: 500 }}>{s.label}</span>
+              <div key={s.label} className="admin-stat-item">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                  <s.Icon size={15} color={s.color} />
+                  <span style={{ color: '#9ca3af', fontSize: '0.72rem', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.label}</span>
                 </div>
-                <p style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800 }}>{s.val}</p>
+                <p style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 800, margin: 0 }}>{s.val}</p>
               </div>
             ))}
           </div>
           
           {/* Bottom 3 large stats */}
           <div className="admin-stat-3">
-            <div style={{ background: '#1a1a1a', borderRadius: '10px', padding: '16px', border: '1px solid #2a2a2a' }}>
-              <p style={{ color: '#9ca3af', fontSize: '0.8rem', marginBottom: '6px', fontWeight: 500 }}>Total Visitors</p>
-              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
-                <p style={{ color: '#fff', fontSize: '1.8rem', fontWeight: 800, lineHeight: 1 }}>
+            <div className="admin-stat-item">
+              <p style={{ color: '#9ca3af', fontSize: '0.78rem', marginBottom: '4px', fontWeight: 500 }}>Total Visitors</p>
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', flexWrap: 'wrap' }}>
+                <p style={{ color: '#fff', fontSize: '1.6rem', fontWeight: 800, lineHeight: 1, margin: 0 }}>
                   {stats.todayVisitors.toLocaleString()}
                 </p>
-                <span style={{ color: stats.visitorGrowth >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 700, display: 'flex', alignItems: 'center' }}>
+                <span style={{ color: stats.visitorGrowth >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center' }}>
                   {stats.visitorGrowth >= 0 ? '↑' : '↓'} {Math.abs(stats.visitorGrowth)}%
                 </span>
               </div>
-              <p style={{ color: '#6b7280', fontSize: '0.72rem', marginTop: '6px' }}>Today vs yesterday</p>
+              <p style={{ color: '#6b7280', fontSize: '0.7rem', marginTop: '4px', margin: 0 }}>Today vs yesterday</p>
             </div>
             
-            <div style={{ background: '#1a1a1a', borderRadius: '10px', padding: '16px', border: '1px solid #2a2a2a' }}>
-              <p style={{ color: '#9ca3af', fontSize: '0.8rem', marginBottom: '6px', fontWeight: 500 }}>Page Views</p>
-              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
-                <p style={{ color: '#fff', fontSize: '1.8rem', fontWeight: 800, lineHeight: 1 }}>
+            <div className="admin-stat-item">
+              <p style={{ color: '#9ca3af', fontSize: '0.78rem', marginBottom: '4px', fontWeight: 500 }}>Page Views</p>
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', flexWrap: 'wrap' }}>
+                <p style={{ color: '#fff', fontSize: '1.6rem', fontWeight: 800, lineHeight: 1, margin: 0 }}>
                   {stats.weekPageViews.toLocaleString()}
                 </p>
-                <span style={{ color: stats.pageViewGrowth >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 700, display: 'flex', alignItems: 'center' }}>
+                <span style={{ color: stats.pageViewGrowth >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center' }}>
                   {stats.pageViewGrowth >= 0 ? '↑' : '↓'} {Math.abs(stats.pageViewGrowth)}%
                 </span>
               </div>
-              <p style={{ color: '#6b7280', fontSize: '0.72rem', marginTop: '6px' }}>Last 7 Days total</p>
+              <p style={{ color: '#6b7280', fontSize: '0.7rem', marginTop: '4px', margin: 0 }}>Last 7 Days total</p>
             </div>
             
-            <div style={{ background: '#1a1a1a', borderRadius: '10px', padding: '16px', border: '1px solid #2a2a2a' }}>
-              <p style={{ color: '#9ca3af', fontSize: '0.8rem', marginBottom: '6px', fontWeight: 500 }}>Active Ads & Banners</p>
-              <p style={{ color: '#fff', fontSize: '1.8rem', fontWeight: 800, lineHeight: 1 }}>
+            <div className="admin-stat-item">
+              <p style={{ color: '#9ca3af', fontSize: '0.78rem', marginBottom: '4px', fontWeight: 500 }}>Active Ads & Banners</p>
+              <p style={{ color: '#fff', fontSize: '1.6rem', fontWeight: 800, lineHeight: 1, margin: 0 }}>
                 {stats.activeBanners}
               </p>
-              <p style={{ color: '#6b7280', fontSize: '0.72rem', marginTop: '6px' }}>Currently running</p>
+              <p style={{ color: '#6b7280', fontSize: '0.7rem', marginTop: '4px', margin: 0 }}>Currently running</p>
             </div>
           </div>
         </div>
 
         {/* REAL DYNAMIC SVG CHART section */}
-        <div style={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px', padding: '24px', position: 'relative' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+        <div className="admin-card" style={{ position: 'relative' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
             <div>
-              <h2 style={{ color: '#fff', fontSize: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <TrendingUp size={18} color="#a855f7" /> Visitors & Analytics Trend
+              <h2 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+                <TrendingUp size={16} color="#a855f7" /> Visitors & Analytics Trend
               </h2>
-              <p style={{ color: '#6b7280', fontSize: '0.78rem', marginTop: '2px' }}>Live data generated dynamically from real visitor sessions</p>
+              <p style={{ color: '#6b7280', fontSize: '0.75rem', marginTop: '2px', margin: 0 }}>Live data generated dynamically from real visitor sessions</p>
             </div>
 
             {/* Metric Toggle buttons */}
@@ -215,31 +215,31 @@ export default function AdminDashboard() {
               <button
                 onClick={() => setMetric('visitors')}
                 style={{
-                  padding: '5px 12px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700,
+                  padding: '4px 10px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 700,
                   background: metric === 'visitors' ? '#a855f7' : 'transparent',
                   color: metric === 'visitors' ? '#fff' : '#9ca3af',
                   cursor: 'pointer', border: 'none', transition: 'all 0.2s'
                 }}
               >
-                <Users size={12} style={{ display: 'inline', marginRight: '4px' }} /> Visitors
+                <Users size={11} style={{ display: 'inline', marginRight: '4px' }} /> Visitors
               </button>
               <button
                 onClick={() => setMetric('pageViews')}
                 style={{
-                  padding: '5px 12px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700,
+                  padding: '4px 10px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 700,
                   background: metric === 'pageViews' ? '#3b82f6' : 'transparent',
                   color: metric === 'pageViews' ? '#fff' : '#9ca3af',
                   cursor: 'pointer', border: 'none', transition: 'all 0.2s'
                 }}
               >
-                <Eye size={12} style={{ display: 'inline', marginRight: '4px' }} /> Page Views
+                <Eye size={11} style={{ display: 'inline', marginRight: '4px' }} /> Page Views
               </button>
             </div>
           </div>
 
-          <div style={{ height: '230px', position: 'relative', marginTop: '10px' }}>
+          <div style={{ height: '210px', position: 'relative', marginTop: '8px' }}>
             {/* Y axis labels */}
-            <div style={{ position: 'absolute', left: 0, top: 0, bottom: '28px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', color: '#6b7280', fontSize: '0.72rem', fontWeight: 600 }}>
+            <div style={{ position: 'absolute', left: 0, top: 0, bottom: '26px', width: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', color: '#6b7280', fontSize: '0.7rem', fontWeight: 600 }}>
               <span>{maxVal >= 1000 ? `${(maxVal/1000).toFixed(1)}k` : maxVal}</span>
               <span>{Math.round(maxVal * 0.75)}</span>
               <span>{Math.round(maxVal * 0.5)}</span>
@@ -248,7 +248,7 @@ export default function AdminDashboard() {
             </div>
             
             {/* Dynamic SVG Chart */}
-            <div style={{ position: 'absolute', left: '46px', right: 0, top: 0, bottom: '24px' }}>
+            <div style={{ position: 'absolute', left: '38px', right: 0, top: 0, bottom: '24px' }}>
               <svg width="100%" height="100%" viewBox={`0 0 ${svgWidth} ${svgHeight}`} preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
@@ -306,7 +306,7 @@ export default function AdminDashboard() {
                   transform: 'translate(-50%, -120%)',
                   background: '#1c1c1c',
                   border: `1px solid ${metric === 'visitors' ? '#a855f7' : '#3b82f6'}`,
-                  padding: '8px 12px',
+                  padding: '6px 10px',
                   borderRadius: '8px',
                   boxShadow: '0 8px 20px rgba(0,0,0,0.6)',
                   pointerEvents: 'none',
@@ -314,18 +314,18 @@ export default function AdminDashboard() {
                   zIndex: 10,
                   animation: 'fadeIn 0.15s ease',
                 }}>
-                  <p style={{ color: '#9ca3af', fontSize: '0.7rem', fontWeight: 600, marginBottom: '2px' }}>
+                  <p style={{ color: '#9ca3af', fontSize: '0.68rem', fontWeight: 600, marginBottom: '2px' }}>
                     {formatShortDate(hoveredPoint.data.date)} ({formatDayName(hoveredPoint.data.date)})
                   </p>
-                  <p style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 800 }}>
-                    {hoveredPoint.data[metric].toLocaleString()} <span style={{ color: metric === 'visitors' ? '#a855f7' : '#3b82f6', fontSize: '0.75rem', fontWeight: 600 }}>{metric === 'visitors' ? 'Visitors' : 'Views'}</span>
+                  <p style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 800, margin: 0 }}>
+                    {hoveredPoint.data[metric].toLocaleString()} <span style={{ color: metric === 'visitors' ? '#a855f7' : '#3b82f6', fontSize: '0.72rem', fontWeight: 600 }}>{metric === 'visitors' ? 'Visitors' : 'Views'}</span>
                   </p>
                 </div>
               )}
             </div>
             
             {/* X axis labels (Dynamic Dates) */}
-            <div style={{ position: 'absolute', bottom: 0, left: '46px', right: 0, display: 'flex', justifyContent: 'space-between', color: '#6b7280', fontSize: '0.72rem', fontWeight: 600 }}>
+            <div style={{ position: 'absolute', bottom: 0, left: '38px', right: 0, display: 'flex', justifyContent: 'space-between', color: '#6b7280', fontSize: '0.68rem', fontWeight: 600 }}>
               {chartData.map((d) => (
                 <span key={d.date} style={{ textAlign: 'center', width: `${100 / chartData.length}%` }}>
                   {formatDayName(d.date)}
@@ -337,30 +337,30 @@ export default function AdminDashboard() {
       </div>
 
       {/* MIDDLE COLUMN: Recent Posts */}
-      <div style={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px', padding: '24px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h2 style={{ color: '#fff', fontSize: '1rem', fontWeight: 700 }}>RECENT POSTS</h2>
-          <Link href="/admin/news" style={{ color: '#a855f7', fontSize: '0.8rem', fontWeight: 600, textDecoration: 'none' }}>View All</Link>
+      <div className="admin-card">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <h2 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>RECENT POSTS</h2>
+          <Link href="/admin/news" style={{ color: '#a855f7', fontSize: '0.78rem', fontWeight: 600, textDecoration: 'none' }}>View All</Link>
         </div>
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {recentNews.map(post => (
-            <div key={post.id} style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-              <div style={{ width: '64px', height: '48px', borderRadius: '6px', overflow: 'hidden', flexShrink: 0, background: '#1a1a1a' }}>
+            <div key={post.id} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <div style={{ width: '56px', height: '42px', borderRadius: '6px', overflow: 'hidden', flexShrink: 0, background: '#1a1a1a' }}>
                 <img src={post.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ color: '#fff', fontSize: '0.8rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: '2px' }}>
+                <p style={{ color: '#fff', fontSize: '0.78rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: '2px', margin: 0 }}>
                   {post.title}
                 </p>
-                <p style={{ color: '#6b7280', fontSize: '0.7rem' }}>
+                <p style={{ color: '#6b7280', fontSize: '0.68rem', margin: 0, marginTop: '2px' }}>
                   {new Date(post.publishedAt).toLocaleDateString()}
                 </p>
               </div>
               <div style={{ flexShrink: 0 }}>
                 <span style={{ 
                   color: post.status === 'published' ? '#22c55e' : '#D4A017', 
-                  fontSize: '0.75rem', fontWeight: 600 
+                  fontSize: '0.72rem', fontWeight: 600 
                 }}>
                   {post.status === 'published' ? 'Published' : 'Draft'}
                 </span>
@@ -371,14 +371,14 @@ export default function AdminDashboard() {
       </div>
 
       {/* RIGHT COLUMN: Quick Actions */}
-      <div style={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px', padding: '24px' }}>
-        <h2 style={{ color: '#fff', fontSize: '1rem', fontWeight: 700, marginBottom: '20px' }}>QUICK ACTIONS</h2>
+      <div className="admin-card">
+        <h2 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 700, marginBottom: '16px', margin: 0 }}>QUICK ACTIONS</h2>
         
         <Link href="/admin/news" style={{ textDecoration: 'none' }}>
           <button style={{ 
             width: '100%', background: '#a855f7', color: '#fff', border: 'none', 
-            borderRadius: '8px', padding: '14px', fontSize: '0.9rem', fontWeight: 700, 
-            cursor: 'pointer', marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+            borderRadius: '8px', padding: '12px', fontSize: '0.85rem', fontWeight: 700, 
+            cursor: 'pointer', marginTop: '14px', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
           }}>
             <span>+</span> Add New Post
           </button>
@@ -397,13 +397,13 @@ export default function AdminDashboard() {
             <Link key={action.label} href={action.href} style={{ textDecoration: 'none' }}>
               <div style={{ 
                 background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '8px', 
-                padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '12px',
-                color: '#9ca3af', fontSize: '0.85rem', fontWeight: 500, transition: 'all 0.2s'
+                padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '10px',
+                color: '#9ca3af', fontSize: '0.82rem', fontWeight: 500, transition: 'all 0.2s'
               }}
               onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = '#444'; }}
               onMouseLeave={e => { e.currentTarget.style.color = '#9ca3af'; e.currentTarget.style.borderColor = '#2a2a2a'; }}
               >
-                <Folder size={15} color="#a855f7" /> {action.label}
+                <Folder size={14} color="#a855f7" /> {action.label}
               </div>
             </Link>
           ))}

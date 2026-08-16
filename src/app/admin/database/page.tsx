@@ -69,7 +69,7 @@ export default function AdminDatabase() {
       )}
 
       {/* Collections table */}
-      <div style={{ background: '#111111', border: '1px solid #2a2a2a', borderRadius: '14px', overflow: 'hidden', marginBottom: '24px' }}>
+      <div className="admin-table-wrap" style={{ marginBottom: '24px' }}>
         <div style={{ padding: '16px 20px', borderBottom: '1px solid #2a2a2a', background: '#1a1a1a', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Database size={16} color="#9ca3af" />
           <h3 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600 }}>Collections</h3>

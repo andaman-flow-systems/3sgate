@@ -138,7 +138,7 @@ export default function AdminBanners() {
       )}
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div className="admin-page-header">
         <div>
           <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, marginBottom: '4px' }}>Ads &amp; Banners</h2>
           <p style={{ color: '#6b7280', fontSize: '0.85rem', margin: 0 }}>
@@ -170,7 +170,8 @@ export default function AdminBanners() {
           {banners.map(b => (
             <div key={b.id} style={{
               background: '#111111', border: '1px solid #2a2a2a', borderRadius: '12px',
-              padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px',
+              padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '14px',
+              flexWrap: 'wrap',
             }}>
               {/* Colour dot */}
               <div style={{
@@ -178,7 +179,7 @@ export default function AdminBanners() {
                 background: COLOR_PREVIEW[b.color] ?? '#9ca3af',
               }} />
 
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: '1 1 200px', minWidth: 0 }}>
                 <p style={{ color: '#fff', fontWeight: 500, fontSize: '0.9rem', marginBottom: '4px' }}>{b.text}</p>
                 <div style={{ display: 'flex', gap: '12px', fontSize: '0.75rem', color: '#6b7280' }}>
                   <span>{b.type}</span>
@@ -186,25 +187,29 @@ export default function AdminBanners() {
                 </div>
               </div>
 
-              {/* Toggle */}
-              <button
-                onClick={() => handleToggle(b.id, b.isActive)}
-                style={{
-                  padding: '5px 14px', borderRadius: '20px', fontSize: '0.78rem', fontWeight: 600,
-                  border: 'none', cursor: 'pointer',
-                  background: b.isActive ? '#22c55e20' : '#2a2a2a',
-                  color: b.isActive ? '#22c55e' : '#9ca3af',
-                }}
-              >
-                {b.isActive ? 'Active' : 'Inactive'}
-              </button>
+              {/* Actions group */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                {/* Toggle */}
+                <button
+                  onClick={() => handleToggle(b.id, b.isActive)}
+                  style={{
+                    display: 'inline-block', whiteSpace: 'nowrap',
+                    padding: '5px 14px', borderRadius: '20px', fontSize: '0.78rem', fontWeight: 600,
+                    border: 'none', cursor: 'pointer',
+                    background: b.isActive ? '#22c55e20' : '#2a2a2a',
+                    color: b.isActive ? '#22c55e' : '#9ca3af',
+                  }}
+                >
+                  {b.isActive ? 'Active' : 'Inactive'}
+                </button>
 
-              <button onClick={() => setIsEditing(b)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem' }}>
-                Edit
-              </button>
-              <button onClick={() => handleDelete(b.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem' }}>
-                Delete
-              </button>
+                <button onClick={() => setIsEditing(b)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.82rem' }}>
+                  Edit
+                </button>
+                <button onClick={() => handleDelete(b.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.82rem' }}>
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -232,7 +237,7 @@ export default function AdminBanners() {
                 <label className="label">Link URL (Optional)</label>
                 <input name="link" defaultValue={isEditing?.link} className="input" placeholder="/donate" />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-grid-2">
                 <div className="form-group">
                   <label className="label">Type</label>
                   <select name="type" defaultValue={isEditing?.type || 'announcement'} className="input">

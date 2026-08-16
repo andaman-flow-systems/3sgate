@@ -112,7 +112,7 @@ export default function AdminJobs() {
         </div>
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
+      <div className="admin-page-header">
         <div>
           <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700 }}>Job Listings</h2>
           <p style={{ color: '#6b7280', fontSize: '0.8rem', margin: 0 }}>
@@ -148,18 +148,22 @@ export default function AdminJobs() {
                   <td style={{ padding: '16px', color: '#9ca3af' }}>{j.company}</td>
                   <td style={{ padding: '16px', color: '#9ca3af' }}>{j.location}</td>
                   <td style={{ padding: '16px', textTransform: 'capitalize', color: '#a78bfa' }}>{j.type}</td>
-                  <td style={{ padding: '16px' }}>
+                  <td style={{ padding: '14px 16px' }}>
                     <span style={{
-                      padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700,
+                      display: 'inline-block', whiteSpace: 'nowrap', textTransform: 'capitalize',
+                      padding: '4px 10px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700,
                       background: j.status === 'active' ? '#22c55e20' : '#ef444420',
-                      color: j.status === 'active' ? '#22c55e' : '#ef4444'
+                      color: j.status === 'active' ? '#22c55e' : '#ef4444',
+                      border: `1px solid ${j.status === 'active' ? '#22c55e40' : '#ef444440'}`,
                     }}>
                       {j.status}
                     </span>
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right' }}>
-                    <button onClick={() => setIsEditing(j)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', marginRight: '8px', cursor: 'pointer' }}>Edit</button>
-                    <button onClick={() => handleDelete(j.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                  <td style={{ padding: '16px' }}>
+                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                      <button onClick={() => setIsEditing(j)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Edit</button>
+                      <button onClick={() => handleDelete(j.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -182,7 +186,7 @@ export default function AdminJobs() {
                 <input name="title" defaultValue={isEditing?.title} className="input" required />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-grid-2">
                 <div className="form-group">
                   <label className="label">Company Name</label>
                   <input name="company" defaultValue={isEditing?.company} className="input" required />
@@ -193,7 +197,7 @@ export default function AdminJobs() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-grid-2">
                 <div className="form-group">
                   <label className="label">Job Type</label>
                   <select name="type" defaultValue={isEditing?.type || 'full-time'} className="input" style={{ background: '#1a1a1a', color: '#fff' }}>

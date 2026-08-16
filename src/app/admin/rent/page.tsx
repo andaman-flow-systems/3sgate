@@ -139,7 +139,7 @@ export default function AdminRent() {
       )}
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div className="admin-page-header">
         <div>
           <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, marginBottom: '4px' }}>Manage Business Directory</h2>
           <p style={{ color: '#6b7280', fontSize: '0.8rem', margin: 0 }}>
@@ -199,18 +199,22 @@ export default function AdminRent() {
                       </a>
                     ) : '-'}
                   </td>
-                  <td style={{ padding: '16px' }}>
-                    <span style={{ 
-                      padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700,
+                  <td style={{ padding: '14px 16px' }}>
+                    <span style={{
+                      display: 'inline-block', whiteSpace: 'nowrap',
+                      padding: '4px 10px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700,
                       background: s.isAvailable ? '#22c55e20' : '#ef444420',
-                      color: s.isAvailable ? '#22c55e' : '#ef4444'
+                      color: s.isAvailable ? '#22c55e' : '#ef4444',
+                      border: `1px solid ${s.isAvailable ? '#22c55e40' : '#ef444440'}`,
                     }}>
                       {s.isAvailable ? 'Available' : 'Rented'}
                     </span>
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right' }}>
-                    <button onClick={() => openEdit(s)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', marginRight: '8px', cursor: 'pointer' }}>Edit</button>
-                    <button onClick={() => handleDelete(s.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                  <td style={{ padding: '16px' }}>
+                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                      <button onClick={() => openEdit(s)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Edit</button>
+                      <button onClick={() => handleDelete(s.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                    </div>
                   </td>
                 </tr>
               ))}

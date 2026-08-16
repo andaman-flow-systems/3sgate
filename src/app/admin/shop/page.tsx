@@ -154,7 +154,7 @@ export default function AdminShop() {
       )}
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div className="admin-page-header">
         <div>
           <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, marginBottom: '4px' }}>
             Manage Shop
@@ -197,10 +197,7 @@ export default function AdminShop() {
           <p style={{ color: '#6b7280', marginTop: '12px' }}>Loading from Supabase…</p>
         </div>
       ) : (
-        <div style={{
-          background: '#111111', border: '1px solid #2a2a2a',
-          borderRadius: '12px', overflow: 'hidden',
-        }}>
+        <div className="admin-table-wrap">
           {products.length === 0 && configured ? (
             <div style={{ textAlign: 'center', padding: '60px 0', color: '#6b7280' }}>
               <Package size={40} style={{ marginBottom: '12px', opacity: 0.4 }} />
@@ -238,6 +235,7 @@ export default function AdminShop() {
                     <td style={{ padding: '14px 16px', color: '#a78bfa', fontWeight: 600 }}>฿{p.price.toLocaleString()}</td>
                     <td style={{ padding: '14px 16px' }}>
                       <span style={{
+                        display: 'inline-block', whiteSpace: 'nowrap',
                         padding: '4px 10px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700,
                         background: p.inStock ? '#22c55e18' : '#ef444418',
                         color:      p.inStock ? '#22c55e'   : '#ef4444',
@@ -246,19 +244,21 @@ export default function AdminShop() {
                         {p.inStock ? 'In Stock' : 'Out of Stock'}
                       </span>
                     </td>
-                    <td style={{ padding: '14px 16px', textAlign: 'right' }}>
-                      <button
-                        onClick={() => openEdit(p)}
-                        style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 14px', borderRadius: '6px', marginRight: '8px', cursor: 'pointer', fontSize: '0.8rem' }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(p.id)}
-                        style={{ background: '#ef444415', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}
-                      >
-                        Delete
-                      </button>
+                    <td style={{ padding: '14px 16px' }}>
+                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                        <button
+                          onClick={() => openEdit(p)}
+                          style={{ background: '#111', border: '1px solid #333', color: '#fff', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(p.id)}
+                          style={{ background: '#ef444415', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 14px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem' }}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -294,7 +294,7 @@ export default function AdminShop() {
                 <input name="name" defaultValue={isEditing?.name} className="input" required />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-grid-2">
                 <div className="form-group">
                   <label className="label">Category</label>
                   <input name="category" defaultValue={isEditing?.category} className="input" required />

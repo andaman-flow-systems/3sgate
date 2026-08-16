@@ -138,7 +138,7 @@ export default function AdminNews() {
       )}
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div className="admin-page-header">
         <div>
           <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, marginBottom: '4px' }}>Manage News</h2>
           <p style={{ color: '#6b7280', fontSize: '0.8rem', margin: 0 }}>
@@ -193,18 +193,21 @@ export default function AdminNews() {
                   <td style={{ padding: '16px', color: '#9ca3af', fontSize: '0.85rem' }}>
                     {new Date(n.publishedAt).toLocaleDateString()}
                   </td>
-                  <td style={{ padding: '16px' }}>
-                    <span style={{ 
-                      padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700,
+                  <td style={{ padding: '14px 16px' }}>
+                    <span style={{
+                      display: 'inline-block', whiteSpace: 'nowrap',
+                      padding: '4px 10px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 700,
                       background: n.status === 'published' ? '#22c55e20' : '#D4A01720',
                       color: n.status === 'published' ? '#22c55e' : '#D4A017'
                     }}>
                       {n.status === 'published' ? 'Published' : 'Draft'}
                     </span>
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right' }}>
-                    <button onClick={() => openEdit(n)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', marginRight: '8px', cursor: 'pointer' }}>Edit</button>
-                    <button onClick={() => handleDelete(n.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                  <td style={{ padding: '16px' }}>
+                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                      <button onClick={() => openEdit(n)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Edit</button>
+                      <button onClick={() => handleDelete(n.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -232,7 +235,7 @@ export default function AdminNews() {
                 <input name="title" defaultValue={isEditing?.title} className="input" required />
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
+              <div className="form-grid-3">
                 <div className="form-group">
                   <label className="label">Category</label>
                   <select name="category" defaultValue={isEditing?.category || 'myanmar-news'} className="input" required>

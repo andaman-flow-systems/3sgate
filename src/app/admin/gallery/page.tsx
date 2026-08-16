@@ -138,7 +138,7 @@ export default function AdminGallery() {
       )}
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div className="admin-page-header">
         <div>
           <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 700, marginBottom: '4px' }}>Manage Gallery</h2>
           <p style={{ color: '#6b7280', fontSize: '0.8rem', margin: 0 }}>
@@ -196,9 +196,11 @@ export default function AdminGallery() {
                       {a.forSale ? `฿${a.price?.toLocaleString()}` : 'Display Only'}
                     </span>
                   </td>
-                  <td style={{ padding: '16px', textAlign: 'right' }}>
-                    <button onClick={() => openEdit(a)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', marginRight: '8px', cursor: 'pointer' }}>Edit</button>
-                    <button onClick={() => handleDelete(a.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                  <td style={{ padding: '16px' }}>
+                    <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                      <button onClick={() => openEdit(a)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Edit</button>
+                      <button onClick={() => handleDelete(a.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -221,7 +223,7 @@ export default function AdminGallery() {
             </div>
             
             <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-grid-2">
                 <div className="form-group">
                   <label className="label">Title</label>
                   <input name="title" defaultValue={isEditing?.title} className="input" required />
@@ -232,7 +234,7 @@ export default function AdminGallery() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="form-grid-2">
                 <div className="form-group">
                   <label className="label">Category (e.g. Painting, Digital)</label>
                   <input name="category" defaultValue={isEditing?.category} className="input" required />
