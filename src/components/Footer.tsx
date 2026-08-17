@@ -52,21 +52,21 @@ export default function Footer() {
           <div>
             <h5 style={{ color: '#D4A017', marginBottom: '16px', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Pages</h5>
             {[
-              { href: '/shop',    label: 'Online Shop' },
-              { href: '/rent',    label: 'Business Directory' },
-              { href: '/news',    label: 'News' },
+              { href: '/shop', label: 'Online Shop' },
+              { href: '/rent', label: 'Business Directory' },
+              { href: '/news', label: 'News' },
               { href: '/gallery', label: 'Art Gallery' },
-              { href: '/donate',  label: 'Donations' },
-              { href: '/jobs',    label: 'Jobs' },
-              { href: '/food',    label: 'Food Guide' },
+              { href: '/donate', label: 'Donations' },
+              { href: '/jobs', label: 'Jobs' },
+              { href: '/food', label: 'Food Guide' },
             ].map((l) => (
               <Link key={l.href} href={l.href} style={{
                 display: 'block', color: '#9ca3af', fontSize: '0.88rem',
                 marginBottom: '8px', textDecoration: 'none',
                 transition: 'color 0.2s',
               }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#9ca3af')}
+                onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
+                onMouseLeave={e => (e.currentTarget.style.color = '#9ca3af')}
               >{l.label}</Link>
             ))}
           </div>
@@ -140,7 +140,7 @@ export default function Footer() {
             <img
               src="/andamanflow-logo.png"
               alt="AndamanFlow Systems"
-              style={{ height: '28px', width: 'auto', objectFit: 'contain' }}
+              style={{ height: '32px', width: 'auto', objectFit: 'contain', borderRadius: '4px' }}
               onError={e => {
                 const el = e.currentTarget as HTMLImageElement;
                 el.style.display = 'none';
@@ -175,7 +175,7 @@ export default function Footer() {
           gap: '12px',
         }}>
           <p style={{ color: '#6b7280', fontSize: '0.82rem' }}>
-            © {year} 3SGate – 3rd Social Gate. All rights reserved.
+            © {year} 3SGates. All rights reserved.
           </p>
           <div style={{ display: 'flex', gap: '20px' }}>
             {['Privacy Policy', 'Terms of Service'].map((t) => (

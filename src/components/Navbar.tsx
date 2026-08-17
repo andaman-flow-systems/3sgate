@@ -265,13 +265,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Search Bar (below top row) */}
-          {mobileSearchOpen && (
-            <div style={{ paddingBottom: '10px' }}>
-              <SearchBar isMobile />
-            </div>
-          )}
-
           {/* Desktop nav links row */}
           <div className="nav-desktop-links" style={{ gap: '2px', paddingBottom: '8px' }}>
             {NAV_LINKS.map((link) => {
@@ -293,7 +286,7 @@ export default function Navbar() {
 
         {/* Mobile full-screen menu */}
         {mobileOpen && (
-          <div style={{ background: '#0d0d0d', borderTop: '1px solid #1e1e1e', position: 'fixed', top: '60px', left: 0, right: 0, bottom: 0, zIndex: 899, overflowY: 'auto', animation: 'slideDown 0.2s ease' }}>
+          <div style={{ background: '#0d0d0d', borderTop: '1px solid #1e1e1e', position: 'absolute', top: '100%', left: 0, right: 0, height: '100vh', paddingBottom: '120px', zIndex: 899, overflowY: 'auto', animation: 'slideDown 0.2s ease' }}>
             {/* Facebook contact button at top */}
             <div style={{ padding: '16px', borderBottom: '1px solid #1e1e1e' }}>
               <a
@@ -328,15 +321,30 @@ export default function Navbar() {
             </nav>
           </div>
         )}
-      </nav>
 
-      {/* Overlay behind mobile menu (doesn't block nav) */}
-      {mobileOpen && (
-        <div
-          onClick={() => setMobileOpen(false)}
-          style={{ position: 'fixed', inset: 0, zIndex: 898, background: 'rgba(0,0,0,0.5)', top: '60px' }}
-        />
-      )}
+        {/* Overlay behind mobile menu (doesn't block nav) */}
+        {mobileOpen && (
+          <div
+            onClick={() => setMobileOpen(false)}
+            style={{ position: 'absolute', top: '100%', left: 0, right: 0, height: '100vh', zIndex: 898, background: 'rgba(0,0,0,0.5)' }}
+          />
+        )}
+
+        {/* Mobile Search Bar Dropdown */}
+        {mobileSearchOpen && (
+          <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, background: '#0b0b0b', borderTop: '1px solid #1e1e1e', padding: '16px', zIndex: 899, boxShadow: '0 10px 30px rgba(0,0,0,0.5)', animation: 'slideDown 0.2s ease' }}>
+            <SearchBar isMobile />
+          </div>
+        )}
+
+        {/* Overlay behind mobile search (doesn't block nav) */}
+        {mobileSearchOpen && !mobileOpen && (
+          <div
+            onClick={() => setMobileSearchOpen(false)}
+            style={{ position: 'absolute', top: '100%', left: 0, right: 0, height: '100vh', zIndex: 898, background: 'rgba(0,0,0,0.5)' }}
+          />
+        )}
+      </nav>
     </>
   );
 }

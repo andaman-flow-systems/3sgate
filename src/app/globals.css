@@ -123,7 +123,7 @@ p  { font-size: 0.95rem; color: var(--text-secondary); }
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding-inline: 24px;
 }
 
 .page-wrapper {
@@ -131,8 +131,15 @@ p  { font-size: 0.95rem; color: var(--text-secondary); }
   padding-top: 0px;
 }
 
-.section { padding: 60px 0; }
-.section-sm { padding: 40px 0; }
+/* ─── Typography & Utilities ─────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(90deg, #D4A017 0%, #f5c518 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section { padding-block: 60px; }
+.section-sm { padding-block: 40px; }
 
 .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -490,7 +497,7 @@ tr:hover td { background: var(--bg-card-hover); color: var(--text-primary); }
 @media (max-width: 1024px) {
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
-  .container { padding: 0 20px; }
+  .container { padding-inline: 20px; }
 
   /* Admin panel - collapsible sidebar */
   .admin-sidebar {
@@ -534,11 +541,11 @@ tr:hover td { background: var(--bg-card-hover); color: var(--text-primary); }
 
 /* ─── Mobile ──── */
 @media (max-width: 768px) {
-  .container { padding: 0 14px; }
+  .container { padding-inline: 14px; }
   .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
   .page-wrapper { padding-top: 0; }
-  .section { padding: 36px 0; }
-  .section-sm { padding: 24px 0; }
+  .section { padding-block: 36px; }
+  .section-sm { padding-block: 24px; }
 
   /* Navbar tweaks */
   .nav-search { display: none !important; }
@@ -565,7 +572,7 @@ tr:hover td { background: var(--bg-card-hover); color: var(--text-primary); }
 
 /* ─── Small Mobile ──── */
 @media (max-width: 480px) {
-  .container { padding: 0 12px; }
+  .container { padding-inline: 12px; }
   h1 { font-size: 1.5rem; }
   h2 { font-size: 1.2rem; }
   .btn-lg { padding: 12px 20px; font-size: 0.9rem; }
