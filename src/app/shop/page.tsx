@@ -4,11 +4,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { sbProductsDB } from '@/lib/supabase-db';
 import { productsDB, type Product } from '@/lib/db';
 import { isSupabaseConfigured } from '@/lib/supabase';
-import { ShoppingBag, X, ExternalLink, CheckCircle, AlertTriangle, Search, Filter } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { ShoppingBag, X, ExternalLink, Search, Filter } from 'lucide-react';
 
 const CATEGORIES = ['All', 'Electronics', 'Fashion', 'Clothing', 'Crafts', 'Accessories'];
 
 export default function ShopPage() {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
   const [filtered, setFiltered] = useState<Product[]>([]);
   const [category, setCategory] = useState('All');
@@ -59,10 +61,10 @@ export default function ShopPage() {
             <div style={{ width: '44px', height: '44px', background: '#D4A01720', border: '1px solid #D4A01750', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <ShoppingBag size={22} color="#D4A017" />
             </div>
-            <h1 style={{ color: '#D4A017', fontSize: '2rem', fontWeight: 800 }}>Our Shop Marketplace</h1>
+            <h1 style={{ color: '#D4A017', fontSize: '2rem', fontWeight: 800 }}>{t('shopHeroTitle')}</h1>
           </div>
           <p style={{ color: '#9ca3af', fontSize: '0.92rem' }}>
-            Discover unique products from our Myanmar community marketplace. All prices in Thai Baht (THB).
+            {t('shopHeroSub')}
           </p>
         </div>
       </div>
@@ -74,7 +76,7 @@ export default function ShopPage() {
             <Search size={16} color="#6b7280" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder={t('shopSearchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               style={{
@@ -99,7 +101,7 @@ export default function ShopPage() {
                   transition: 'all 0.2s', fontFamily: 'Inter, sans-serif',
                 }}
               >
-                {cat}
+                {cat === 'All' ? t('all') : cat}
               </button>
             ))}
           </div>
@@ -108,7 +110,7 @@ export default function ShopPage() {
         {/* Loading state */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>Loading items from database...</p>
+            <p>{t('loading')}</p>
           </div>
         ) : (
           /* Products grid */
@@ -150,7 +152,7 @@ export default function ShopPage() {
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}>
                         <span style={{ background: '#ef4444', color: '#fff', padding: '4px 12px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700 }}>
-                          OUT OF STOCK
+                          {t('outOfStock')}
                         </span>
                       </div>
                     )}
@@ -176,7 +178,7 @@ export default function ShopPage() {
                     ฿{product.price.toLocaleString()}
                   </span>
                   <span style={{ color: '#a78bfa', fontSize: '0.78rem', fontWeight: 600 }}>
-                    View Details →
+                    {t('viewDetails')}
                   </span>
                 </div>
               </div>
@@ -186,7 +188,7 @@ export default function ShopPage() {
 
         {!loading && filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p style={{ fontSize: '1.1rem' }}>No products found matching your search.</p>
+            <p style={{ fontSize: '1.1rem' }}>{t('shopNoProducts')}</p>
           </div>
         )}
       </div>
@@ -228,7 +230,7 @@ export default function ShopPage() {
                     ฿{selectedProduct.price.toLocaleString()}
                   </span>
                   <span style={{ display: 'block', color: selectedProduct.inStock ? '#22c55e' : '#ef4444', fontSize: '0.78rem', fontWeight: 700, marginTop: '4px' }}>
-                    {selectedProduct.inStock ? '✓ In Stock' : '✕ Out of Stock'}
+                    {selectedProduct.inStock ? `✓ ${t('inStock')}` : `✕ ${t('outOfStock')}`}
                   </span>
                 </div>
               </div>
@@ -248,13 +250,13 @@ export default function ShopPage() {
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
                   }}
                 >
-                  <ExternalLink size={18} /> Buy / Inquire on Facebook Page
+                  <ExternalLink size={18} /> {t('shopBuyInquireFacebook')}
                 </a>
                 <button
                   onClick={() => setSelectedProduct(null)}
                   style={{ padding: '14px 20px', borderRadius: '10px', background: '#1a1a1a', border: '1px solid #333', color: '#fff', cursor: 'pointer' }}
                 >
-                  Close
+                  {t('close')}
                 </button>
               </div>
             </div>

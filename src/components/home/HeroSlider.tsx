@@ -2,39 +2,41 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-
-const SLIDES = [
-  {
-    id: 1,
-    headline: 'Connecting Communities.',
-    highlight: 'Creating Opportunities.',
-    sub: 'A trusted platform that connects businesses, communities, creators, job seekers, and social initiatives to create meaningful opportunities and positive social impact.',
-    image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&q=80',
-  },
-  {
-    id: 2,
-    headline: 'Supporting Myanmar',
-    highlight: 'Communities Abroad.',
-    sub: 'Your trusted source for news, jobs, art, and community support for Myanmar people living in Thailand and around the world.',
-    image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200&q=80',
-  },
-  {
-    id: 3,
-    headline: 'Empowering Artists &',
-    highlight: 'Creative Voices.',
-    sub: 'Showcase and discover artwork from talented Myanmar artists and support the next generation of creative minds.',
-    image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1200&q=80',
-  },
-];
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function HeroSlider() {
+  const { t } = useLanguage();
   const [current, setCurrent] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  const SLIDES = [
+    {
+      id: 1,
+      headline: t('slide1Headline'),
+      highlight: t('slide1Highlight'),
+      sub: t('slide1Sub'),
+      image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&q=80',
+    },
+    {
+      id: 2,
+      headline: t('slide2Headline'),
+      highlight: t('slide2Highlight'),
+      sub: t('slide2Sub'),
+      image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200&q=80',
+    },
+    {
+      id: 3,
+      headline: t('slide3Headline'),
+      highlight: t('slide3Highlight'),
+      sub: t('slide3Sub'),
+      image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1200&q=80',
+    },
+  ];
+
   useEffect(() => {
-    const t = setInterval(() => goTo((current + 1) % SLIDES.length), 6000);
-    return () => clearInterval(t);
-  }, [current]);
+    const timer = setInterval(() => goTo((current + 1) % SLIDES.length), 6000);
+    return () => clearInterval(timer);
+  }, [current, SLIDES.length]);
 
   function goTo(idx: number) {
     if (isAnimating) return;
@@ -80,10 +82,10 @@ export default function HeroSlider() {
           </p>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             <Link href="/shop" className="btn btn-gold" style={{ textDecoration: 'none', fontFamily: 'Inter,sans-serif', borderRadius: '8px', padding: '10px 20px', fontWeight: 700, fontSize: '0.85rem' }}>
-              EXPLORE NOW
+              {t('exploreNow')}
             </Link>
             <Link href="/news" className="btn btn-outline" style={{ textDecoration: 'none', fontFamily: 'Inter,sans-serif', borderRadius: '8px', padding: '10px 20px', fontWeight: 700, fontSize: '0.85rem', border: '1px solid rgba(255,255,255,0.3)', color: '#fff' }}>
-              LEARN MORE
+              {t('learnMore')}
             </Link>
           </div>
         </div>
@@ -99,23 +101,6 @@ export default function HeroSlider() {
           ))}
         </div>
       </div>
-
-      <style>{`
-        .hero-slider {
-          height: 380px;
-        }
-        .hero-content {
-          padding: 36px 36px;
-        }
-        @media (max-width: 768px) {
-          .hero-slider { height: 300px; }
-          .hero-content { padding: 24px 20px; max-width: 100% !important; }
-        }
-        @media (max-width: 480px) {
-          .hero-slider { height: 260px; }
-          .hero-content { padding: 20px 16px; }
-        }
-      `}</style>
     </>
   );
 }

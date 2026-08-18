@@ -1,41 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { Heart, Users, BookOpen, QrCode, Building2, Copy, Check, ArrowLeft, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Heart, Users, BookOpen, Building2, Copy, Check, ArrowLeft, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { sbDonationsDB } from '@/lib/supabase-db';
 import { donationsDB } from '@/lib/db';
 import { isSupabaseConfigured } from '@/lib/supabase';
-
-const DONATION_TYPES = [
-  {
-    id: 'support-me',
-    title: 'Support the Platform',
-    sub: 'Help us keep 3SGate running',
-    desc: 'Your contribution supports the development, hosting, and maintenance of the 3SGate platform — keeping this community resource free and accessible for everyone.',
-    Icon: Heart,
-    color: '#a855f7',
-  },
-  {
-    id: 'refugee',
-    title: 'Refugee Support',
-    sub: 'Emergency aid for displaced families',
-    desc: 'Provide essential relief to Myanmar refugees in border areas — food, clean water, temporary shelter, and medical care for the most vulnerable families.',
-    Icon: Users,
-    color: '#ef4444',
-  },
-  {
-    id: 'scholarship',
-    title: 'Student Scholarships',
-    sub: 'Invest in the next generation',
-    desc: 'Fund education for children and students who have lost access to schooling. Every contribution helps a young person build a brighter future.',
-    Icon: BookOpen,
-    color: '#22c55e',
-  },
-] as const;
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const PRESET_AMOUNTS = [200, 500, 1000, 2000];
 
 export default function DonatePage() {
+  const { t } = useLanguage();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [activeTab, setActiveTab] = useState<'support-me' | 'refugee' | 'scholarship'>('support-me');
   const [amount, setAmount] = useState('500');
@@ -44,7 +19,33 @@ export default function DonatePage() {
   const [message, setMessage] = useState('');
 
   const [copiedBank, setCopiedBank] = useState(false);
-  const [copiedPromptPay, setCopiedPromptPay] = useState(false);
+
+  const DONATION_TYPES = [
+    {
+      id: 'support-me' as const,
+      title: t('donateTabSupportPlatform'),
+      sub: t('donateTabSupportPlatformSub'),
+      desc: t('donateTabSupportPlatformDesc'),
+      Icon: Heart,
+      color: '#a855f7',
+    },
+    {
+      id: 'refugee' as const,
+      title: t('donateTabRefugee'),
+      sub: t('donateTabRefugeeSub'),
+      desc: t('donateTabRefugeeDesc'),
+      Icon: Users,
+      color: '#ef4444',
+    },
+    {
+      id: 'scholarship' as const,
+      title: t('donateTabScholarship'),
+      sub: t('donateTabScholarshipSub'),
+      desc: t('donateTabScholarshipDesc'),
+      Icon: BookOpen,
+      color: '#22c55e',
+    },
+  ];
 
   const current = DONATION_TYPES.find(d => d.id === activeTab)!;
 
@@ -75,22 +76,16 @@ export default function DonatePage() {
         donationsDB.create(payload);
       }
     } catch {
-      // Fallback
       donationsDB.create(payload);
     }
 
     setStep(3);
   };
 
-  const copyToClipboard = (text: string, type: 'bank' | 'promptpay') => {
+  const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    if (type === 'bank') {
-      setCopiedBank(true);
-      setTimeout(() => setCopiedBank(false), 2000);
-    } else {
-      setCopiedPromptPay(true);
-      setTimeout(() => setCopiedPromptPay(false), 2000);
-    }
+    setCopiedBank(true);
+    setTimeout(() => setCopiedBank(false), 2000);
   };
 
   const resetForm = () => {
@@ -118,17 +113,17 @@ export default function DonatePage() {
             }}>
               <Heart size={22} color="#ef4444" />
             </div>
-            <h1 style={{ color: '#ef4444', fontSize: '2rem', fontWeight: 800 }}>Make an Impact</h1>
+            <h1 style={{ color: '#ef4444', fontSize: '2rem', fontWeight: 800 }}>{t('donateHeroTitle')}</h1>
           </div>
           <p style={{ color: '#9ca3af', fontSize: '0.92rem' }}>
-            Your contribution directly supports our community initiatives. All amounts are in Thai Baht (THB).
+            {t('donateHeroSub')}
           </p>
 
           {/* Stepper indicator */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: '12px', marginTop: '24px',
             background: '#111111', padding: '12px 20px', borderRadius: '12px', width: 'fit-content',
-            border: '1px solid #2a2a2a'
+            border: '1px solid #2a2a2a', flexWrap: 'wrap'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{
@@ -136,7 +131,7 @@ export default function DonatePage() {
                 background: step >= 1 ? '#ef4444' : '#2a2a2a', color: '#fff',
                 fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center'
               }}>1</div>
-              <span style={{ fontSize: '0.85rem', color: step >= 1 ? '#fff' : '#6b7280', fontWeight: 600 }}>Choose Amount</span>
+              <span style={{ fontSize: '0.85rem', color: step >= 1 ? '#fff' : '#6b7280', fontWeight: 600 }}>{t('donateStep1Title')}</span>
             </div>
             <div style={{ width: '20px', height: '1px', background: '#2a2a2a' }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -145,7 +140,7 @@ export default function DonatePage() {
                 background: step >= 2 ? '#ef4444' : '#2a2a2a', color: '#fff',
                 fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center'
               }}>2</div>
-              <span style={{ fontSize: '0.85rem', color: step >= 2 ? '#fff' : '#6b7280', fontWeight: 600 }}>QR & Bank Transfer</span>
+              <span style={{ fontSize: '0.85rem', color: step >= 2 ? '#fff' : '#6b7280', fontWeight: 600 }}>{t('donateStep2Title')}</span>
             </div>
             <div style={{ width: '20px', height: '1px', background: '#2a2a2a' }} />
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -154,7 +149,7 @@ export default function DonatePage() {
                 background: step >= 3 ? '#22c55e' : '#2a2a2a', color: '#fff',
                 fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center'
               }}>3</div>
-              <span style={{ fontSize: '0.85rem', color: step >= 3 ? '#22c55e' : '#6b7280', fontWeight: 600 }}>Thank You</span>
+              <span style={{ fontSize: '0.85rem', color: step >= 3 ? '#22c55e' : '#6b7280', fontWeight: 600 }}>{t('donateStep3Title')}</span>
             </div>
           </div>
         </div>
@@ -215,7 +210,7 @@ export default function DonatePage() {
                 <form onSubmit={handleProceedToPayment} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   {/* Amount presets */}
                   <div>
-                    <label className="label">Select Amount (THB)</label>
+                    <label className="label">{t('donateSelectAmount')}</label>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '8px' }}>
                       {PRESET_AMOUNTS.map(val => (
                         <button
@@ -250,13 +245,13 @@ export default function DonatePage() {
                         fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
                       }}
                     >
-                      Enter Custom Amount
+                      {t('donateCustomAmount')}
                     </button>
                   </div>
 
                   {amount === 'custom' && (
                     <div className="form-group">
-                      <label className="label">Custom Amount (THB)</label>
+                      <label className="label">{t('donateCustomAmount')}</label>
                       <div style={{ position: 'relative' }}>
                         <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', fontSize: '1rem', fontWeight: 600 }}>฿</span>
                         <input
@@ -274,10 +269,10 @@ export default function DonatePage() {
                   )}
 
                   <div className="form-group">
-                    <label className="label">Your Name (Optional)</label>
+                    <label className="label">{t('donateYourName')}</label>
                     <input
                       type="text"
-                      placeholder="Anonymous Donor"
+                      placeholder={t('donateYourNamePlaceholder')}
                       value={donorName}
                       onChange={e => setDonorName(e.target.value)}
                       className="input"
@@ -285,10 +280,10 @@ export default function DonatePage() {
                   </div>
 
                   <div className="form-group">
-                    <label className="label">Message of Support (Optional)</label>
+                    <label className="label">{t('donateMessage')}</label>
                     <textarea
                       className="input"
-                      placeholder="Leave a word of encouragement..."
+                      placeholder={t('donateMessagePlaceholder')}
                       value={message}
                       onChange={e => setMessage(e.target.value)}
                       rows={3}
@@ -309,7 +304,7 @@ export default function DonatePage() {
                       opacity: (!amount || (amount === 'custom' && (!customAmount || Number(customAmount) <= 0))) ? 0.5 : 1,
                     }}
                   >
-                    Proceed to Payment (฿{getFinalAmount().toLocaleString()} THB) →
+                    {t('donateProceedBtn')} (฿{getFinalAmount().toLocaleString()} THB)
                   </button>
                 </form>
               </div>
@@ -327,7 +322,7 @@ export default function DonatePage() {
                   cursor: 'pointer', marginBottom: '20px'
                 }}
               >
-                <ArrowLeft size={16} /> Back to Edit Amount
+                <ArrowLeft size={16} /> {t('back')}
               </button>
 
               <div style={{
@@ -336,11 +331,11 @@ export default function DonatePage() {
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center'
               }}>
                 <div>
-                  <span style={{ color: '#9ca3af', fontSize: '0.8rem', display: 'block' }}>Donation Summary</span>
+                  <span style={{ color: '#9ca3af', fontSize: '0.8rem', display: 'block' }}>{t('donateHeroTitle')}</span>
                   <span style={{ color: '#fff', fontWeight: 700, fontSize: '1.1rem' }}>{current.title}</span>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <span style={{ color: '#9ca3af', fontSize: '0.8rem', display: 'block' }}>Total Amount</span>
+                  <span style={{ color: '#9ca3af', fontSize: '0.8rem', display: 'block' }}>{t('price')}</span>
                   <span style={{ color: '#22c55e', fontWeight: 800, fontSize: '1.3rem' }}>฿{getFinalAmount().toLocaleString()} THB</span>
                 </div>
               </div>
@@ -382,7 +377,7 @@ export default function DonatePage() {
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                       <div>
-                        <span style={{ color: '#6b7280', fontSize: '0.75rem', display: 'block', marginBottom: '2px' }}>Account Holder Name</span>
+                        <span style={{ color: '#6b7280', fontSize: '0.75rem', display: 'block', marginBottom: '2px' }}>{t('donateAccountName')}</span>
                         <span style={{ color: '#fff', fontSize: '1.05rem', fontWeight: 700 }}>MR. HEIN THANT</span>
                       </div>
 
@@ -393,13 +388,13 @@ export default function DonatePage() {
                         border: '1px solid #2a2a2a'
                       }}>
                         <div>
-                          <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block', marginBottom: '2px' }}>CIMB Thai Account Number</span>
+                          <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block', marginBottom: '2px' }}>{t('donateAccountNo')}</span>
                           <span style={{ color: '#22c55e', fontSize: '1.25rem', fontWeight: 900, fontFamily: 'monospace', letterSpacing: '0.05em' }}>
                             7014952040
                           </span>
                         </div>
                         <button
-                          onClick={() => copyToClipboard('7014952040', 'bank')}
+                          onClick={() => copyToClipboard('7014952040')}
                           style={{
                             background: copiedBank ? '#22c55e' : '#22c55e20',
                             border: `1px solid ${copiedBank ? '#22c55e' : '#22c55e60'}`,
@@ -410,7 +405,7 @@ export default function DonatePage() {
                           }}
                         >
                           {copiedBank ? <Check size={16} /> : <Copy size={16} />}
-                          {copiedBank ? 'Copied!' : 'Copy Acc'}
+                          {copiedBank ? t('copied') : t('copy')}
                         </button>
                       </div>
                     </div>
@@ -423,7 +418,7 @@ export default function DonatePage() {
                   }}>
                     <ShieldCheck size={18} color="#a855f7" style={{ flexShrink: 0, marginTop: '2px' }} />
                     <p style={{ color: '#9ca3af', fontSize: '0.78rem', lineHeight: 1.5, margin: 0 }}>
-                      After completing the payment in your banking app, click below to confirm. Your support makes a direct difference!
+                      {t('donateTransferInstructions')}
                     </p>
                   </div>
 
@@ -439,7 +434,7 @@ export default function DonatePage() {
                     }}
                   >
                     <CheckCircle2 size={18} />
-                    I Have Completed the Transfer
+                    {t('donateConfirmSentBtn')}
                   </button>
                 </div>
 
@@ -458,17 +453,16 @@ export default function DonatePage() {
                 width: '72px', height: '72px', borderRadius: '50%', background: '#22c55e20',
                 border: '2px solid #22c55e', margin: '0 auto 20px',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                animation: 'pulse 2s infinite'
               }}>
                 <Sparkles size={36} color="#22c55e" />
               </div>
 
               <h2 style={{ color: '#fff', fontSize: '1.8rem', fontWeight: 800, marginBottom: '10px' }}>
-                Thank You for Your Donation!
+                {t('donateStep3Title')}
               </h2>
 
               <p style={{ color: '#9ca3af', fontSize: '0.95rem', maxWidth: '480px', margin: '0 auto 24px', lineHeight: 1.6 }}>
-                {donorName ? <strong style={{ color: '#fff' }}>{donorName}</strong> : 'Generous Friend'}, your contribution of <strong style={{ color: '#22c55e' }}>฿{getFinalAmount().toLocaleString()} THB</strong> to <span style={{ color: '#a855f7' }}>{current.title}</span> has been recorded.
+                {donorName ? <strong style={{ color: '#fff' }}>{donorName}</strong> : 'Friend'}, your contribution of <strong style={{ color: '#22c55e' }}>฿{getFinalAmount().toLocaleString()} THB</strong> to <span style={{ color: '#a855f7' }}>{current.title}</span> has been recorded.
               </p>
 
               <div style={{
@@ -476,7 +470,7 @@ export default function DonatePage() {
                 padding: '20px', maxWidth: '400px', margin: '0 auto 28px', textAlign: 'left'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                  <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>Cause</span>
+                  <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>{t('category')}</span>
                   <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>{current.title}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
@@ -484,7 +478,7 @@ export default function DonatePage() {
                   <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>{donorName || 'Anonymous'}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>Amount</span>
+                  <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>{t('price')}</span>
                   <span style={{ color: '#22c55e', fontSize: '0.95rem', fontWeight: 800 }}>฿{getFinalAmount().toLocaleString()} THB</span>
                 </div>
               </div>
@@ -495,10 +489,10 @@ export default function DonatePage() {
                   className="btn"
                   style={{ background: '#1a1a1a', color: '#fff', border: '1px solid #333' }}
                 >
-                  Make Another Donation
+                  {t('donateProceedBtn')}
                 </button>
-                <a href="/" className="btn btn-purple">
-                  Return to Home Page
+                <a href="/" className="btn btn-purple" style={{ textDecoration: 'none' }}>
+                  {t('home')}
                 </a>
               </div>
             </div>

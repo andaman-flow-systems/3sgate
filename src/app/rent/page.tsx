@@ -4,9 +4,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { sbRentalsDB } from '@/lib/supabase-db';
 import { rentalsDB, type RentalSpace } from '@/lib/db';
 import { isSupabaseConfigured } from '@/lib/supabase';
-import { Building, MapPin, Maximize2, ExternalLink, Search, Filter, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Building, MapPin, Maximize2, ExternalLink, Search, X } from 'lucide-react';
 
 export default function RentPage() {
+  const { t } = useLanguage();
   const [spaces, setSpaces] = useState<RentalSpace[]>([]);
   const [filtered, setFiltered] = useState<RentalSpace[]>([]);
   const [search, setSearch] = useState('');
@@ -69,10 +71,10 @@ export default function RentPage() {
             }}>
               <Building size={22} color="#0284c7" />
             </div>
-            <h1 style={{ color: '#0284c7', fontSize: '2rem', fontWeight: 800 }}>Shop & Space Rentals</h1>
+            <h1 style={{ color: '#0284c7', fontSize: '2rem', fontWeight: 800 }}>{t('rentHeroTitle')}</h1>
           </div>
           <p style={{ color: '#9ca3af', fontSize: '0.92rem' }}>
-            Find prime retail stalls, showroom spaces, and market spots across Thailand.
+            {t('rentHeroSub')}
           </p>
         </div>
       </div>
@@ -87,7 +89,7 @@ export default function RentPage() {
             <Search size={16} color="#6b7280" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
-              placeholder="Search space or location..."
+              placeholder={t('rentSearchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               style={{
@@ -100,9 +102,9 @@ export default function RentPage() {
 
           <div style={{ display: 'flex', gap: '8px' }}>
             {[
-              { id: 'all', label: 'All Spaces' },
-              { id: 'available', label: 'Available Now' },
-              { id: 'rented', label: 'Rented' },
+              { id: 'all', label: t('rentTabAll') },
+              { id: 'available', label: t('rentTabAvailable') },
+              { id: 'rented', label: t('rentTabRented') },
             ].map(tab => (
               <button
                 key={tab.id}
@@ -125,7 +127,7 @@ export default function RentPage() {
         {/* Grid */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>Loading rental spaces from database...</p>
+            <p>{t('loading')}</p>
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
@@ -156,7 +158,7 @@ export default function RentPage() {
                     color: '#fff', padding: '4px 10px', borderRadius: '20px',
                     fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase'
                   }}>
-                    {space.isAvailable ? 'Available' : 'Rented'}
+                    {space.isAvailable ? t('available') : t('rented')}
                   </div>
                 </div>
 
@@ -172,9 +174,9 @@ export default function RentPage() {
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ color: '#0284c7', fontSize: '1.2rem', fontWeight: 800 }}>
-                      ฿{space.price.toLocaleString()} <span style={{ fontSize: '0.75rem', fontWeight: 400, color: '#9ca3af' }}>/ mo</span>
+                      ฿{space.price.toLocaleString()} <span style={{ fontSize: '0.75rem', fontWeight: 400, color: '#9ca3af' }}>{t('perMonth')}</span>
                     </span>
-                    <span style={{ color: '#38bdf8', fontSize: '0.8rem', fontWeight: 600 }}>View Space →</span>
+                    <span style={{ color: '#38bdf8', fontSize: '0.8rem', fontWeight: 600 }}>{t('viewDetails')}</span>
                   </div>
                 </div>
               </div>
@@ -184,7 +186,7 @@ export default function RentPage() {
 
         {!loading && filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>No rental spaces found.</p>
+            <p>{t('rentNoSpaces')}</p>
           </div>
         )}
       </div>
@@ -210,7 +212,7 @@ export default function RentPage() {
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <span style={{ color: '#0284c7', fontSize: '1.4rem', fontWeight: 800 }}>฿{selectedSpace.price.toLocaleString()}</span>
-                  <span style={{ display: 'block', color: '#6b7280', fontSize: '0.75rem' }}>per month</span>
+                  <span style={{ display: 'block', color: '#6b7280', fontSize: '0.75rem' }}>{t('perMonth')}</span>
                 </div>
               </div>
 
@@ -228,7 +230,7 @@ export default function RentPage() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
                 }}
               >
-                <ExternalLink size={18} /> Inquire / Contact Space Owner
+                <ExternalLink size={18} /> {t('rentContactOwner')}
               </a>
             </div>
           </div>

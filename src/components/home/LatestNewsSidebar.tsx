@@ -3,16 +3,21 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { newsDB, type NewsPost } from '@/lib/db';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function LatestNewsSidebar() {
+  const { t, language } = useLanguage();
   const [news, setNews] = useState<NewsPost[]>([]);
 
   useEffect(() => {
     setNews(newsDB.getPublished().slice(0, 4));
   }, []);
 
-  const catLabel = (cat: NewsPost['category']) =>
-    cat === 'myanmar-thailand' ? 'Myanmar-TH' : cat === 'myanmar-abroad' ? 'Abroad' : 'Myanmar';
+  const catLabel = (cat: NewsPost['category']) => {
+    if (cat === 'myanmar-thailand') return t('newsCatThailand');
+    if (cat === 'myanmar-abroad') return t('newsCatAbroad');
+    return t('newsCatLocal');
+  };
 
   const catColor = (cat: NewsPost['category']) =>
     cat === 'myanmar-thailand' ? '#3b82f6' : cat === 'myanmar-abroad' ? '#22c55e' : '#D4A017';
@@ -20,8 +25,8 @@ export default function LatestNewsSidebar() {
   return (
     <div>
       <div className="section-header">
-        <span className="section-title" style={{ color: '#3b82f6' }}>LATEST NEWS</span>
-        <Link href="/news" className="view-all">View All</Link>
+        <span className="section-title" style={{ color: '#3b82f6' }}>{t('latestNews')}</span>
+        <Link href="/news" className="view-all">{t('viewAll')}</Link>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -77,7 +82,7 @@ export default function LatestNewsSidebar() {
                   </span>
                   <span style={{ color: '#374151', fontSize: '0.68rem' }}>·</span>
                   <span style={{ fontSize: '0.68rem', color: '#6b7280' }}>
-                    {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    {new Date(post.publishedAt).toLocaleDateString(language === 'mm' ? 'my-MM' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </span>
                 </div>
               </div>

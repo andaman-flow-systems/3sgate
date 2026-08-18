@@ -4,21 +4,23 @@ import { useState, useEffect, useCallback } from 'react';
 import { sbNewsDB } from '@/lib/supabase-db';
 import { newsDB, type NewsPost } from '@/lib/db';
 import { isSupabaseConfigured } from '@/lib/supabase';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Newspaper, Calendar, User, ArrowRight, X } from 'lucide-react';
 
-const CATEGORIES = [
-  { id: 'all', label: 'All News' },
-  { id: 'myanmar-thailand', label: 'Myanmar-Thailand' },
-  { id: 'myanmar-abroad', label: 'Myanmar Abroad' },
-  { id: 'myanmar-news', label: 'Myanmar Local' },
-];
-
 export default function NewsPage() {
+  const { t, language } = useLanguage();
   const [posts, setPosts] = useState<NewsPost[]>([]);
   const [filtered, setFiltered] = useState<NewsPost[]>([]);
   const [category, setCategory] = useState('all');
   const [selectedPost, setSelectedPost] = useState<NewsPost | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const CATEGORIES = [
+    { id: 'all', label: t('newsAllCategories') },
+    { id: 'myanmar-thailand', label: t('newsCatThailand') },
+    { id: 'myanmar-abroad', label: t('newsCatAbroad') },
+    { id: 'myanmar-news', label: t('newsCatLocal') },
+  ];
 
   const loadNews = useCallback(async () => {
     setLoading(true);
@@ -68,10 +70,10 @@ export default function NewsPage() {
             }}>
               <Newspaper size={22} color="#ea580c" />
             </div>
-            <h1 style={{ color: '#ea580c', fontSize: '2rem', fontWeight: 800 }}>Community News</h1>
+            <h1 style={{ color: '#ea580c', fontSize: '2rem', fontWeight: 800 }}>{t('newsHeroTitle')}</h1>
           </div>
           <p style={{ color: '#9ca3af', fontSize: '0.92rem' }}>
-            Latest updates, immigration policies, and stories for Myanmar communities.
+            {t('newsHeroSub')}
           </p>
         </div>
       </div>
@@ -100,7 +102,7 @@ export default function NewsPage() {
         {/* Grid */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>Loading news articles from database...</p>
+            <p>{t('loading')}</p>
           </div>
         ) : (
           <div className="news-grid">
@@ -132,7 +134,7 @@ export default function NewsPage() {
                   <div style={{ padding: '20px' }}>
                     <div style={{ display: 'flex', gap: '12px', color: '#6b7280', fontSize: '0.75rem', marginBottom: '10px' }}>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <Calendar size={13} color="#ea580c" /> {new Date(post.publishedAt).toLocaleDateString()}
+                        <Calendar size={13} color="#ea580c" /> {new Date(post.publishedAt).toLocaleDateString(language === 'mm' ? 'my-MM' : 'en-US')}
                       </span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <User size={13} /> {post.author}
@@ -150,7 +152,7 @@ export default function NewsPage() {
                 </div>
 
                 <div style={{ padding: '0 20px 20px', color: '#ea580c', fontSize: '0.85rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  Read Full Article <ArrowRight size={14} />
+                  {t('newsReadFullArticle')} <ArrowRight size={14} />
                 </div>
               </div>
             ))}
@@ -159,7 +161,7 @@ export default function NewsPage() {
 
         {!loading && filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>No news articles found in this category.</p>
+            <p>{t('newsNoPosts')}</p>
           </div>
         )}
       </div>
@@ -177,8 +179,8 @@ export default function NewsPage() {
 
             <div style={{ padding: '28px' }}>
               <div style={{ display: 'flex', gap: '14px', color: '#ea580c', fontSize: '0.8rem', fontWeight: 600, marginBottom: '12px' }}>
-                <span>Published: {new Date(selectedPost.publishedAt).toLocaleDateString()}</span>
-                <span>Author: {selectedPost.author}</span>
+                <span>{t('newsPublishedOn')}: {new Date(selectedPost.publishedAt).toLocaleDateString(language === 'mm' ? 'my-MM' : 'en-US')}</span>
+                <span>{t('newsBy')}: {selectedPost.author}</span>
               </div>
 
               <h2 style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 800, lineHeight: 1.4, marginBottom: '16px' }}>
@@ -194,7 +196,7 @@ export default function NewsPage() {
                   onClick={() => setSelectedPost(null)}
                   style={{ padding: '10px 24px', borderRadius: '8px', background: '#ea580c', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer' }}
                 >
-                  Close Article
+                  {t('close')}
                 </button>
               </div>
             </div>

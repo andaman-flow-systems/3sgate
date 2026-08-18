@@ -4,9 +4,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { sbJobsDB } from '@/lib/supabase-db';
 import { jobsDB, type JobListing } from '@/lib/db';
 import { isSupabaseConfigured } from '@/lib/supabase';
-import { Briefcase, MapPin, Clock, DollarSign, Mail, ShieldAlert, CheckCircle, Search, Filter, X } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Briefcase, MapPin, Clock, DollarSign, Mail, Search, X } from 'lucide-react';
 
 export default function JobsPage() {
+  const { t } = useLanguage();
   const [jobs, setJobs] = useState<JobListing[]>([]);
   const [filtered, setFiltered] = useState<JobListing[]>([]);
   const [search, setSearch] = useState('');
@@ -54,6 +56,16 @@ export default function JobsPage() {
     setFiltered(result);
   }, [search, typeFilter, jobs]);
 
+  const getJobTypeLabel = (type: string) => {
+    switch (type) {
+      case 'full-time': return t('jobsFullTime');
+      case 'part-time': return t('jobsPartTime');
+      case 'contract': return t('jobsContract');
+      case 'freelance': return t('jobsFreelance');
+      default: return t('jobsAllTypes');
+    }
+  };
+
   return (
     <div>
       {/* Hero Header */}
@@ -71,10 +83,10 @@ export default function JobsPage() {
             }}>
               <Briefcase size={22} color="#3b82f6" />
             </div>
-            <h1 style={{ color: '#3b82f6', fontSize: '2rem', fontWeight: 800 }}>Job Opportunities</h1>
+            <h1 style={{ color: '#3b82f6', fontSize: '2rem', fontWeight: 800 }}>{t('jobsHeroTitle')}</h1>
           </div>
           <p style={{ color: '#9ca3af', fontSize: '0.92rem' }}>
-            Verified job listings and official recruitment agency postings for Myanmar workers in Thailand & abroad.
+            {t('jobsHeroSub')}
           </p>
         </div>
       </div>
@@ -89,7 +101,7 @@ export default function JobsPage() {
             <Search size={16} color="#6b7280" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
-              placeholder="Search by title, company, or location..."
+              placeholder={t('jobsSearchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               style={{
@@ -100,21 +112,21 @@ export default function JobsPage() {
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '8px' }}>
-            {['all', 'full-time', 'part-time', 'contract', 'freelance'].map(t => (
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {['all', 'full-time', 'part-time', 'contract', 'freelance'].map(typeKey => (
               <button
-                key={t}
-                onClick={() => setTypeFilter(t)}
+                key={typeKey}
+                onClick={() => setTypeFilter(typeKey)}
                 style={{
                   padding: '8px 14px', borderRadius: '8px',
-                  border: `1px solid ${typeFilter === t ? '#3b82f6' : '#2a2a2a'}`,
-                  background: typeFilter === t ? '#3b82f620' : '#111111',
-                  color: typeFilter === t ? '#3b82f6' : '#9ca3af',
+                  border: `1px solid ${typeFilter === typeKey ? '#3b82f6' : '#2a2a2a'}`,
+                  background: typeFilter === typeKey ? '#3b82f620' : '#111111',
+                  color: typeFilter === typeKey ? '#3b82f6' : '#9ca3af',
                   fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer',
-                  textTransform: 'capitalize', transition: 'all 0.15s'
+                  transition: 'all 0.15s'
                 }}
               >
-                {t === 'all' ? 'All Types' : t}
+                {getJobTypeLabel(typeKey)}
               </button>
             ))}
           </div>
@@ -123,7 +135,7 @@ export default function JobsPage() {
         {/* Jobs List */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>Loading jobs from database...</p>
+            <p>{t('loading')}</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -156,7 +168,7 @@ export default function JobsPage() {
                         background: '#a855f720', border: '1px solid #a855f750', color: '#a855f7',
                         fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: '4px'
                       }}>
-                        Recruitment Agency
+                        {t('jobsRecruitmentAgent')}
                       </span>
                     )}
                   </div>
@@ -167,7 +179,7 @@ export default function JobsPage() {
 
                   <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '0.82rem', color: '#6b7280' }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Clock size={14} color="#3b82f6" /> {job.type}
+                      <Clock size={14} color="#3b82f6" /> {getJobTypeLabel(job.type)}
                     </span>
                     {job.salary && (
                       <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#22c55e', fontWeight: 600 }}>
@@ -184,7 +196,7 @@ export default function JobsPage() {
                     cursor: 'pointer', whiteSpace: 'nowrap'
                   }}
                 >
-                  View Listing →
+                  {t('viewDetails')}
                 </button>
               </div>
             ))}
@@ -193,7 +205,7 @@ export default function JobsPage() {
 
         {!loading && filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>No job listings found.</p>
+            <p>{t('jobsNoJobs')}</p>
           </div>
         )}
       </div>
@@ -214,29 +226,29 @@ export default function JobsPage() {
 
             <div style={{ background: '#1a1a1a', padding: '16px', borderRadius: '10px', marginBottom: '20px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <div>
-                <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block' }}>Location</span>
+                <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block' }}>{t('location')}</span>
                 <span style={{ color: '#fff', fontSize: '0.88rem', fontWeight: 600 }}>{selectedJob.location}</span>
               </div>
               <div>
-                <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block' }}>Job Type</span>
-                <span style={{ color: '#fff', fontSize: '0.88rem', fontWeight: 600, textTransform: 'capitalize' }}>{selectedJob.type}</span>
+                <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block' }}>{t('category')}</span>
+                <span style={{ color: '#fff', fontSize: '0.88rem', fontWeight: 600 }}>{getJobTypeLabel(selectedJob.type)}</span>
               </div>
               {selectedJob.salary && (
                 <div>
-                  <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block' }}>Salary</span>
+                  <span style={{ color: '#6b7280', fontSize: '0.72rem', display: 'block' }}>{t('jobsSalary')}</span>
                   <span style={{ color: '#22c55e', fontSize: '0.88rem', fontWeight: 700 }}>{selectedJob.salary}</span>
                 </div>
               )}
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <h4 style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 700, marginBottom: '8px' }}>Job Description</h4>
+              <h4 style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 700, marginBottom: '8px' }}>Description</h4>
               <p style={{ color: '#9ca3af', fontSize: '0.88rem', lineHeight: 1.6 }}>{selectedJob.description}</p>
             </div>
 
             {selectedJob.requirements && selectedJob.requirements.length > 0 && (
               <div style={{ marginBottom: '24px' }}>
-                <h4 style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 700, marginBottom: '8px' }}>Requirements</h4>
+                <h4 style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 700, marginBottom: '8px' }}>{t('jobsRequirements')}</h4>
                 <ul style={{ paddingLeft: '20px', color: '#9ca3af', fontSize: '0.85rem', lineHeight: 1.7 }}>
                   {selectedJob.requirements.map((req, i) => (
                     <li key={i}>{req}</li>
@@ -254,7 +266,7 @@ export default function JobsPage() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
                 }}
               >
-                <Mail size={18} /> Apply / Email: {selectedJob.contactEmail}
+                <Mail size={18} /> {t('jobsApplyEmail')}: {selectedJob.contactEmail}
               </a>
             </div>
           </div>

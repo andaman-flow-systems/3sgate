@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '@/components/Logo';
 import { Mail, MapPin, Globe } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Footer() {
   const pathname = usePathname();
+  const { t } = useLanguage();
   const year = new Date().getFullYear();
 
   if (pathname?.startsWith('/admin')) {
@@ -30,7 +32,7 @@ export default function Footer() {
           <div>
             <Logo size="md" />
             <p style={{ fontSize: '0.85rem', color: '#6b7280', marginTop: '14px', lineHeight: 1.7 }}>
-              A trusted gateway that connects communities with opportunities, knowledge, businesses, and meaningful social impact.
+              {t('siteDescription')}
             </p>
             <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
               {['facebook', 'twitter', 'instagram'].map((s) => (
@@ -50,15 +52,18 @@ export default function Footer() {
 
           {/* Pages */}
           <div>
-            <h5 style={{ color: '#D4A017', marginBottom: '16px', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Pages</h5>
+            <h5 style={{ color: '#D4A017', marginBottom: '16px', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              {t('footerPages')}
+            </h5>
             {[
-              { href: '/shop', label: 'Online Shop' },
-              { href: '/rent', label: 'Business Directory' },
-              { href: '/news', label: 'News' },
-              { href: '/gallery', label: 'Art Gallery' },
-              { href: '/donate', label: 'Donations' },
-              { href: '/jobs', label: 'Jobs' },
-              { href: '/food', label: 'Food Guide' },
+              { href: '/shop', label: t('footerOnlineShop') },
+              { href: '/rent', label: t('footerBusinessDirectory') },
+              { href: '/stay', label: t('footerStay') },
+              { href: '/news', label: t('footerNews') },
+              { href: '/gallery', label: t('footerArtGallery') },
+              { href: '/donate', label: t('footerDonations') },
+              { href: '/jobs', label: t('footerJobs') },
+              { href: '/food', label: t('footerFoodGuide') },
             ].map((l) => (
               <Link key={l.href} href={l.href} style={{
                 display: 'block', color: '#9ca3af', fontSize: '0.88rem',
@@ -73,15 +78,25 @@ export default function Footer() {
 
           {/* Community */}
           <div>
-            <h5 style={{ color: '#3b82f6', marginBottom: '16px', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Community</h5>
-            {['Myanmar in Thailand', 'Myanmar Abroad', 'Refugee Support', 'Scholarships', 'Cultural Events'].map((item) => (
+            <h5 style={{ color: '#3b82f6', marginBottom: '16px', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              {t('footerCommunity')}
+            </h5>
+            {[
+              t('footerMyanmarInThailand'),
+              t('footerMyanmarAbroad'),
+              t('footerRefugeeSupport'),
+              t('footerScholarships'),
+              t('footerCulturalEvents'),
+            ].map((item) => (
               <p key={item} style={{ color: '#9ca3af', fontSize: '0.88rem', marginBottom: '8px' }}>{item}</p>
             ))}
           </div>
 
           {/* Contact */}
           <div>
-            <h5 style={{ color: '#22c55e', marginBottom: '16px', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Contact</h5>
+            <h5 style={{ color: '#22c55e', marginBottom: '16px', fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              {t('footerContact')}
+            </h5>
             <p style={{ color: '#9ca3af', fontSize: '0.88rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Mail size={15} color="#6b7280" /> admin.3sgates2026@gmail.com
             </p>
@@ -89,7 +104,7 @@ export default function Footer() {
               <MapPin size={15} color="#6b7280" /> Bangkok, Thailand
             </p>
             <p style={{ color: '#9ca3af', fontSize: '0.88rem', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Globe size={15} color={"#6b7280"} /> www.3sgates.com
+              <Globe size={15} color="#6b7280" /> www.3sgates.com
             </p>
           </div>
         </div>
@@ -98,90 +113,18 @@ export default function Footer() {
         <div style={{
           borderTop: '1px solid #1e1e1e',
           paddingTop: '24px',
-          marginBottom: '20px',
           display: 'flex',
-          justifyContent: 'center',
-        }}>
-          <a
-            href="https://andamanflow.systems"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: '14px',
-              textDecoration: 'none',
-              padding: '12px 28px',
-              borderRadius: '50px',
-              background: 'linear-gradient(135deg, rgba(56,189,248,0.06) 0%, rgba(14,165,233,0.04) 100%)',
-              border: '1px solid rgba(56,189,248,0.15)',
-              boxShadow: '0 0 24px rgba(56,189,248,0.08)',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(56,189,248,0.12) 0%, rgba(14,165,233,0.08) 100%)';
-              e.currentTarget.style.border = '1px solid rgba(56,189,248,0.35)';
-              e.currentTarget.style.boxShadow = '0 0 36px rgba(56,189,248,0.18)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(56,189,248,0.06) 0%, rgba(14,165,233,0.04) 100%)';
-              e.currentTarget.style.border = '1px solid rgba(56,189,248,0.15)';
-              e.currentTarget.style.boxShadow = '0 0 24px rgba(56,189,248,0.08)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            <span style={{ color: '#4b5563', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, whiteSpace: 'nowrap' }}>
-              Powered by
-            </span>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/andamanflow-logo.png"
-              alt="AndamanFlow Systems"
-              style={{ height: '32px', width: 'auto', objectFit: 'contain', borderRadius: '4px' }}
-              onError={e => {
-                const el = e.currentTarget as HTMLImageElement;
-                el.style.display = 'none';
-                const fallback = el.nextSibling as HTMLElement;
-                if (fallback) fallback.style.display = 'flex';
-              }}
-            />
-            {/* Fallback text if logo fails */}
-            <span style={{
-              display: 'none',
-              alignItems: 'center',
-              gap: '4px',
-              fontSize: '1rem',
-              fontWeight: 800,
-              fontFamily: 'Inter, sans-serif',
-            }}>
-              <span style={{ color: '#ffffff' }}>Andaman</span>
-              <span style={{ color: '#38bdf8' }}>Flow</span>
-              <span style={{ color: '#6b7280', fontSize: '0.8rem', fontWeight: 400 }}>Systems</span>
-            </span>
-          </a>
-        </div>
-
-        {/* Bottom bar */}
-        <div style={{
-          borderTop: '1px solid #1e1e1e',
-          paddingTop: '20px',
-          display: 'flex',
-          alignItems: 'center',
           justifyContent: 'space-between',
+          alignItems: 'center',
           flexWrap: 'wrap',
           gap: '12px',
         }}>
-          <p style={{ color: '#6b7280', fontSize: '0.82rem' }}>
-            © {year} 3SGates. All rights reserved.
+          <p style={{ fontSize: '0.8rem', color: '#6b7280' }}>
+            © {year} 3SGates. {t('footerAllRightsReserved')}
           </p>
-          <div style={{ display: 'flex', gap: '20px' }}>
-            {['Privacy Policy', 'Terms of Service'].map((t) => (
-              <a key={t} href="#" style={{ color: '#6b7280', fontSize: '0.82rem', textDecoration: 'none' }}>{t}</a>
-            ))}
-          </div>
+          <p style={{ fontSize: '0.8rem', color: '#4b5563' }}>
+            {t('footerPoweredBy')}
+          </p>
         </div>
       </div>
     </footer>

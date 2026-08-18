@@ -21,6 +21,8 @@ import type {
   Banner,
   DonationRecord,
   VisitorStat,
+  StayListing,
+  AccommodationType,
 } from './db';
 
 // ─── Helper: map DB row → TypeScript shape ─────────────────────────────────────
@@ -742,3 +744,100 @@ export const sbStatsDB = {
   },
 };
 
+// ─── Stays ─────────────────────────────────────────────────────────────────────
+function toStay(row: Record<string, unknown>): StayListing {
+  return {
+    id:                row.id as string,
+    title:             row.title as string,
+    companyName:       row.company_name as string,
+    accommodationType: row.accommodation_type as AccommodationType,
+    images:            (row.images as string[]) ?? [],
+    location:          row.location as string,
+    contactEmail:      row.contact_email as string | undefined,
+    description:       row.description as string,
+    size:              row.size as string | undefined,
+    price:             row.price as number | undefined,
+    rating:            row.rating as number | undefined,
+    externalUrl:       row.external_url as string | undefined,
+    websiteUrl:        row.website_url as string | undefined,
+    facebookUrl:       row.facebook_url as string | undefined,
+    createdAt:         row.created_at as string,
+  };
+}
+
+export const sbStaysDB = {
+  getAll: async (): Promise<StayListing[]> => {
+    const { data, error } = await supabase
+      .from('stays')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data ?? []).map(toStay);
+  },
+
+  getById: async (id: string): Promise<StayListing | null> => {
+    const { data, error } = await supabase
+      .from('stays')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+    if (error || !data) return null;
+    return toStay(data);
+  },
+
+  create: async (s: Omit<StayListing, 'id' | 'createdAt'>): Promise<StayListing> => {
+    const { data, error } = await supabase
+      .from('stays')
+      .insert({
+        title:              s.title,
+        company_name:       s.companyName,
+        accommodation_type: s.accommodationType,
+        images:             s.images,
+        location:           s.location,
+        contact_email:      s.contactEmail,
+        description:        s.description,
+        size:               s.size,
+        price:              s.price,
+        rating:             s.rating,
+        external_url:       s.externalUrl,
+        website_url:        s.websiteUrl,
+        facebook_url:       s.facebookUrl,
+      })
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return toStay(data);
+  },
+
+  update: async (id: string, s: Partial<StayListing>): Promise<StayListing> => {
+    const patch: Record<string, unknown> = {};
+    if (s.title              !== undefined) patch.title              = s.title;
+    if (s.companyName        !== undefined) patch.company_name       = s.companyName;
+    if (s.accommodationType  !== undefined) patch.accommodation_type = s.accommodationType;
+    if (s.images             !== undefined) patch.images             = s.images;
+    if (s.location           !== undefined) patch.location           = s.location;
+    if (s.contactEmail       !== undefined) patch.contact_email      = s.contactEmail;
+    if (s.description        !== undefined) patch.description        = s.description;
+    if (s.size               !== undefined) patch.size               = s.size;
+    if (s.price              !== undefined) patch.price              = s.price;
+    if (s.rating             !== undefined) patch.rating             = s.rating;
+    if (s.externalUrl        !== undefined) patch.external_url       = s.externalUrl;
+    if (s.websiteUrl         !== undefined) patch.website_url        = s.websiteUrl;
+    if (s.facebookUrl        !== undefined) patch.facebook_url       = s.facebookUrl;
+
+    const { data, error } = await supabase
+      .from('stays')
+      .update(patch)
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return toStay(data);
+  },
+
+  delete: async (id: string): Promise<boolean> => {
+    const { error } = await supabase.from('stays').delete().eq('id', id);
+    if (error) throw new Error(error.message);
+    return true;
+  },
+};

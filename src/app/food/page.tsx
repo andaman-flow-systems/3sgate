@@ -4,11 +4,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { sbFoodDB } from '@/lib/supabase-db';
 import { foodDB, type FoodPlace } from '@/lib/db';
 import { isSupabaseConfigured } from '@/lib/supabase';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Utensils, MapPin, Star, Phone, Clock, Search, X, PhoneCall } from 'lucide-react';
 
 const CATEGORIES = ['All', 'Thai Cuisine', 'Seafood & BBQ', 'Street Food', 'Shan & Northern', 'Myanmar Cuisine', 'Asian & Japanese', 'Cafés & Drinks', 'Desserts & Bakery'];
 
 export default function FoodPage() {
+  const { t } = useLanguage();
   const [places, setPlaces] = useState<FoodPlace[]>([]);
   const [filtered, setFiltered] = useState<FoodPlace[]>([]);
   const [category, setCategory] = useState('All');
@@ -70,10 +72,10 @@ export default function FoodPage() {
             }}>
               <Utensils size={22} color="#f59e0b" />
             </div>
-            <h1 style={{ color: '#f59e0b', fontSize: '2rem', fontWeight: 800 }}>Best Food & Dining Guide</h1>
+            <h1 style={{ color: '#f59e0b', fontSize: '2rem', fontWeight: 800 }}>{t('foodHeroTitle')}</h1>
           </div>
           <p style={{ color: '#9ca3af', fontSize: '0.92rem' }}>
-            Discover top-rated restaurants, authentic street food stalls, cafés, seafood spots, and regional delicacies across Thailand.
+            {t('foodHeroSub')}
           </p>
         </div>
       </div>
@@ -88,7 +90,7 @@ export default function FoodPage() {
             <Search size={16} color="#6b7280" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
-              placeholder="Search restaurant or city..."
+              placeholder={t('foodSearchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               style={{
@@ -113,7 +115,7 @@ export default function FoodPage() {
                   transition: 'all 0.15s'
                 }}
               >
-                {cat}
+                {cat === 'All' ? t('foodAllCategories') : cat}
               </button>
             ))}
           </div>
@@ -122,7 +124,7 @@ export default function FoodPage() {
         {/* Grid */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>Loading food listings from database...</p>
+            <p>{t('loading')}</p>
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
@@ -176,7 +178,7 @@ export default function FoodPage() {
 
         {!loading && filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>No food places found.</p>
+            <p>{t('foodNoPlaces')}</p>
           </div>
         )}
       </div>
@@ -213,12 +215,12 @@ export default function FoodPage() {
                 </div>
                 {selectedPlace.openHours && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#ccc', fontSize: '0.85rem' }}>
-                    <Clock size={16} color="#f59e0b" /> Hours: {selectedPlace.openHours}
+                    <Clock size={16} color="#f59e0b" /> {t('foodOpenHours')}: {selectedPlace.openHours}
                   </div>
                 )}
                 {selectedPlace.phone && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#22c55e', fontSize: '0.85rem', fontWeight: 600 }}>
-                    <Phone size={16} /> Phone: {selectedPlace.phone}
+                    <Phone size={16} /> {t('foodPhone')}: {selectedPlace.phone}
                   </div>
                 )}
               </div>
@@ -232,14 +234,14 @@ export default function FoodPage() {
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
                   }}
                 >
-                  <PhoneCall size={18} /> Call Restaurant ({selectedPlace.phone})
+                  <PhoneCall size={18} /> {t('foodCallNow')} ({selectedPlace.phone})
                 </a>
               ) : (
                 <button
                   onClick={() => setSelectedPlace(null)}
                   style={{ width: '100%', padding: '14px', borderRadius: '10px', background: '#1a1a1a', border: '1px solid #333', color: '#fff', cursor: 'pointer' }}
                 >
-                  Close Preview
+                  {t('close')}
                 </button>
               )}
             </div>

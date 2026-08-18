@@ -97,6 +97,35 @@ export interface Banner {
   createdAt: string;
 }
 
+export type AccommodationType =
+  | 'Hotels'
+  | 'Apartments'
+  | 'Hostels'
+  | 'Guesthouses'
+  | 'Shared Rooms'
+  | 'Villas & Houses'
+  | 'Camping'
+  | 'Short-Term Rentals'
+  | 'Long-Term Rentals';
+
+export interface StayListing {
+  id: string;
+  title: string;
+  companyName: string;
+  accommodationType: AccommodationType;
+  images: string[];          // max 3
+  location: string;
+  contactEmail?: string;
+  description: string;
+  size?: string;
+  price?: number;
+  rating?: number;           // 0–5
+  externalUrl?: string;
+  websiteUrl?: string;
+  facebookUrl?: string;
+  createdAt: string;
+}
+
 export interface AdminUser {
   id: string;
   username: string;
@@ -130,6 +159,7 @@ const KEYS = {
   donations:  '3sg_donations',
   jobs:       '3sg_jobs',
   food:       '3sg_food',
+  stays:      '3sg_stays',
   banners:    '3sg_banners',
   users:      '3sg_users',
   settings:   '3sg_settings',
@@ -251,6 +281,15 @@ export const foodDB = {
   create: (data: Omit<FoodPlace, 'id' | 'createdAt'>) => createRecord<FoodPlace>(KEYS.food, data),
   update: (id: string, data: Partial<FoodPlace>) => updateRecord<FoodPlace>(KEYS.food, id, data),
   delete: (id: string) => deleteRecord<FoodPlace>(KEYS.food, id),
+};
+
+// ─── Stays ─────────────────────────────────────────────────────────────────────
+export const staysDB = {
+  getAll: () => getAll<StayListing>(KEYS.stays),
+  getById: (id: string) => findById<StayListing>(KEYS.stays, id),
+  create: (data: Omit<StayListing, 'id' | 'createdAt'>) => createRecord<StayListing>(KEYS.stays, data),
+  update: (id: string, data: Partial<StayListing>) => updateRecord<StayListing>(KEYS.stays, id, data),
+  delete: (id: string) => deleteRecord<StayListing>(KEYS.stays, id),
 };
 
 // ─── Banners ───────────────────────────────────────────────────────────────────

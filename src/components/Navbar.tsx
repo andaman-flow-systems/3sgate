@@ -5,22 +5,13 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import { productsDB, rentalsDB, newsDB, galleryDB, jobsDB, foodDB } from '@/lib/db';
-
-const NAV_LINKS = [
-  { href: '/',         label: 'HOME' },
-  { href: '/shop',     label: 'SHOP' },
-  { href: '/rent',     label: 'BUSINESS DIRECTORY' },
-  { href: '/gallery',  label: 'GALLERY' },
-  { href: '/donate',   label: 'DONATE' },
-  { href: '/jobs',     label: 'JOBS' },
-  { href: '/food',     label: 'FOOD GUIDE' },
-];
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface SearchResultItem {
   id: string;
   title: string;
   subtitle: string;
-  type: 'Shop' | 'Directory' | 'News' | 'Gallery' | 'Jobs' | 'Food';
+  type: 'Shop' | 'Directory' | 'News' | 'Gallery' | 'Jobs' | 'Food' | 'Stay';
   href: string;
   image?: string;
   badgeColor: string;
@@ -30,12 +21,25 @@ interface SearchResultItem {
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { t, language, toggleLanguage } = useLanguage();
+
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
+
+  const NAV_LINKS = useMemo(() => [
+    { href: '/',        label: t('home') },
+    { href: '/shop',    label: t('shop') },
+    { href: '/rent',    label: t('businessDirectory') },
+    { href: '/gallery', label: t('gallery') },
+    { href: '/donate',  label: t('donate') },
+    { href: '/jobs',    label: t('jobs') },
+    { href: '/food',    label: t('foodGuide') },
+    { href: '/stay',    label: t('stay') },
+  ], [t]);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -127,6 +131,43 @@ export default function Navbar() {
     setMobileSearchOpen(false);
     router.push(href);
   };
+
+  // ── Language Toggle Button ──────────────────────────────────────────────────
+  const LangToggle = ({ compact = false }: { compact?: boolean }) => (
+    <button
+      onClick={toggleLanguage}
+      id="language-toggle-btn"
+      aria-label={`Switch to ${language === 'en' ? 'Myanmar' : 'English'}`}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '6px',
+        background: '#1a1a1a',
+        border: '1px solid #3a3a3a',
+        color: '#D4A017',
+        fontSize: compact ? '0.72rem' : '0.78rem',
+        fontWeight: 700,
+        padding: compact ? '5px 10px' : '7px 12px',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        transition: 'all 0.2s',
+        fontFamily: 'Inter, sans-serif',
+        whiteSpace: 'nowrap',
+        letterSpacing: '0.03em',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#D4A017'; (e.currentTarget as HTMLButtonElement).style.background = '#D4A01715'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#3a3a3a'; (e.currentTarget as HTMLButtonElement).style.background = '#1a1a1a'; }}
+    >
+      {/* Globe icon */}
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      <span>{t('langLabel')}</span>
+      <span style={{ opacity: 0.5, fontWeight: 400 }}>|</span>
+      <span style={{ color: '#9ca3af', fontWeight: 500 }}>{t('langButton')}</span>
+    </button>
+  );
 
   const SearchBar = ({ isMobile = false }: { isMobile?: boolean }) => (
     <div ref={isMobile ? mobileSearchRef : searchRef} style={{ flex: isMobile ? undefined : 1, maxWidth: isMobile ? undefined : '480px', position: 'relative', width: isMobile ? '100%' : undefined }}>
@@ -220,7 +261,12 @@ export default function Navbar() {
             </div>
 
             {/* Right actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+
+              {/* Language Toggle — desktop */}
+              <div className="nav-lang-btn">
+                <LangToggle />
+              </div>
 
               {/* Mobile search icon */}
               <button
@@ -246,7 +292,7 @@ export default function Navbar() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
                 </svg>
-                <span className="nav-fb-text">Contact Us</span>
+                <span className="nav-fb-text">{t('contactUs')}</span>
               </a>
 
               {/* Mobile hamburger */}
@@ -287,18 +333,19 @@ export default function Navbar() {
         {/* Mobile full-screen menu */}
         {mobileOpen && (
           <div style={{ background: '#0d0d0d', borderTop: '1px solid #1e1e1e', position: 'absolute', top: '100%', left: 0, right: 0, height: '100vh', paddingBottom: '120px', zIndex: 899, overflowY: 'auto', animation: 'slideDown 0.2s ease' }}>
-            {/* Facebook contact button at top */}
-            <div style={{ padding: '16px', borderBottom: '1px solid #1e1e1e' }}>
+            {/* Language toggle + Facebook contact button at top */}
+            <div style={{ padding: '12px 16px', borderBottom: '1px solid #1e1e1e', display: 'flex', gap: '10px' }}>
+              <LangToggle compact />
               <a
                 href="https://www.facebook.com/share/1BZMe1KVPk/"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#1877f2', color: '#fff', padding: '12px', borderRadius: '10px', fontWeight: 700, fontSize: '0.9rem', textDecoration: 'none' }}
+                style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#1877f2', color: '#fff', padding: '10px', borderRadius: '10px', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none' }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
                 </svg>
-                Contact Us on Facebook
+                {t('contactUsFacebook')}
               </a>
             </div>
 
@@ -322,7 +369,7 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* Overlay behind mobile menu (doesn't block nav) */}
+        {/* Overlay behind mobile menu */}
         {mobileOpen && (
           <div
             onClick={() => setMobileOpen(false)}
@@ -337,7 +384,7 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* Overlay behind mobile search (doesn't block nav) */}
+        {/* Overlay behind mobile search */}
         {mobileSearchOpen && !mobileOpen && (
           <div
             onClick={() => setMobileSearchOpen(false)}
@@ -345,6 +392,12 @@ export default function Navbar() {
           />
         )}
       </nav>
+
+      <style>{`
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        /* Hide lang toggle on very small screens (fits inside mobile menu) */
+        @media (max-width: 640px) { .nav-lang-btn { display: none !important; } }
+      `}</style>
     </>
   );
 }

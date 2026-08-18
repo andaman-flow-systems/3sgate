@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { galleryDB, type ArtworkItem } from '@/lib/db';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function FeaturedArtwork() {
+  const { t } = useLanguage();
   const [items, setItems] = useState<ArtworkItem[]>([]);
 
   useEffect(() => {
@@ -14,8 +16,8 @@ export default function FeaturedArtwork() {
   return (
     <div>
       <div className="section-header">
-        <span className="section-title" style={{ color: '#a855f7' }}>FEATURED ARTWORK</span>
-        <Link href="/gallery" className="view-all">View All</Link>
+        <span className="section-title" style={{ color: '#a855f7' }}>{t('featuredArtwork')}</span>
+        <Link href="/gallery" className="view-all">{t('viewAll')}</Link>
       </div>
 
       <div style={{
@@ -56,7 +58,7 @@ export default function FeaturedArtwork() {
                   {art.title}
                 </p>
                 <p style={{ fontSize: '0.68rem', color: '#6b7280' }}>
-                  Artist: {art.artist}
+                  {t('artist')}: {art.artist}
                 </p>
               </div>
             </div>

@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { galleryDB, type ArtworkItem } from '@/lib/db';
 import { Palette } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function GalleryPage() {
+  const { t } = useLanguage();
   const [artworks, setArtworks] = useState<ArtworkItem[]>([]);
   const [selected, setSelected] = useState<ArtworkItem | null>(null);
 
@@ -25,10 +27,10 @@ export default function GalleryPage() {
             <div style={{ width: '44px', height: '44px', background: '#a855f720', border: '1px solid #a855f750', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Palette size={22} color="#a855f7" />
             </div>
-            <h1 style={{ color: '#a855f7', fontSize: '2rem', fontWeight: 800 }}>Art Gallery</h1>
+            <h1 style={{ color: '#a855f7', fontSize: '2rem', fontWeight: 800 }}>{t('galleryHeroTitle')}</h1>
           </div>
           <p style={{ color: '#9ca3af', fontSize: '0.92rem' }}>
-            Showcasing artwork from established and emerging Myanmar artists
+            {t('galleryHeroSub')}
           </p>
         </div>
       </div>
@@ -88,14 +90,18 @@ export default function GalleryPage() {
                   {art.title}
                 </h3>
                 <p style={{ color: '#9ca3af', fontSize: '0.82rem' }}>
-                  by {art.artist}
+                  {t('artist')}: {art.artist}
                 </p>
               </div>
             </div>
           ))}
         </div>
 
-
+        {artworks.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
+            <p>{t('galleryNoArtworks')}</p>
+          </div>
+        )}
       </div>
 
       {/* Lightbox Modal */}
@@ -135,7 +141,7 @@ export default function GalleryPage() {
                   {selected.title}
                 </h2>
                 <p style={{ color: '#9ca3af', fontSize: '0.9rem', marginBottom: '24px' }}>
-                  Artist: <span style={{ color: '#fff', fontWeight: 600 }}>{selected.artist}</span>
+                  {t('artist')}: <span style={{ color: '#fff', fontWeight: 600 }}>{selected.artist}</span>
                 </p>
                 <p style={{ color: '#6b7280', fontSize: '0.9rem', lineHeight: 1.6, flex: 1 }}>
                   {selected.description}
@@ -178,11 +184,10 @@ export default function GalleryPage() {
                       (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1)';
                     }}
                   >
-                    {/* Facebook Icon */}
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
                     </svg>
-                    Click Here
+                    {t('galleryBuyInquire')}
                   </a>
                 </div>
               </div>
@@ -190,8 +195,6 @@ export default function GalleryPage() {
           </div>
         </div>
       )}
-      
-
     </div>
   );
 }

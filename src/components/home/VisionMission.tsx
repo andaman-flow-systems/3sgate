@@ -1,6 +1,11 @@
+'use client';
+
 import { Target, Rocket } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function VisionMission() {
+  const { t } = useLanguage();
+
   return (
     <div className="grid-2" style={{ gap: '20px', marginBottom: '40px' }}>
       {/* Vision */}
@@ -16,11 +21,11 @@ export default function VisionMission() {
             <Target size={18} color="#D4A017" />
           </div>
           <h3 style={{ color: '#D4A017', fontSize: '1rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-            Vision
+            {t('visionTitle')}
           </h3>
         </div>
         <p style={{ color: '#9ca3af', fontSize: '0.88rem', lineHeight: 1.75 }}>
-          To become a trusted gateway that connects communities with opportunities, knowledge, businesses, and meaningful social impact.
+          {t('visionText')}
         </p>
       </div>
 
@@ -37,11 +42,11 @@ export default function VisionMission() {
             <Rocket size={18} color="#22c55e" />
           </div>
           <h3 style={{ color: '#22c55e', fontSize: '1rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-            Mission
+            {t('missionTitle')}
           </h3>
         </div>
         <p style={{ color: '#9ca3af', fontSize: '0.88rem', lineHeight: 1.75 }}>
-          To empower communities by connecting people with information, businesses, jobs, creativity, and opportunities that create positive social impact.
+          {t('missionText')}
         </p>
       </div>
     </div>

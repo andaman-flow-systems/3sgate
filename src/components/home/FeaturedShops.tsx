@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { productsDB, type Product } from '@/lib/db';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function FeaturedShops() {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -14,8 +16,8 @@ export default function FeaturedShops() {
   return (
     <div>
       <div className="section-header">
-        <span className="section-title" style={{ color: '#D4A017' }}>FEATURED SHOPS</span>
-        <Link href="/shop" className="view-all">View All</Link>
+        <span className="section-title" style={{ color: '#D4A017' }}>{t('featuredShops')}</span>
+        <Link href="/shop" className="view-all">{t('viewAll')}</Link>
       </div>
 
       <div className="grid-4" style={{ gap: '12px' }}>
