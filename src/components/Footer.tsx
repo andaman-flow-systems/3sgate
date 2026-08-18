@@ -11,7 +11,7 @@ export default function Footer() {
   const { t } = useLanguage();
   const year = new Date().getFullYear();
 
-  if (pathname?.startsWith('/admin')) {
+  if (pathname?.startsWith('/3sgsec_madmin') || pathname?.startsWith('/admin')) {
     return null;
   }
   return (

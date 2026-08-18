@@ -76,7 +76,7 @@ export default function AdBanner() {
     return () => clearInterval(interval);
   }, [banners.length]);
 
-  if (pathname?.startsWith('/admin') || banners.length === 0 || dismissed) return null;
+  if (pathname?.startsWith('/3sgsec_madmin') || pathname?.startsWith('/admin') || banners.length === 0 || dismissed) return null;
 
   const banner = banners[current];
   const theme  = colorMap[banner.color] ?? colorMap.gold;

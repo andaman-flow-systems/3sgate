@@ -11,13 +11,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    if (pathname === '/admin/login') {
+    if (pathname === '/3sgsec_madmin/login') {
       setAuthChecked(true);
       return;
     }
     
     if (!isAuthenticated()) {
-      router.push('/admin/login');
+      router.push('/3sgsec_madmin/login');
     } else {
       setAuthChecked(true);
     }
@@ -25,7 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!authChecked) return <div style={{ height: '100vh', background: '#0B0B0B' }} />;
 
-  if (pathname === '/admin/login') {
+  if (pathname === '/3sgsec_madmin/login') {
     return <>{children}</>;
   }
 

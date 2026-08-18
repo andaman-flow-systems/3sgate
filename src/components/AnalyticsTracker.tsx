@@ -12,7 +12,7 @@ export default function AnalyticsTracker() {
 
   useEffect(() => {
     // Exclude admin panel routes to avoid skewing public analytics
-    if (pathname.startsWith('/admin')) {
+    if (pathname.startsWith('/3sgsec_madmin') || pathname.startsWith('/admin')) {
       return;
     }
 

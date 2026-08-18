@@ -195,8 +195,9 @@ export default function AdminStay() {
     const rawWeb = (f.get('websiteUrl') as string).trim();
     const rawFb  = (f.get('facebookUrl') as string).trim();
 
-    if (rawExt.includes('/admin') || rawWeb.includes('/admin') || rawFb.includes('/admin')) {
-      setError('External URLs cannot point to the admin panel (/admin). Please provide a real booking link, website, or Facebook page.');
+    if (rawExt.includes('/admin') || rawWeb.includes('/admin') || rawFb.includes('/admin') ||
+        rawExt.includes('/3sgsec_madmin') || rawWeb.includes('/3sgsec_madmin') || rawFb.includes('/3sgsec_madmin')) {
+      setError('External URLs cannot point to the admin panel. Please provide a real booking link, website, or Facebook page.');
       setSaving(false);
       return;
     }

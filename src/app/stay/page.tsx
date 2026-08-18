@@ -49,7 +49,7 @@ function normalizeExternalUrl(raw?: string): string | null {
   if (!trimmed) return null;
 
   // Strict check: Never allow internal admin links
-  if (trimmed.includes('/admin') || trimmed.startsWith('/admin')) {
+  if (trimmed.includes('/admin') || trimmed.startsWith('/admin') || trimmed.includes('/3sgsec_madmin') || trimmed.startsWith('/3sgsec_madmin')) {
     return null;
   }
 

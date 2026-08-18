@@ -12,19 +12,19 @@ import {
 } from 'lucide-react';
 
 const NAV = [
-  { href: '/admin',           label: 'Dashboard',          Icon: LayoutDashboard },
-  { href: '/admin/shop',      label: 'Shop',               Icon: ShoppingBag },
-  { href: '/admin/rent',      label: 'Business Directory', Icon: Store },
-  { href: '/admin/stay',      label: 'Stay',               Icon: BedDouble },
-  { href: '/admin/news',      label: 'News',               Icon: Newspaper },
-  { href: '/admin/gallery',   label: 'Gallery',            Icon: ImageIcon },
-  { href: '/admin/donate',    label: 'Donations',          Icon: Heart },
-  { href: '/admin/jobs',      label: 'Jobs',               Icon: Briefcase },
-  { href: '/admin/food',      label: 'Food Guide',         Icon: UtensilsCrossed },
-  { href: '/admin/banners',   label: 'Ads & Banners',      Icon: Megaphone },
-  { href: '/admin/users',     label: 'Users',              Icon: Users },
-  { href: '/admin/settings',  label: 'Settings',           Icon: Settings },
-  { href: '/admin/database',  label: 'Database',           Icon: Database },
+  { href: '/3sgsec_madmin',           label: 'Dashboard',          Icon: LayoutDashboard },
+  { href: '/3sgsec_madmin/shop',      label: 'Shop',               Icon: ShoppingBag },
+  { href: '/3sgsec_madmin/rent',      label: 'Business Directory', Icon: Store },
+  { href: '/3sgsec_madmin/stay',      label: 'Stay',               Icon: BedDouble },
+  { href: '/3sgsec_madmin/news',      label: 'News',               Icon: Newspaper },
+  { href: '/3sgsec_madmin/gallery',   label: 'Gallery',            Icon: ImageIcon },
+  { href: '/3sgsec_madmin/donate',    label: 'Donations',          Icon: Heart },
+  { href: '/3sgsec_madmin/jobs',      label: 'Jobs',               Icon: Briefcase },
+  { href: '/3sgsec_madmin/food',      label: 'Food Guide',         Icon: UtensilsCrossed },
+  { href: '/3sgsec_madmin/banners',   label: 'Ads & Banners',      Icon: Megaphone },
+  { href: '/3sgsec_madmin/users',     label: 'Users',              Icon: Users },
+  { href: '/3sgsec_madmin/settings',  label: 'Settings',           Icon: Settings },
+  { href: '/3sgsec_madmin/database',  label: 'Database',           Icon: Database },
 ];
 
 interface SidebarProps {
@@ -99,7 +99,7 @@ function SidebarContent({ onClose, isMobile }: { onClose?: () => void; isMobile?
       {/* Logout */}
       <div style={{ padding: '12px', borderTop: '1px solid #1e1e1e' }}>
         <button
-          onClick={() => { logout(); window.location.href = '/admin/login'; }}
+          onClick={() => { logout(); window.location.href = '/3sgsec_madmin/login'; }}
           style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%', padding: '9px 12px', background: 'transparent', border: '1px solid #2a2a2a', color: '#ef4444', fontSize: '0.85rem', fontWeight: 500, cursor: 'pointer', borderRadius: '8px', transition: 'all 0.15s ease', fontFamily: 'Inter, sans-serif' }}
           onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#1a0a0a'; }}
           onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}

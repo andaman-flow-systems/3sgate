@@ -340,7 +340,7 @@ export default function AdminDashboard() {
       <div className="admin-card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <h2 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>RECENT POSTS</h2>
-          <Link href="/admin/news" style={{ color: '#a855f7', fontSize: '0.78rem', fontWeight: 600, textDecoration: 'none' }}>View All</Link>
+          <Link href="/3sgsec_madmin/news" style={{ color: '#a855f7', fontSize: '0.78rem', fontWeight: 600, textDecoration: 'none' }}>View All</Link>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -374,7 +374,7 @@ export default function AdminDashboard() {
       <div className="admin-card">
         <h2 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 700, marginBottom: '16px', margin: 0 }}>QUICK ACTIONS</h2>
         
-        <Link href="/admin/news" style={{ textDecoration: 'none' }}>
+        <Link href="/3sgsec_madmin/news" style={{ textDecoration: 'none' }}>
           <button style={{ 
             width: '100%', background: '#a855f7', color: '#fff', border: 'none', 
             borderRadius: '8px', padding: '12px', fontSize: '0.85rem', fontWeight: 700, 
@@ -386,13 +386,13 @@ export default function AdminDashboard() {
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {[
-            { label: 'Manage Shops', href: '/admin/shop' },
-            { label: 'Manage Business Directory', href: '/admin/rent' },
-            { label: 'Manage News', href: '/admin/news' },
-            { label: 'Manage Gallery', href: '/admin/gallery' },
-            { label: 'Manage Jobs', href: '/admin/jobs' },
-            { label: 'Manage Donations', href: '/admin/donate' },
-            { label: 'Manage Banners', href: '/admin/banners' },
+            { label: 'Manage Shops', href: '/3sgsec_madmin/shop' },
+            { label: 'Manage Business Directory', href: '/3sgsec_madmin/rent' },
+            { label: 'Manage News', href: '/3sgsec_madmin/news' },
+            { label: 'Manage Gallery', href: '/3sgsec_madmin/gallery' },
+            { label: 'Manage Jobs', href: '/3sgsec_madmin/jobs' },
+            { label: 'Manage Donations', href: '/3sgsec_madmin/donate' },
+            { label: 'Manage Banners', href: '/3sgsec_madmin/banners' },
           ].map(action => (
             <Link key={action.label} href={action.href} style={{ textDecoration: 'none' }}>
               <div style={{ 

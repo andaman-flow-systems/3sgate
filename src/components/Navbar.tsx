@@ -240,7 +240,7 @@ export default function Navbar() {
     </div>
   );
 
-  if (pathname?.startsWith('/admin')) return null;
+  if (pathname?.startsWith('/3sgsec_madmin') || pathname?.startsWith('/admin')) return null;
 
   return (
     <>

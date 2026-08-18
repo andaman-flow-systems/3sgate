@@ -14,7 +14,7 @@ export default function AdminLogin() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (login(username, password)) {
-      router.push('/admin');
+      router.push('/3sgsec_madmin');
     } else {
       setError('Invalid username or password');
     }
