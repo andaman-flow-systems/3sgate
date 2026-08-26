@@ -61,6 +61,22 @@ function normalizeExternalUrl(raw?: string): string | null {
   return trimmed;
 }
 
+// Helper: Get translated accommodation type label
+function getAccommodationTypeLabel(type: AccommodationType, t: (k: TranslationKey) => string): string {
+  switch (type) {
+    case 'Hotels': return t('hotels');
+    case 'Apartments': return t('apartments');
+    case 'Hostels': return t('hostels');
+    case 'Guesthouses': return t('guesthouses');
+    case 'Shared Rooms': return t('sharedRooms');
+    case 'Villas & Houses': return t('villasHouses');
+    case 'Camping': return t('camping');
+    case 'Short-Term Rentals': return t('shortTermRentals');
+    case 'Long-Term Rentals': return t('longTermRentals');
+    default: return type;
+  }
+}
+
 // Derive redirect URL
 function getRedirectUrl(stay: StayListing): string {
   const primary = normalizeExternalUrl(stay.externalUrl);
@@ -129,7 +145,7 @@ function StayCard({
           />
         ) : (
           <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #1a1200, #0d0d0d)' }}>
-            <BedDouble size={48} color="#3a3a3a" />
+            <BedDouble size={48} color="#333" />
           </div>
         )}
 
@@ -142,7 +158,7 @@ function StayCard({
 
         {/* Type badge */}
         <div style={{ position: 'absolute', top: '10px', left: '10px', background: `${color}dd`, color: '#000', fontSize: '0.68rem', fontWeight: 800, padding: '3px 8px', borderRadius: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          {stay.accommodationType}
+          {getAccommodationTypeLabel(stay.accommodationType, t)}
         </div>
       </div>
 
@@ -294,7 +310,7 @@ function StayDetailModal({
 
           {/* Category Badge overlay */}
           <div style={{ position: 'absolute', top: '16px', left: '16px', background: `${color}dd`, color: '#000', fontSize: '0.72rem', fontWeight: 800, padding: '4px 10px', borderRadius: '8px', textTransform: 'uppercase' }}>
-            {stay.accommodationType}
+            {getAccommodationTypeLabel(stay.accommodationType, t)}
           </div>
 
           {/* Image thumbnails bar (all 3 images switcher) */}
@@ -372,7 +388,7 @@ function StayDetailModal({
           {/* Description */}
           <div style={{ marginBottom: '24px' }}>
             <h4 style={{ color: '#fff', fontSize: '0.92rem', fontWeight: 700, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              About this Stay
+              {t('aboutThisStay')}
             </h4>
             <p style={{ color: '#d1d5db', fontSize: '0.92rem', lineHeight: 1.7, margin: 0, whiteSpace: 'pre-line' }}>
               {stay.description}
@@ -407,7 +423,7 @@ function StayDetailModal({
                 onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1.01)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1)'; }}
               >
-                <ExternalLink size={18} /> {t('visitWebsite')} / Book Direct ↗
+                <ExternalLink size={18} /> {t('visitWebsite')} / {t('bookDirect')}
               </a>
             )}
 
@@ -435,7 +451,7 @@ function StayDetailModal({
                     gap: '6px',
                   }}
                 >
-                  <Globe size={15} color="#3b82f6" /> Official Website
+                  <Globe size={15} color="#3b82f6" /> {t('officialWebsite')}
                 </a>
               )}
 
@@ -461,7 +477,7 @@ function StayDetailModal({
                     gap: '6px',
                   }}
                 >
-                  <MessageSquare size={15} color="#1877f2" /> Facebook Page
+                  <MessageSquare size={15} color="#1877f2" /> {t('facebookPage')}
                 </a>
               )}
             </div>
@@ -585,7 +601,7 @@ export default function StayPage() {
               style={{ display: 'flex', alignItems: 'center', gap: '7px', background: showFilters ? '#a855f720' : '#1a1a1a', border: `1px solid ${showFilters ? '#a855f7' : '#333'}`, color: showFilters ? '#a855f7' : '#9ca3af', borderRadius: '10px', padding: '11px 16px', cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem', transition: 'all 0.2s' }}
             >
               <SlidersHorizontal size={15} />
-              {t('filter')} {typeFilter !== 'All' && `· ${typeFilter}`}
+              {t('filter')} {typeFilter !== 'All' && `· ${getAccommodationTypeLabel(typeFilter as AccommodationType, t)}`}
             </button>
           </div>
         </div>
@@ -596,7 +612,7 @@ export default function StayPage() {
         <div style={{ background: '#0d0d0d', borderBottom: '1px solid #1e1e1e', padding: '14px 0', animation: 'slideDown 0.2s ease' }}>
           <div className="container">
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-              <span style={{ color: '#6b7280', fontSize: '0.78rem', fontWeight: 600 }}>TYPE:</span>
+              <span style={{ color: '#6b7280', fontSize: '0.78rem', fontWeight: 600 }}>{t('typeLabel')}</span>
               {['All', ...ACCOMMODATION_TYPES].map(type => {
                 const isActive = typeFilter === type;
                 const color = type === 'All' ? '#a855f7' : (TYPE_COLORS[type] ?? '#D4A017');
@@ -616,7 +632,7 @@ export default function StayPage() {
                       transition: 'all 0.2s',
                     }}
                   >
-                    {type === 'All' ? t('stayAllTypes') : type}
+                    {type === 'All' ? t('stayAllTypes') : getAccommodationTypeLabel(type as AccommodationType, t)}
                   </button>
                 );
               })}
@@ -631,8 +647,8 @@ export default function StayPage() {
         {!loading && stays.length > 0 && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '10px' }}>
             <p style={{ color: '#6b7280', fontSize: '0.82rem' }}>
-              Showing <strong style={{ color: '#fff' }}>{filtered.length}</strong> of {stays.length} listings
-              {typeFilter !== 'All' && <> · filtered by <span style={{ color: TYPE_COLORS[typeFilter] ?? '#D4A017' }}>{typeFilter}</span></>}
+              {t('showingListings')} <strong style={{ color: '#fff' }}>{filtered.length}</strong> {t('ofListings')} {stays.length} {t('listingsLabel')}
+              {typeFilter !== 'All' && <> · {t('filteredBy')} <span style={{ color: TYPE_COLORS[typeFilter] ?? '#D4A017' }}>{getAccommodationTypeLabel(typeFilter as AccommodationType, t)}</span></>}
             </p>
             {(search || typeFilter !== 'All') && (
               <button

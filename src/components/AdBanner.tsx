@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { bannersDB, type Banner } from '@/lib/db';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const colorMap: Record<string, { bg: string; glow: string; text: string; badge: string; dot: string }> = {
   gold: {
@@ -42,22 +43,25 @@ const colorMap: Record<string, { bg: string; glow: string; text: string; badge: 
   },
 };
 
-const typeLabel: Record<string, string> = {
-  announcement: '📢 ANNOUNCEMENT',
-  promo:        '🔥 SPECIAL OFFER',
-  event:        '🎉 EVENT',
-  news:         '📰 NEWS',
-  alert:        '⚠️ ALERT',
-};
-
 export const BANNER_HEIGHT = 52;
 
 export default function AdBanner() {
   const pathname = usePathname();
+  const { t } = useLanguage();
   const [banners, setBanners] = useState<Banner[]>([]);
   const [current, setCurrent]  = useState(0);
   const [dismissed, setDismissed] = useState(false);
   const [animating, setAnimating] = useState(false);
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case 'promo': return t('bannerPromo');
+      case 'event': return t('bannerEvent');
+      case 'news': return t('bannerNews');
+      case 'alert': return t('bannerAlert');
+      default: return t('bannerAnnouncement');
+    }
+  };
 
   useEffect(() => {
     const active = bannersDB.getActive();
@@ -80,7 +84,7 @@ export default function AdBanner() {
 
   const banner = banners[current];
   const theme  = colorMap[banner.color] ?? colorMap.gold;
-  const label  = typeLabel[banner.type] ?? '📢 ANNOUNCEMENT';
+  const label  = getTypeLabel(banner.type);
 
   return (
     <div style={{
@@ -170,7 +174,7 @@ export default function AdBanner() {
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
             >
               {banner.text}
-              <span style={{ marginLeft: '10px', opacity: 0.6, fontSize: '0.8rem' }}>→ Click to learn more</span>
+              <span style={{ marginLeft: '10px', opacity: 0.7, fontSize: '0.8rem' }}>{t('bannerLearnMore')}</span>
             </a>
           ) : (
             <span style={{

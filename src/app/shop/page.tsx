@@ -48,6 +48,18 @@ export default function ShopPage() {
     setFiltered(result);
   }, [category, search, products]);
 
+  const getCategoryLabel = (cat: string) => {
+    switch (cat) {
+      case 'All': return t('all');
+      case 'Electronics': return t('catElectronics');
+      case 'Fashion': return t('catFashion');
+      case 'Clothing': return t('catClothing');
+      case 'Crafts': return t('catCrafts');
+      case 'Accessories': return t('catAccessories');
+      default: return cat;
+    }
+  };
+
   return (
     <div>
       {/* Page Hero */}
@@ -101,7 +113,7 @@ export default function ShopPage() {
                   transition: 'all 0.2s', fontFamily: 'Inter, sans-serif',
                 }}
               >
-                {cat === 'All' ? t('all') : cat}
+                {getCategoryLabel(cat)}
               </button>
             ))}
           </div>

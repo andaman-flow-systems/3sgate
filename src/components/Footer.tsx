@@ -56,14 +56,15 @@ export default function Footer() {
               {t('footerPages')}
             </h5>
             {[
-              { href: '/shop', label: t('footerOnlineShop') },
-              { href: '/rent', label: t('footerBusinessDirectory') },
-              { href: '/stay', label: t('footerStay') },
-              { href: '/news', label: t('footerNews') },
-              { href: '/gallery', label: t('footerArtGallery') },
+              { href: '/',       label: t('footerHome') },
+              { href: '/shop',   label: t('footerOnlineShop') },
+              { href: '/rent',   label: t('footerBusinessDirectory') },
+              { href: '/gallery',label: t('footerArtGallery') },
+              { href: '/news',   label: t('footerNews') },
               { href: '/donate', label: t('footerDonations') },
-              { href: '/jobs', label: t('footerJobs') },
-              { href: '/food', label: t('footerFoodGuide') },
+              { href: '/jobs',   label: t('footerJobs') },
+              { href: '/food',   label: t('footerFoodGuide') },
+              { href: '/stay',   label: t('footerStay') },
             ].map((l) => (
               <Link key={l.href} href={l.href} style={{
                 display: 'block', color: '#9ca3af', fontSize: '0.88rem',

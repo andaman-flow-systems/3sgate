@@ -137,7 +137,7 @@ export default function Navbar() {
     <button
       onClick={toggleLanguage}
       id="language-toggle-btn"
-      aria-label={`Switch to ${language === 'en' ? 'Myanmar' : 'English'}`}
+      aria-label={`Switch to ${language === 'en' ? 'Thai' : language === 'th' ? 'Myanmar' : 'English'}`}
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -184,7 +184,7 @@ export default function Navbar() {
         </svg>
         <input
           type="text"
-          placeholder="Search products, news, jobs..."
+          placeholder={t('searchPlaceholderGlobal')}
           value={searchQuery}
           onFocus={() => setIsFocused(true)}
           onChange={(e) => { setSearchQuery(e.target.value); setIsFocused(true); }}
@@ -195,7 +195,7 @@ export default function Navbar() {
           style={{ background: 'transparent', border: 'none', outline: 'none', color: '#ffffff', fontSize: '0.88rem', width: '100%', padding: '10px 0', fontFamily: 'Inter, sans-serif' }}
         />
         {searchQuery && (
-          <button onClick={() => { setSearchQuery(''); setIsFocused(false); }} style={{ background: 'transparent', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '0.85rem', padding: '2px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Clear">✕</button>
+          <button onClick={() => { setSearchQuery(''); setIsFocused(false); }} style={{ background: 'transparent', border: 'none', color: '#6b7280', cursor: 'pointer', fontSize: '0.85rem', padding: '2px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title={t('close')}>✕</button>
         )}
       </div>
 
@@ -203,8 +203,8 @@ export default function Navbar() {
       {isFocused && searchQuery.trim().length > 0 && (
         <div style={{ position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0, background: '#121212', border: '1px solid #2a2a2a', borderRadius: '12px', boxShadow: '0 12px 32px rgba(0,0,0,0.8)', overflow: 'hidden', zIndex: 1000, maxHeight: '380px', overflowY: 'auto' }}>
           <div style={{ padding: '10px 14px', borderBottom: '1px solid #1e1e1e', fontSize: '0.75rem', color: '#6b7280', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', justifyContent: 'space-between' }}>
-            <span>Results ({searchResults.length})</span>
-            <span>↵ to select</span>
+            <span>{t('searchResultsLabel')} ({searchResults.length})</span>
+            <span>{t('pressEnterToSelect')}</span>
           </div>
           {searchResults.length > 0 ? (
             <div>
@@ -232,7 +232,7 @@ export default function Navbar() {
             </div>
           ) : (
             <div style={{ padding: '24px', textAlign: 'center', color: '#6b7280' }}>
-              <p style={{ fontSize: '0.88rem', marginBottom: '4px' }}>No matches for &quot;{searchQuery}&quot;</p>
+              <p style={{ fontSize: '0.88rem', marginBottom: '4px' }}>{t('noMatchesFor')} &quot;{searchQuery}&quot;</p>
             </div>
           )}
         </div>

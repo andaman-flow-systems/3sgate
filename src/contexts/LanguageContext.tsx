@@ -2,9 +2,9 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
-export type Language = 'en' | 'mm';
+export type Language = 'en' | 'mm' | 'th';
 
-// ─── Complete Bilingual Translation Strings ───────────────────────────────────
+// ─── Complete Trilingual Translation Strings ───────────────────────────────────
 const translations = {
   en: {
     // ── Global / Common ──
@@ -53,7 +53,7 @@ const translations = {
     jobs: 'JOBS',
     foodGuide: 'FOOD GUIDE',
     stay: 'STAY',
-    langButton: 'မြန်မာ',
+    langButton: 'ภาษาไทย',
     langLabel: 'EN',
 
     // ── Home Hero Slides ──
@@ -214,6 +214,7 @@ const translations = {
     longTermRentals: 'Long-Term Rentals',
 
     // ── Footer ──
+    footerHome: 'Home',
     footerPages: 'Pages',
     footerCommunity: 'Community',
     footerContact: 'Contact',
@@ -232,6 +233,43 @@ const translations = {
     footerCulturalEvents: 'Cultural Events',
     footerPoweredBy: 'Powered by AndamanFlow Systems',
     footerAllRightsReserved: 'All rights reserved.',
+    // ── Additional UI / Category / Component Strings ──
+    searchResultsLabel: 'Results',
+    pressEnterToSelect: '↵ to select',
+    noMatchesFor: 'No matches for',
+    description: 'Description',
+    officialWebsite: 'Official Website',
+    facebookPage: 'Facebook Page',
+    bookDirect: 'Book Direct ↗',
+    aboutThisStay: 'About this Stay',
+    showingListings: 'Showing',
+    ofListings: 'of',
+    listingsLabel: 'listings',
+    filteredBy: 'filtered by',
+    typeLabel: 'TYPE:',
+    donor: 'Donor',
+    anonymous: 'Anonymous',
+    friend: 'Friend',
+    directBankTransfer: 'Direct Bank Transfer',
+    bannerAnnouncement: '📢 ANNOUNCEMENT',
+    bannerPromo: '🔥 SPECIAL OFFER',
+    bannerEvent: '🎉 EVENT',
+    bannerNews: '📰 NEWS',
+    bannerAlert: '⚠️ ALERT',
+    bannerLearnMore: '→ Click to learn more',
+    catElectronics: 'Electronics',
+    catFashion: 'Fashion',
+    catClothing: 'Clothing',
+    catCrafts: 'Crafts',
+    catAccessories: 'Accessories',
+    foodCatThai: 'Thai Cuisine',
+    foodCatSeafood: 'Seafood & BBQ',
+    foodCatStreet: 'Street Food',
+    foodCatShan: 'Shan & Northern',
+    foodCatMyanmar: 'Myanmar Cuisine',
+    foodCatAsian: 'Asian & Japanese',
+    foodCatCafe: 'Cafés & Drinks',
+    foodCatDessert: 'Desserts & Bakery',
   },
 
   mm: {
@@ -442,6 +480,7 @@ const translations = {
     longTermRentals: 'အချိန်ရှည်ငှားရန်',
 
     // ── Footer ──
+    footerHome: 'ပင်မစာမျက်နှာ',
     footerPages: 'စာမျက်နှာများ',
     footerCommunity: 'လူမှုအသိုက်အဝန်း',
     footerContact: 'ဆက်သွယ်ရန်',
@@ -460,6 +499,309 @@ const translations = {
     footerCulturalEvents: 'ယဉ်ကျေးမှုပွဲတော်များ',
     footerPoweredBy: 'AndamanFlow Systems မှ ဝန်ဆောင်မှုပေးပါသည်',
     footerAllRightsReserved: 'မူပိုင်ခွင့်များ ရယူထားပြီး ဖြစ်ပါသည်။',
+    // ── Additional UI / Category / Component Strings ──
+    searchResultsLabel: 'ရှာဖွေမှုရလဒ်များ',
+    pressEnterToSelect: '↵ ရွေးချယ်ရန်',
+    noMatchesFor: 'နှင့် ကိုက်ညီမှုမရှိပါ',
+    description: 'အသေးစိတ် ဖော်ပြချက်',
+    officialWebsite: 'တရားဝင် ဝဘ်ဆိုဒ်',
+    facebookPage: 'Facebook စာမျက်နှာ',
+    bookDirect: 'တိုက်ရိုက် ဘွတ်ကင်လုပ်ရန် ↗',
+    aboutThisStay: 'ဤတည်းခိုခန်း အကြောင်း',
+    showingListings: 'ပြသနေသည်',
+    ofListings: 'ခုအနက်',
+    listingsLabel: 'နေရာများ',
+    filteredBy: 'စစ်ထုတ်ထားသော',
+    typeLabel: 'အမျိုးအစား -',
+    donor: 'အလှူရှင်',
+    anonymous: 'အမည်မဖော်လိုသူ',
+    friend: 'မိတ်ဆွေ',
+    directBankTransfer: 'ဘဏ်အကောင့်သို့ တိုက်ရိုက်လွှဲရန်',
+    bannerAnnouncement: '📢 ကြေညာချက်',
+    bannerPromo: '🔥 အထူးပရိုမိုးရှင်း',
+    bannerEvent: '🎉 ပွဲအခမ်းအနား',
+    bannerNews: '📰 သတင်း',
+    bannerAlert: '⚠️ သတိပေးချက်',
+    bannerLearnMore: '→ အသေးစိတ်ကြည့်ရန် နှိပ်ပါ',
+    catElectronics: 'အီလက်ထရောနစ်',
+    catFashion: 'ဖက်ရှင်',
+    catClothing: 'အဝတ်အထည်',
+    catCrafts: 'လက်မှုပစ္စည်း',
+    catAccessories: 'အသုံးအဆောင်များ',
+    foodCatThai: 'ထိုင်းအစားအစာ',
+    foodCatSeafood: 'ပင်လယ်စာနှင့် အကင်',
+    foodCatStreet: 'လမ်းဘေး အစားအစာ',
+    foodCatShan: 'ရှမ်းနှင့် မြောက်ပိုင်းအစားအစာ',
+    foodCatMyanmar: 'မြန်မာရိုးရာ အစားအစာ',
+    foodCatAsian: 'အာရှနှင့် ဂျပန်အစားအစာ',
+    foodCatCafe: 'ကဖေးနှင့် အအေးဆိုင်များ',
+    foodCatDessert: 'မုန့်မျိုးစုံနှင့် မုန့်ဖုတ်လုပ်ငန်း',
+  },
+
+  th: {
+    // ── Global / Common ──
+    siteName: '3SGates',
+    siteTagline: 'เชื่อมต่อชุมชน สร้างโอกาส',
+    siteDescription: 'ประตูที่เชื่อมต่อชุมชนชาวเมียนมาร์กับโอกาส ความรู้ ธุรกิจ และการสร้างผลกระทบทางสังคมที่มีความหมาย',
+    search: 'ค้นหา',
+    searchPlaceholderGlobal: 'ค้นหาสินค้า ข่าว งาน สถานที่…',
+    viewAll: 'ดูทั้งหมด',
+    exploreNow: 'สำรวจเลย',
+    learnMore: 'เรียนรู้เพิ่มเติม',
+    contactUs: 'ติดต่อเรา',
+    contactUsFacebook: 'ติดต่อเราทาง Facebook',
+    close: 'ปิด',
+    back: 'กลับ',
+    all: 'ทั้งหมด',
+    filter: 'กรอง',
+    clearFilters: 'ล้างตัวกรอง',
+    loading: 'กำลังโหลดข้อมูล…',
+    noResults: 'ไม่พบผลการค้นหา',
+    noResultsHint: 'ลองปรับคำค้นหาหรือตัวกรองของคุณ',
+    actions: 'การดำเนินการ',
+    thb: '฿',
+    perMonth: '/เดือน',
+    perNight: '/คืน',
+    inStock: 'มีสินค้า',
+    outOfStock: 'สินค้าหมด',
+    available: 'ว่างให้เช่า',
+    rented: 'ให้เช่าแล้ว',
+    viewDetails: 'ดูรายละเอียด →',
+    visitWebsite: 'เยี่ยมชมเว็บไซต์',
+    copy: 'คัดลอก',
+    copied: 'คัดลอกแล้ว ✓',
+    rating: 'คะแนน',
+    location: 'ที่ตั้ง',
+    price: 'ราคา',
+    category: 'หมวดหมู่',
+    date: 'วันที่',
+
+    // ── Navbar ──
+    home: 'หน้าหลัก',
+    shop: 'ร้านค้า',
+    businessDirectory: 'ไดเรกทอรีธุรกิจ',
+    gallery: 'แกลเลอรี่',
+    donate: 'บริจาค',
+    jobs: 'งาน',
+    foodGuide: 'คู่มืออาหาร',
+    stay: 'ที่พัก',
+    langButton: 'မြန်မာ',
+    langLabel: 'TH',
+
+    // ── Home Hero Slides ──
+    slide1Headline: 'เชื่อมต่อชุมชน',
+    slide1Highlight: 'สร้างโอกาส',
+    slide1Sub: 'แพลตฟอร์มที่น่าเชื่อถือซึ่งเชื่อมต่อธุรกิจ ชุมชน ผู้สร้างสรรค์ ผู้หางาน และโครงการเพื่อสังคม เพื่อสร้างโอกาสและผลกระทบเชิงบวก',
+    slide2Headline: 'สนับสนุนชุมชน',
+    slide2Highlight: 'ชาวเมียนมาร์ในต่างแดน',
+    slide2Sub: 'แหล่งข้อมูลที่น่าเชื่อถือสำหรับข่าวสาร งาน ศิลปะ และการสนับสนุนชุมชนชาวเมียนมาร์ในประเทศไทยและทั่วโลก',
+    slide3Headline: 'เสริมพลังศิลปิน &',
+    slide3Highlight: 'เสียงแห่งความคิดสร้างสรรค์',
+    slide3Sub: 'ค้นพบและชื่นชมผลงานศิลปะจากศิลปินชาวเมียนมาร์ที่มีความสามารถ และสนับสนุนนักสร้างสรรค์รุ่นใหม่',
+
+    // ── Home Quick Access ──
+    qaShop: 'ร้านค้า',
+    qaShopSub: 'ช้อปออนไลน์',
+    qaDirectory: 'ไดเรกทอรี',
+    qaDirectorySub: 'ไดเรกทอรีธุรกิจ',
+    qaNews: 'ข่าวสาร',
+    qaNewsSub: 'ข่าวล่าสุด',
+    qaArt: 'ศิลปะ',
+    qaArtSub: 'ผลงานสร้างสรรค์',
+    qaDonate: 'บริจาค',
+    qaDonateSub: 'สร้างผลกระทบ',
+    qaJobs: 'งาน',
+    qaJobsSub: 'หางาน',
+    qaFood: 'อาหาร',
+    qaFoodSub: 'อาหาร & สถานที่',
+    qaStay: 'ที่พัก',
+    qaStaySub: 'โรงแรม & ห้องพัก',
+
+    // ── Home Vision & Mission ──
+    visionTitle: 'วิสัยทัศน์',
+    visionText: 'เป็นประตูที่เชื่อมต่อชุมชนกับโอกาส ความรู้ ธุรกิจ และการสร้างผลกระทบทางสังคมที่มีความหมาย',
+    missionTitle: 'พันธกิจ',
+    missionText: 'เสริมพลังชุมชนด้วยการเชื่อมต่อผู้คนกับข้อมูล ธุรกิจ งาน ความคิดสร้างสรรค์ และโอกาสที่สร้างผลกระทบทางสังคมเชิงบวก',
+
+    // ── Home Sections ──
+    latestNews: 'ข่าวล่าสุด',
+    featuredArtwork: 'ผลงานศิลปะแนะนำ',
+    featuredShops: 'ร้านค้าแนะนำ',
+    artist: 'ศิลปิน',
+
+    // ── Shop Page ──
+    shopHeroTitle: 'ตลาดร้านค้าของเรา',
+    shopHeroSub: 'ค้นพบสินค้าพิเศษจากตลาดชุมชนชาวเมียนมาร์ของเรา ราคาทั้งหมดเป็นบาทไทย (THB)',
+    shopSearchPlaceholder: 'ค้นหาสินค้าตามชื่อหรือหมวดหมู่…',
+    shopBuyInquireFacebook: 'ซื้อ / สอบถามทาง Facebook Page',
+    shopNoProducts: 'ไม่พบสินค้าที่ตรงกับการค้นหาของคุณ',
+
+    // ── Business Directory (Rent) Page ──
+    rentHeroTitle: 'ไดเรกทอรีธุรกิจและการเช่า',
+    rentHeroSub: 'พื้นที่เชิงพาณิชย์ สำนักงาน ร้านค้า และอสังหาริมทรัพย์สำหรับชุมชนชาวเมียนมาร์ในประเทศไทยและต่างประเทศ',
+    rentSearchPlaceholder: 'ค้นหาพื้นที่ตามชื่อ ที่ตั้ง หรือคุณสมบัติ…',
+    rentTabAll: 'พื้นที่ทั้งหมด',
+    rentTabAvailable: 'ว่างให้เช่าเดี๋ยวนี้',
+    rentTabRented: 'ให้เช่าแล้วในปัจจุบัน',
+    rentContactOwner: 'ติดต่อ / สอบถามทาง Facebook',
+    rentNoSpaces: 'ไม่พบพื้นที่ให้เช่าที่ตรงกับการค้นหาของคุณ',
+    rentSize: 'ขนาด',
+    rentStatusAvailable: '✓ ว่างให้เช่า',
+    rentStatusRented: '✕ ให้เช่าแล้ว',
+
+    // ── Art Gallery Page ──
+    galleryHeroTitle: 'แกลเลอรี่ศิลปะ',
+    galleryHeroSub: 'จัดแสดงผลงานจากศิลปินชาวเมียนมาร์ที่มีชื่อเสียงและกำลังเติบโต',
+    galleryBuyInquire: 'สอบถาม / ซื้อทาง Facebook',
+    galleryForSale: 'ขายอยู่',
+    galleryNotForSale: 'จัดแสดงเท่านั้น',
+    galleryNoArtworks: 'ไม่พบผลงานศิลปะในแกลเลอรี่',
+
+    // ── Donate Page ──
+    donateHeroTitle: 'สนับสนุนสาเหตุที่มีความหมาย',
+    donateHeroSub: '100% ของเงินบริจาคชุมชนมอบให้ตรงๆ แก่การบรรเทาทุกข์ฉุกเฉิน ทุนการศึกษา และการสนับสนุนครอบครัวชาวเมียนมาร์ที่พลัดถิ่น',
+    donateTabSupportPlatform: 'สนับสนุนแพลตฟอร์ม',
+    donateTabSupportPlatformSub: 'ช่วยให้ 3SGate ออนไลน์และฟรี',
+    donateTabSupportPlatformDesc: 'การสนับสนุนของคุณช่วยการพัฒนา โฮสติ้ง และการบำรุงรักษาแพลตฟอร์ม 3SGate — ทำให้ทรัพยากรชุมชนนี้ฟรีและเข้าถึงได้สำหรับทุกคน',
+    donateTabRefugee: 'สนับสนุนผู้ลี้ภัย',
+    donateTabRefugeeSub: 'ความช่วยเหลือฉุกเฉินสำหรับครอบครัวที่พลัดถิ่น',
+    donateTabRefugeeDesc: 'ให้การบรรเทาทุกข์ที่จำเป็นแก่ผู้ลี้ภัยชาวเมียนมาร์ในพื้นที่ชายแดน — อาหาร น้ำสะอาด ที่พักชั่วคราว และการดูแลทางการแพทย์สำหรับครอบครัวที่เปราะบางที่สุด',
+    donateTabScholarship: 'ทุนการศึกษา',
+    donateTabScholarshipSub: 'ลงทุนในรุ่นต่อไป',
+    donateTabScholarshipDesc: 'สนับสนุนการศึกษาของเด็กและนักเรียนที่ขาดโอกาสทางการศึกษา ทุกการบริจาคช่วยให้คนหนุ่มสาวสร้างอนาคตที่สดใส',
+    donateSelectAmount: 'เลือกจำนวนเงินบริจาค (THB ฿)',
+    donateCustomAmount: 'จำนวนที่กำหนดเอง (฿)',
+    donateYourName: 'ชื่อหรือนามแฝงของคุณ (ไม่บังคับ)',
+    donateYourNamePlaceholder: 'เช่น ไม่ประสงค์ออกนาม หรือ นางสาวสมใจ',
+    donateMessage: 'ข้อความให้กำลังใจ (ไม่บังคับ)',
+    donateMessagePlaceholder: 'ฝากข้อความอบอุ่นแห่งความหวัง…',
+    donateProceedBtn: 'ดำเนินการบริจาค →',
+    donateStep1Title: 'ขั้นที่ 1: เลือกจำนวนเงิน & สาเหตุ',
+    donateStep2Title: 'ขั้นที่ 2: โอนเงินผ่านธนาคาร & PromptPay QR',
+    donateStep3Title: 'ขอบคุณสำหรับความใจดีของคุณ!',
+    donateTransferInstructions: 'โอนเงินผ่านบัญชีธนาคารไทยหรือสแกน PromptPay QR ด้านล่าง:',
+    donateBankName: 'ชื่อธนาคาร',
+    donateAccountNo: 'หมายเลขบัญชี',
+    donateAccountName: 'ชื่อบัญชี',
+    donateConfirmSentBtn: 'โอนเงินเรียบร้อยแล้ว ✓',
+
+    // ── Jobs Page ──
+    jobsHeroTitle: 'โอกาสในการทำงาน',
+    jobsHeroSub: 'ค้นหาตำแหน่งงานที่ผ่านการตรวจสอบสำหรับผู้เชี่ยวชาญ แรงงานทักษะ และสมาชิกชุมชนชาวเมียนมาร์ในประเทศไทยและทางไกล',
+    jobsSearchPlaceholder: 'ค้นหางานตามตำแหน่ง บริษัท ทักษะ…',
+    jobsAllTypes: 'ประเภทงานทั้งหมด',
+    jobsFullTime: 'เต็มเวลา',
+    jobsPartTime: 'พาร์ทไทม์',
+    jobsContract: 'สัญญาจ้าง',
+    jobsFreelance: 'ฟรีแลนซ์',
+    jobsRecruitmentAgent: 'บริษัทจัดหางาน',
+    jobsDirectEmployer: 'นายจ้างโดยตรง',
+    jobsApplyEmail: 'สมัครทางอีเมล',
+    jobsSalary: 'เงินเดือน',
+    jobsRequirements: 'ความต้องการ & คุณสมบัติ',
+    jobsNoJobs: 'ไม่พบรายการงานที่ตรงกับการค้นหาของคุณ',
+
+    // ── Food Guide Page ──
+    foodHeroTitle: 'คู่มืออาหารเมียนมาร์ & อาหารท้องถิ่น',
+    foodHeroSub: 'ค้นพบร้านอาหารเมียนมาร์แท้ อาหารไทยใหญ่ อาหารริมทาง และคาเฟ่ในประเทศไทย',
+    foodSearchPlaceholder: 'ค้นหาร้านอาหาร อาหาร สถานที่…',
+    foodAllCategories: 'ทุกประเภทอาหาร',
+    foodOpenHours: 'เวลาเปิด',
+    foodPhone: 'โทรศัพท์',
+    foodCallNow: 'โทรหาร้านอาหาร',
+    foodNoPlaces: 'ไม่พบร้านอาหารที่ตรงกับการค้นหาของคุณ',
+
+    // ── News Page ──
+    newsHeroTitle: 'ข่าวสารและเรื่องราวของชุมชน',
+    newsHeroSub: 'ติดตามข้อมูลอัปเดตล่าสุดจากเมียนมาร์ ชุมชนชายแดนไทย-เมียนมาร์ และชาวเมียนมาร์ในต่างแดน',
+    newsAllCategories: 'ข่าวทั้งหมด',
+    newsCatThailand: 'เมียนมาร์-ไทย',
+    newsCatAbroad: 'เมียนมาร์ในต่างแดน',
+    newsCatLocal: 'เมียนมาร์ในประเทศ',
+    newsPublishedOn: 'เผยแพร่เมื่อ',
+    newsBy: 'โดย',
+    newsReadFullArticle: 'อ่านบทความเต็ม →',
+    newsBackToList: '← กลับไปยังข่าว',
+    newsNoPosts: 'ไม่พบบทความข่าวในหมวดหมู่นี้',
+
+    // ── Stay Page ──
+    stayPageTitle: 'ไดเรกทอรีที่พัก',
+    stayPageSubtitle: 'ค้นหาโรงแรม อพาร์ตเมนต์ เกสต์เฮ้าส์ และอื่นๆ สำหรับการพักของคุณในเมียนมาร์',
+    staySearchPlaceholder: 'ค้นหาตามชื่อหรือที่ตั้ง…',
+    stayAllTypes: 'ทุกประเภท',
+    stayNoListings: 'ไม่พบรายการที่พัก',
+    stayNoListingsHint: 'ลองปรับการค้นหาหรือตัวกรองของคุณ',
+    stayPhotos: 'รูปภาพ',
+    stayStarsLabel: 'ดาว',
+
+    // ── Accommodation Types ──
+    hotels: 'โรงแรม',
+    apartments: 'อพาร์ตเมนต์',
+    hostels: 'โฮสเทล',
+    guesthouses: 'เกสต์เฮ้าส์',
+    sharedRooms: 'ห้องพักรวม',
+    villasHouses: 'วิลล่า & บ้าน',
+    camping: 'แคมป์ปิ้ง',
+    shortTermRentals: 'เช่าระยะสั้น',
+    longTermRentals: 'เช่าระยะยาว',
+
+    // ── Footer ──
+    footerHome: 'หน้าหลัก',
+    footerPages: 'หน้า',
+    footerCommunity: 'ชุมชน',
+    footerContact: 'ติดต่อ',
+    footerOnlineShop: 'ร้านค้าออนไลน์',
+    footerBusinessDirectory: 'ไดเรกทอรีธุรกิจ',
+    footerNews: 'ข่าวสาร',
+    footerArtGallery: 'แกลเลอรี่ศิลปะ',
+    footerDonations: 'การบริจาค',
+    footerJobs: 'งาน',
+    footerFoodGuide: 'คู่มืออาหาร',
+    footerStay: 'ไดเรกทอรีที่พัก',
+    footerMyanmarInThailand: 'ชาวเมียนมาร์ในไทย',
+    footerMyanmarAbroad: 'ชาวเมียนมาร์ในต่างแดน',
+    footerRefugeeSupport: 'สนับสนุนผู้ลี้ภัย',
+    footerScholarships: 'ทุนการศึกษา',
+    footerCulturalEvents: 'งานวัฒนธรรม',
+    footerPoweredBy: 'ขับเคลื่อนโดย AndamanFlow Systems',
+    footerAllRightsReserved: 'สงวนลิขสิทธิ์ทั้งหมด',
+    // ── Additional UI / Category / Component Strings ──
+    searchResultsLabel: 'ผลลัพธ์การค้นหา',
+    pressEnterToSelect: '↵ เพื่อเลือก',
+    noMatchesFor: 'ไม่พบรายการที่ตรงกับ',
+    description: 'รายละเอียด',
+    officialWebsite: 'เว็บไซต์ทางการ',
+    facebookPage: 'เพจ Facebook',
+    bookDirect: 'จองโดยตรง ↗',
+    aboutThisStay: 'เกี่ยวกับที่พักนี้',
+    showingListings: 'กำลังแสดง',
+    ofListings: 'จากทั้งหมด',
+    listingsLabel: 'รายการ',
+    filteredBy: 'กรองตาม',
+    typeLabel: 'ประเภท:',
+    donor: 'ผู้บริจาค',
+    anonymous: 'ไม่ประสงค์ออกนาม',
+    friend: 'เพื่อนผู้มีจิตศรัทธา',
+    directBankTransfer: 'โอนเงินผ่านบัญชีธนาคารโดยตรง',
+    bannerAnnouncement: '📢 ประกาศ',
+    bannerPromo: '🔥 ข้อเสนอพิเศษ',
+    bannerEvent: '🎉 กิจกรรม',
+    bannerNews: '📰 ข่าวสาร',
+    bannerAlert: '⚠️ แจ้งเตือน',
+    bannerLearnMore: '→ คลิกเพื่อดูเพิ่มเติม',
+    catElectronics: 'อิเล็กทรอนิกส์',
+    catFashion: 'แฟชั่น',
+    catClothing: 'เสื้อผ้า',
+    catCrafts: 'งานฝีมือ',
+    catAccessories: 'เครื่องประดับ & ของใช้',
+    foodCatThai: 'อาหารไทย',
+    foodCatSeafood: 'ซีฟู้ด & บาร์บีคิว',
+    foodCatStreet: 'สตรีทฟู้ด',
+    foodCatShan: 'อาหารไทใหญ่ & อาหารเหนือ',
+    foodCatMyanmar: 'อาหารเมียนมาร์',
+    foodCatAsian: 'อาหารเอเชีย & ญี่ปุ่น',
+    foodCatCafe: 'คาเฟ่ & เครื่องดื่ม',
+    foodCatDessert: 'ของหวาน & เบเกอรี่',
   },
 } as const;
 
@@ -489,7 +831,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
-      if (stored === 'en' || stored === 'mm') {
+      if (stored === 'en' || stored === 'mm' || stored === 'th') {
         setLanguageState(stored);
       }
     } catch {}
@@ -502,7 +844,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const toggleLanguage = useCallback(() => {
     setLanguageState(prev => {
-      const next = prev === 'en' ? 'mm' : 'en';
+      const next = prev === 'en' ? 'th' : prev === 'th' ? 'mm' : 'en';
       try { localStorage.setItem(STORAGE_KEY, next); } catch {}
       return next;
     });

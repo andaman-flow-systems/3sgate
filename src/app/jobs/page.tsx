@@ -242,7 +242,7 @@ export default function JobsPage() {
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <h4 style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 700, marginBottom: '8px' }}>Description</h4>
+              <h4 style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 700, marginBottom: '8px' }}>{t('description')}</h4>
               <p style={{ color: '#9ca3af', fontSize: '0.88rem', lineHeight: 1.6 }}>{selectedJob.description}</p>
             </div>
 

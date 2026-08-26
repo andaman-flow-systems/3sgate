@@ -370,7 +370,7 @@ export default function DonatePage() {
                         <Building2 size={20} color="#c8102e" />
                       </div>
                       <div>
-                        <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: 700 }}>Direct Bank Transfer</h4>
+                        <h4 style={{ color: '#fff', fontSize: '1rem', fontWeight: 700 }}>{t('directBankTransfer')}</h4>
                         <p style={{ color: '#c8102e', fontSize: '0.78rem', fontWeight: 600 }}>CIMB Thai</p>
                       </div>
                     </div>
@@ -462,7 +462,7 @@ export default function DonatePage() {
               </h2>
 
               <p style={{ color: '#9ca3af', fontSize: '0.95rem', maxWidth: '480px', margin: '0 auto 24px', lineHeight: 1.6 }}>
-                {donorName ? <strong style={{ color: '#fff' }}>{donorName}</strong> : 'Friend'}, your contribution of <strong style={{ color: '#22c55e' }}>฿{getFinalAmount().toLocaleString()} THB</strong> to <span style={{ color: '#a855f7' }}>{current.title}</span> has been recorded.
+                {donorName ? <strong style={{ color: '#fff' }}>{donorName}</strong> : t('friend')}, ฿<strong style={{ color: '#22c55e' }}>{getFinalAmount().toLocaleString()} THB</strong> → <span style={{ color: '#a855f7' }}>{current.title}</span>
               </p>
 
               <div style={{
@@ -474,8 +474,8 @@ export default function DonatePage() {
                   <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>{current.title}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                  <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>Donor</span>
-                  <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>{donorName || 'Anonymous'}</span>
+                  <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>{t('donor')}</span>
+                  <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 600 }}>{donorName || t('anonymous')}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>{t('price')}</span>

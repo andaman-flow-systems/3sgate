@@ -55,6 +55,21 @@ export default function FoodPage() {
     setFiltered(result);
   }, [category, search, places]);
 
+  const getCategoryLabel = (cat: string) => {
+    switch (cat) {
+      case 'All': return t('foodAllCategories');
+      case 'Thai Cuisine': return t('foodCatThai');
+      case 'Seafood & BBQ': return t('foodCatSeafood');
+      case 'Street Food': return t('foodCatStreet');
+      case 'Shan & Northern': return t('foodCatShan');
+      case 'Myanmar Cuisine': return t('foodCatMyanmar');
+      case 'Asian & Japanese': return t('foodCatAsian');
+      case 'Cafés & Drinks': return t('foodCatCafe');
+      case 'Desserts & Bakery': return t('foodCatDessert');
+      default: return cat;
+    }
+  };
+
   return (
     <div>
       {/* Hero */}
@@ -115,7 +130,7 @@ export default function FoodPage() {
                   transition: 'all 0.15s'
                 }}
               >
-                {cat === 'All' ? t('foodAllCategories') : cat}
+                {getCategoryLabel(cat)}
               </button>
             ))}
           </div>
