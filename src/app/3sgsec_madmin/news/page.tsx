@@ -239,9 +239,9 @@ export default function AdminNews() {
                 <div className="form-group">
                   <label className="label">Category</label>
                   <select name="category" defaultValue={isEditing?.category || 'myanmar-news'} className="input" required>
-                    <option value="myanmar-news">Myanmar News</option>
-                    <option value="myanmar-thailand">Myanmar in Thailand</option>
-                    <option value="myanmar-abroad">Myanmar Abroad</option>
+                    <option value="myanmar-news">Local News</option>
+                    <option value="myanmar-thailand">In Thailand</option>
+                    <option value="myanmar-abroad">Abroad</option>
                   </select>
                 </div>
                 <div className="form-group">

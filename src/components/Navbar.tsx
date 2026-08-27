@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
 import { productsDB, rentalsDB, newsDB, galleryDB, jobsDB, foodDB } from '@/lib/db';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage, type Language } from '@/contexts/LanguageContext';
 
 interface SearchResultItem {
   id: string;
@@ -21,7 +21,7 @@ interface SearchResultItem {
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { t, language, toggleLanguage } = useLanguage();
+  const { t, language } = useLanguage();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
@@ -132,42 +132,226 @@ export default function Navbar() {
     router.push(href);
   };
 
-  // ── Language Toggle Button ──────────────────────────────────────────────────
-  const LangToggle = ({ compact = false }: { compact?: boolean }) => (
-    <button
-      onClick={toggleLanguage}
-      id="language-toggle-btn"
-      aria-label={`Switch to ${language === 'en' ? 'Thai' : language === 'th' ? 'Myanmar' : 'English'}`}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '6px',
-        background: '#1a1a1a',
-        border: '1px solid #3a3a3a',
-        color: '#D4A017',
-        fontSize: compact ? '0.72rem' : '0.78rem',
-        fontWeight: 700,
-        padding: compact ? '5px 10px' : '7px 12px',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        fontFamily: 'Inter, sans-serif',
-        whiteSpace: 'nowrap',
-        letterSpacing: '0.03em',
-      }}
-      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#D4A017'; (e.currentTarget as HTMLButtonElement).style.background = '#D4A01715'; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#3a3a3a'; (e.currentTarget as HTMLButtonElement).style.background = '#1a1a1a'; }}
-    >
-      {/* Globe icon */}
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-      </svg>
-      <span>{t('langLabel')}</span>
-      <span style={{ opacity: 0.5, fontWeight: 400 }}>|</span>
-      <span style={{ color: '#9ca3af', fontWeight: 500 }}>{t('langButton')}</span>
-    </button>
-  );
+  // ── Language Selector Dropdown ─────────────────────────────────────────────
+  const LANGUAGE_OPTIONS: { code: Language; label: string; subLabel: string }[] = [
+    { code: 'en', label: 'English', subLabel: 'English' },
+    { code: 'th', label: 'ภาษาไทย', subLabel: 'Thai' },
+    { code: 'mm', label: 'မြန်မာ', subLabel: 'Burmese' },
+  ];
+
+  const LanguageDropdown = ({
+    compact = false,
+    iconOnly = false,
+    align = 'right',
+  }: {
+    compact?: boolean;
+    iconOnly?: boolean;
+    align?: 'left' | 'right';
+  }) => {
+    const { language, setLanguage } = useLanguage();
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      const handleClickOutside = (e: MouseEvent) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+          setIsOpen(false);
+        }
+      };
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setIsOpen(false);
+      };
+      if (isOpen) {
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('keydown', handleKeyDown);
+      }
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener('keydown', handleKeyDown);
+      };
+    }, [isOpen]);
+
+    const currentOption = LANGUAGE_OPTIONS.find((l) => l.code === language) || LANGUAGE_OPTIONS[0];
+
+    return (
+      <div ref={dropdownRef} style={{ position: 'relative', display: 'inline-block' }}>
+        <button
+          onClick={() => setIsOpen((prev) => !prev)}
+          id={iconOnly ? 'language-dropdown-icon-btn' : compact ? 'language-dropdown-mobile-btn' : 'language-dropdown-btn'}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-label={`Language selector. Current language: ${currentOption.label}`}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: iconOnly ? '0' : '7px',
+            background: isOpen ? '#222222' : 'transparent',
+            border: `1px solid ${isOpen ? '#D4A017' : '#2a2a2a'}`,
+            color: '#D4A017',
+            fontSize: compact ? '0.74rem' : '0.8rem',
+            fontWeight: 600,
+            padding: iconOnly ? '7px' : compact ? '6px 10px' : '7px 13px',
+            width: iconOnly ? '36px' : undefined,
+            height: iconOnly ? '36px' : undefined,
+            borderRadius: '8px',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            fontFamily: 'Inter, sans-serif',
+            whiteSpace: 'nowrap',
+            boxShadow: isOpen ? '0 0 12px rgba(212, 160, 23, 0.2)' : 'none',
+          }}
+          onMouseEnter={(e) => {
+            if (!isOpen) {
+              e.currentTarget.style.borderColor = '#D4A017';
+              e.currentTarget.style.background = '#222222';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isOpen) {
+              e.currentTarget.style.borderColor = '#2a2a2a';
+              e.currentTarget.style.background = 'transparent';
+            }
+          }}
+        >
+          {/* Globe icon */}
+          <svg
+            width={iconOnly ? 18 : 14}
+            height={iconOnly ? 18 : 14}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#D4A017"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ flexShrink: 0 }}
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+
+          {!iconOnly && (
+            <>
+              {/* Current language name */}
+              <span style={{ color: '#D4A017', fontWeight: 700 }}>{currentOption.label}</span>
+
+              {/* Down chevron with smooth rotation */}
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#D4A017"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{
+                  transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s ease',
+                  marginLeft: '2px',
+                  flexShrink: 0,
+                }}
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </>
+          )}
+        </button>
+
+        {/* Dropdown Menu */}
+        {isOpen && (
+          <div
+            role="listbox"
+            style={{
+              position: 'absolute',
+              top: 'calc(100% + 6px)',
+              ...(align === 'left' ? { left: 0 } : { right: 0 }),
+              minWidth: '175px',
+              background: 'rgba(20, 20, 20, 0.98)',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid #333333',
+              borderRadius: '10px',
+              padding: '6px',
+              boxShadow: '0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04)',
+              zIndex: 1005,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '3px',
+              transformOrigin: align === 'left' ? 'top left' : 'top right',
+              animation: 'dropdownSlideDown 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+          >
+            {LANGUAGE_OPTIONS.map((opt) => {
+              const isSelected = opt.code === language;
+              return (
+                <button
+                  key={opt.code}
+                  role="option"
+                  aria-selected={isSelected}
+                  onClick={() => {
+                    setLanguage(opt.code);
+                    setIsOpen(false);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '9px 12px',
+                    borderRadius: '7px',
+                    border: 'none',
+                    background: isSelected ? 'rgba(212, 160, 23, 0.12)' : 'transparent',
+                    color: isSelected ? '#D4A017' : '#e5e7eb',
+                    cursor: 'pointer',
+                    fontSize: '0.85rem',
+                    fontFamily: 'Inter, sans-serif',
+                    textAlign: 'left',
+                    transition: 'background 0.15s ease, color 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = '#222222';
+                      e.currentTarget.style.color = '#ffffff';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.color = '#e5e7eb';
+                    }
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontWeight: isSelected ? 700 : 500 }}>{opt.label}</span>
+                    {opt.code !== 'en' && (
+                      <span style={{ fontSize: '0.72rem', color: isSelected ? '#D4A017aa' : '#6b7280' }}>
+                        ({opt.subLabel})
+                      </span>
+                    )}
+                  </div>
+                  {isSelected && (
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#D4A017"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   const SearchBar = ({ isMobile = false }: { isMobile?: boolean }) => (
     <div ref={isMobile ? mobileSearchRef : searchRef} style={{ flex: isMobile ? undefined : 1, maxWidth: isMobile ? undefined : '480px', position: 'relative', width: isMobile ? '100%' : undefined }}>
@@ -263,9 +447,9 @@ export default function Navbar() {
             {/* Right actions */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
 
-              {/* Language Toggle — desktop */}
+              {/* Language Selector — desktop */}
               <div className="nav-lang-btn">
-                <LangToggle />
+                <LanguageDropdown align="right" />
               </div>
 
               {/* Mobile search icon */}
@@ -308,6 +492,11 @@ export default function Navbar() {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 )}
               </button>
+
+              {/* Mobile language selector (icon-only, right of hamburger) */}
+              <div className="mobile-lang-btn">
+                <LanguageDropdown iconOnly align="right" />
+              </div>
             </div>
           </div>
 
@@ -333,16 +522,15 @@ export default function Navbar() {
         {/* Mobile full-screen menu */}
         {mobileOpen && (
           <div style={{ background: '#0d0d0d', borderTop: '1px solid #1e1e1e', position: 'absolute', top: '100%', left: 0, right: 0, height: '100vh', paddingBottom: '120px', zIndex: 899, overflowY: 'auto', animation: 'slideDown 0.2s ease' }}>
-            {/* Language toggle + Facebook contact button at top */}
-            <div style={{ padding: '12px 16px', borderBottom: '1px solid #1e1e1e', display: 'flex', gap: '10px' }}>
-              <LangToggle compact />
+            {/* Full-width Facebook contact button at top */}
+            <div style={{ padding: '12px 16px', borderBottom: '1px solid #1e1e1e' }}>
               <a
                 href="https://www.facebook.com/share/1BZMe1KVPk/"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#1877f2', color: '#fff', padding: '10px', borderRadius: '10px', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none' }}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#1877f2', color: '#fff', padding: '12px 16px', borderRadius: '10px', fontWeight: 700, fontSize: '0.88rem', textDecoration: 'none', transition: 'background 0.2s' }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
                 </svg>
                 {t('contactUsFacebook')}
@@ -395,8 +583,21 @@ export default function Navbar() {
 
       <style>{`
         @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-        /* Hide lang toggle on very small screens (fits inside mobile menu) */
-        @media (max-width: 640px) { .nav-lang-btn { display: none !important; } }
+        @keyframes dropdownSlideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        .mobile-lang-btn { display: none !important; }
+        @media (max-width: 768px) {
+          .nav-lang-btn { display: none !important; }
+          .mobile-lang-btn { display: flex !important; }
+        }
       `}</style>
     </>
   );

@@ -419,7 +419,7 @@ export default function AdminStay() {
               <div className="form-grid-2">
                 <div className="form-group">
                   <label className="label">Location</label>
-                  <input name="location" defaultValue={isEditing?.location} className="input" placeholder="e.g. Yangon, Myanmar" />
+                  <input name="location" defaultValue={isEditing?.location} className="input" placeholder="e.g. Bangkok, Thailand" />
                 </div>
                 <div className="form-group">
                   <label className="label">Contact Email</label>

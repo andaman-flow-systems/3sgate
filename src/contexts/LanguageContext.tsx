@@ -10,7 +10,7 @@ const translations = {
     // ── Global / Common ──
     siteName: '3SGates',
     siteTagline: 'Connecting Communities. Creating Opportunities.',
-    siteDescription: 'A trusted gateway that connects Myanmar communities with opportunities, knowledge, businesses, and meaningful social impact.',
+    siteDescription: 'A trusted gateway that connects communities with opportunities, knowledge, businesses, and meaningful social impact.',
     search: 'Search',
     searchPlaceholderGlobal: 'Search products, news, jobs, places…',
     viewAll: 'View All',
@@ -60,12 +60,12 @@ const translations = {
     slide1Headline: 'Connecting Communities.',
     slide1Highlight: 'Creating Opportunities.',
     slide1Sub: 'A trusted platform that connects businesses, communities, creators, job seekers, and social initiatives to create meaningful opportunities and positive social impact.',
-    slide2Headline: 'Supporting Myanmar',
+    slide2Headline: 'Supporting',
     slide2Highlight: 'Communities Abroad.',
-    slide2Sub: 'Your trusted source for news, jobs, art, and community support for Myanmar people living in Thailand and around the world.',
+    slide2Sub: 'Your trusted source for news, jobs, art, and community support for communities living in Thailand and around the world.',
     slide3Headline: 'Empowering Artists &',
     slide3Highlight: 'Creative Voices.',
-    slide3Sub: 'Showcase and discover artwork from talented Myanmar artists and support the next generation of creative minds.',
+    slide3Sub: 'Showcase and discover artwork from talented artists and support the next generation of creative minds.',
 
     // ── Home Quick Access ──
     qaShop: 'SHOP',
@@ -99,14 +99,14 @@ const translations = {
 
     // ── Shop Page ──
     shopHeroTitle: 'Our Shop Marketplace',
-    shopHeroSub: 'Discover unique products from our Myanmar community marketplace. All prices in Thai Baht (THB).',
+    shopHeroSub: 'Discover unique products from our community marketplace. All prices in Thai Baht (THB).',
     shopSearchPlaceholder: 'Search products by name or category…',
     shopBuyInquireFacebook: 'Buy / Inquire on Facebook Page',
     shopNoProducts: 'No products found matching your search.',
 
     // ── Business Directory (Rent) Page ──
     rentHeroTitle: 'Business & Rental Directory',
-    rentHeroSub: 'Commercial spaces, offices, shops, and properties for the Myanmar community in Thailand and beyond.',
+    rentHeroSub: 'Commercial spaces, offices, shops, and properties for the community in Thailand and beyond.',
     rentSearchPlaceholder: 'Search spaces by name, location, or features…',
     rentTabAll: 'All Spaces',
     rentTabAvailable: 'Available Now',
@@ -119,7 +119,7 @@ const translations = {
 
     // ── Art Gallery Page ──
     galleryHeroTitle: 'Art Gallery',
-    galleryHeroSub: 'Showcasing artwork from established and emerging Myanmar artists.',
+    galleryHeroSub: 'Showcasing artwork from established and emerging artists.',
     galleryBuyInquire: 'Inquire / Buy on Facebook',
     galleryForSale: 'For Sale',
     galleryNotForSale: 'Exhibition Only',
@@ -127,13 +127,13 @@ const translations = {
 
     // ── Donate Page ──
     donateHeroTitle: 'Support Meaningful Causes',
-    donateHeroSub: '100% of community donations go directly to emergency relief, education scholarships, and supporting displaced Myanmar families.',
+    donateHeroSub: '100% of community donations go directly to emergency relief, education scholarships, and supporting displaced families.',
     donateTabSupportPlatform: 'Support Platform',
     donateTabSupportPlatformSub: 'Help keep 3SGate online & free',
     donateTabSupportPlatformDesc: 'Your contribution supports the development, hosting, and maintenance of the 3SGate platform — keeping this community resource free and accessible for everyone.',
     donateTabRefugee: 'Refugee Support',
     donateTabRefugeeSub: 'Emergency aid for displaced families',
-    donateTabRefugeeDesc: 'Provide essential relief to Myanmar refugees in border areas — food, clean water, temporary shelter, and medical care for the most vulnerable families.',
+    donateTabRefugeeDesc: 'Provide essential relief to refugees in border areas — food, clean water, temporary shelter, and medical care for the most vulnerable families.',
     donateTabScholarship: 'Student Scholarships',
     donateTabScholarshipSub: 'Invest in the next generation',
     donateTabScholarshipDesc: 'Fund education for children and students who have lost access to schooling. Every contribution helps a young person build a brighter future.',
@@ -155,7 +155,7 @@ const translations = {
 
     // ── Jobs Page ──
     jobsHeroTitle: 'Job Opportunities',
-    jobsHeroSub: 'Find verified job openings for Myanmar professionals, skilled workers, and community members in Thailand and remotely.',
+    jobsHeroSub: 'Find verified job openings for professionals, skilled workers, and community members in Thailand and remotely.',
     jobsSearchPlaceholder: 'Search jobs by title, company, skills…',
     jobsAllTypes: 'All Job Types',
     jobsFullTime: 'Full Time',
@@ -170,8 +170,8 @@ const translations = {
     jobsNoJobs: 'No job listings found matching your search.',
 
     // ── Food Guide Page ──
-    foodHeroTitle: 'Myanmar & Regional Food Guide',
-    foodHeroSub: 'Discover authentic Myanmar restaurants, Shan cuisine, street food, and cafés in Thailand.',
+    foodHeroTitle: 'Regional Food Guide',
+    foodHeroSub: 'Discover authentic local restaurants, Shan cuisine, street food, and cafés in Thailand.',
     foodSearchPlaceholder: 'Search restaurants, cuisines, locations…',
     foodAllCategories: 'All Cuisines',
     foodOpenHours: 'Open Hours',
@@ -181,11 +181,11 @@ const translations = {
 
     // ── News Page ──
     newsHeroTitle: 'Community News & Stories',
-    newsHeroSub: 'Stay informed with the latest updates from Myanmar, Thailand border communities, and the diaspora abroad.',
+    newsHeroSub: 'Stay informed with the latest updates from regional, Thailand border communities, and the diaspora abroad.',
     newsAllCategories: 'All News',
-    newsCatThailand: 'Myanmar-Thailand',
-    newsCatAbroad: 'Myanmar Abroad',
-    newsCatLocal: 'Myanmar Local',
+    newsCatThailand: 'Regional Thailand',
+    newsCatAbroad: 'Communities Abroad',
+    newsCatLocal: 'Local Community',
     newsPublishedOn: 'Published on',
     newsBy: 'By',
     newsReadFullArticle: 'Read Full Article →',
@@ -194,7 +194,7 @@ const translations = {
 
     // ── Stay Page ──
     stayPageTitle: 'Accommodation Directory',
-    stayPageSubtitle: 'Find hotels, apartments, guesthouses and more for your stay in Myanmar.',
+    stayPageSubtitle: 'Find hotels, apartments, guesthouses and more for your stay.',
     staySearchPlaceholder: 'Search by name or location…',
     stayAllTypes: 'All Types',
     stayNoListings: 'No accommodation listings found.',
@@ -226,8 +226,8 @@ const translations = {
     footerJobs: 'Jobs',
     footerFoodGuide: 'Food Guide',
     footerStay: 'Stay Directory',
-    footerMyanmarInThailand: 'Myanmar in Thailand',
-    footerMyanmarAbroad: 'Myanmar Abroad',
+    footerMyanmarInThailand: 'Communities in Thailand',
+    footerMyanmarAbroad: 'Communities Abroad',
     footerRefugeeSupport: 'Refugee Support',
     footerScholarships: 'Scholarships',
     footerCulturalEvents: 'Cultural Events',
@@ -266,7 +266,7 @@ const translations = {
     foodCatSeafood: 'Seafood & BBQ',
     foodCatStreet: 'Street Food',
     foodCatShan: 'Shan & Northern',
-    foodCatMyanmar: 'Myanmar Cuisine',
+    foodCatMyanmar: 'Traditional Cuisine',
     foodCatAsian: 'Asian & Japanese',
     foodCatCafe: 'Cafés & Drinks',
     foodCatDessert: 'Desserts & Bakery',
@@ -327,11 +327,11 @@ const translations = {
     slide1Highlight: 'အခွင့်အလမ်းများ ဖန်တီးပေးခြင်း။',
     slide1Sub: 'စီးပွားရေးလုပ်ငန်းများ၊ လူမှုအသိုင်းအဝိုင်းများ၊ ဖန်တီးရှင်များ၊ အလုပ်ရှာဖွေသူများနှင့် လူမှုဖွံ့ဖြိုးရေးလုပ်ငန်းများကို အဓိပ္ပာယ်ရှိသော အခွင့်အလမ်းများနှင့် ချိတ်ဆက်ပေးသော ယုံကြည်စိတ်ချရသည့် ပလက်ဖောင်း။',
     slide2Headline: 'ထိုင်းနိုင်ငံနှင့် ပြည်ပရောက်',
-    slide2Highlight: 'မြန်မာလူထုကို ကူညီပံ့ပိုးပေးခြင်း။',
-    slide2Sub: 'ထိုင်းနိုင်ငံနှင့် ကမ္ဘာအရပ်ရပ်ရှိ မြန်မာပြည်သူများအတွက် သတင်းအချက်အလက်၊ အလုပ်အကိုင်၊ အနုပညာနှင့် လူမှုကူညီစောင့်ရှောက်ရေး အရင်းအမြစ်။',
-    slide3Headline: 'မြန်မာအနုပညာရှင်များနှင့်',
+    slide2Highlight: 'လူထုကို ကူညီပံ့ပိုးပေးခြင်း။',
+    slide2Sub: 'ထိုင်းနိုင်ငံနှင့် ကမ္ဘာအရပ်ရပ်ရှိ ပြည်သူများအတွက် သတင်းအချက်အလက်၊ အလုပ်အကိုင်၊ အနုပညာနှင့် လူမှုကူညီစောင့်ရှောက်ရေး အရင်းအမြစ်။',
+    slide3Headline: 'အနုပညာရှင်များနှင့်',
     slide3Highlight: 'ဖန်တီးရှင်များကို စွမ်းဆောင်ရည်မြှင့်တင်ခြင်း။',
-    slide3Sub: 'ပါရမီရှင် မြန်မာအနုပညာရှင်များ၏ လက်ရာများကို ရှာဖွေဖော်ထုတ်ပြသပြီး မျိုးဆက်သစ် ဖန်တီးရှင်များကို အားပေးကူညီကြပါစို့။',
+    slide3Sub: 'ပါရမီရှင် အနုပညာရှင်များ၏ လက်ရာများကို ရှာဖွေဖော်ထုတ်ပြသပြီး မျိုးဆက်သစ် ဖန်တီးရှင်များကို အားပေးကူညီကြပါစို့။',
 
     // ── Home Quick Access ──
     qaShop: 'ဆိုင်များ',
@@ -365,14 +365,14 @@ const translations = {
 
     // ── Shop Page ──
     shopHeroTitle: 'ကျွန်ုပ်တို့၏ အွန်လိုင်းစျေးဆိုင်',
-    shopHeroSub: 'မြန်မာလူမှုအသိုက်အဝန်း စျေးကွက်မှ ထူးခြားသော ကုန်ပစ္စည်းများကို ရှာဖွေဝယ်ယူပါ။ စျေးနှုန်းအားလုံး ထိုင်းဘတ်ငွေ (THB) ဖြင့် ဖြစ်ပါသည်။',
+    shopHeroSub: 'လူမှုအသိုက်အဝန်း စျေးကွက်မှ ထူးခြားသော ကုန်ပစ္စည်းများကို ရှာဖွေဝယ်ယူပါ။ စျေးနှုန်းအားလုံး ထိုင်းဘတ်ငွေ (THB) ဖြင့် ဖြစ်ပါသည်။',
     shopSearchPlaceholder: 'ပစ္စည်းအမည် သို့မဟုတ် အမျိုးအစားဖြင့် ရှာရန်…',
     shopBuyInquireFacebook: 'Facebook စာမျက်နှာမှတစ်ဆင့် ဝယ်ယူ/မေးမြန်းရန်',
     shopNoProducts: 'သင်ရှာဖွေသော ကုန်ပစ္စည်း မတွေ့ရှိပါ။',
 
     // ── Business Directory (Rent) Page ──
     rentHeroTitle: 'စီးပွားရေးနှင့် နေရာငှားရမ်းခြင်း လမ်းညွှန်',
-    rentHeroSub: 'ထိုင်းနိုင်ငံနှင့် အခြားဒေသများရှိ မြန်မာစီးပွားရေးလုပ်ငန်းများအတွက် ဆိုင်ခန်းများ၊ ရုံးခန်းများနှင့် နေရာများ။',
+    rentHeroSub: 'ထိုင်းနိုင်ငံနှင့် အခြားဒေသများရှိ စီးပွားရေးလုပ်ငန်းများအတွက် ဆိုင်ခန်းများ၊ ရုံးခန်းများနှင့် နေရာများ။',
     rentSearchPlaceholder: 'နာမည်၊ တည်နေရာ သို့မဟုတ် အချက်အလက်ဖြင့် ရှာရန်…',
     rentTabAll: 'နေရာအားလုံး',
     rentTabAvailable: 'ယခုငှားရန်ရှိသည်',
@@ -385,7 +385,7 @@ const translations = {
 
     // ── Art Gallery Page ──
     galleryHeroTitle: 'အနုပညာပြခန်း',
-    galleryHeroSub: 'ဝါရင့်နှင့် မျိုးဆက်သစ် မြန်မာအနုပညာရှင်များ၏ လက်ရာမွန်များကို ဂုဏ်ပြုပြသခြင်း။',
+    galleryHeroSub: 'ဝါရင့်နှင့် မျိုးဆက်သစ် အနုပညာရှင်များ၏ လက်ရာမွန်များကို ဂုဏ်ပြုပြသခြင်း။',
     galleryBuyInquire: 'Facebook မှတစ်ဆင့် မေးမြန်း/ဝယ်ယူရန်',
     galleryForSale: 'ဝယ်ယူနိုင်ပါသည်',
     galleryNotForSale: 'ပြသရန်သာဖြစ်ပါသည်',
@@ -393,13 +393,13 @@ const translations = {
 
     // ── Donate Page ──
     donateHeroTitle: 'အဓိပ္ပာယ်ရှိသော လူမှုကူညီရေးလုပ်ငန်းများသို့ လှူဒါန်းပါ',
-    donateHeroSub: 'သင်၏ လှူဒါန်းငွေ ၁၀၀% သည် အရေးပေါ် အကူအညီများ၊ ပညာသင်ဆုများနှင့် စစ်ဘေးရှောင် မြန်မာမိသားစုများထံသို့ တိုက်ရိုက် ရောက်ရှိပါမည်။',
+    donateHeroSub: 'သင်၏ လှူဒါန်းငွေ ၁၀၀% သည် အရေးပေါ် အကူအညီများ၊ ပညာသင်ဆုများနှင့် စစ်ဘေးရှောင် မိသားစုများထံသို့ တိုက်ရိုက် ရောက်ရှိပါမည်။',
     donateTabSupportPlatform: 'ပလက်ဖောင်းကို ထောက်ပံ့ရန်',
     donateTabSupportPlatformSub: '3SGate ဝဘ်ဆိုဒ် အခမဲ့ ဆက်လက်လည်ပတ်နိုင်စေရန်',
     donateTabSupportPlatformDesc: 'သင်၏ ထောက်ပံ့မှုသည် 3SGate ပလက်ဖောင်း ဖွံ့ဖြိုးတိုးတက်ရေး၊ ဝဘ်ဆာဗာထိန်းသိမ်းရေးနှင့် လူတိုင်းအခမဲ့ အသုံးပြုနိုင်စေရန် ကူညီပေးပါသည်။',
     donateTabRefugee: 'စစ်ဘေးရှောင်များ ကူညီရေး',
     donateTabRefugeeSub: 'နယ်စပ်ဒေသရှိ ဒုက္ခသည်မိသားစုများအတွက် အရေးပေါ်အကူအညီ',
-    donateTabRefugeeDesc: 'နယ်စပ်ဒေသများရှိ ထိခိုက်လွယ်ဆုံး မြန်မာစစ်ဘေးရှောင်မိသားစုများအတွက် အစားအစာ၊ သန့်ရှင်းသောသောက်သုံးရေ၊ ယာယီခိုလှုံရာနှင့် ဆေးဝါးများ ထောက်ပံ့ပေးပါသည်။',
+    donateTabRefugeeDesc: 'နယ်စပ်ဒေသများရှိ ထိခိုက်လွယ်ဆုံး စစ်ဘေးရှောင်မိသားစုများအတွက် အစားအစာ၊ သန့်ရှင်းသောသောက်သုံးရေ၊ ယာယီခိုလှုံရာနှင့် ဆေးဝါးများ ထောက်ပံ့ပေးပါသည်။',
     donateTabScholarship: 'ကျောင်းသား/သူများ ပညာသင်ဆု',
     donateTabScholarshipSub: 'မျိုးဆက်သစ်များ၏ အနာဂတ်အတွက် ရင်းနှီးမြှုပ်နှံပါ',
     donateTabScholarshipDesc: 'ပညာသင်ကြားခွင့် ဆုံးရှုံးနေရသော ကလေးငယ်များနှင့် လူငယ်များအတွက် ပညာသင်ဆုများ ထောက်ပံ့ပေးပြီး တောက်ပသောအနာဂတ်ကို ဖန်တီးပေးပါ။',
@@ -421,7 +421,7 @@ const translations = {
 
     // ── Jobs Page ──
     jobsHeroTitle: 'အလုပ်အကိုင် အခွင့်အလမ်းများ',
-    jobsHeroSub: 'ထိုင်းနိုင်ငံနှင့် အဝေးရောက် မြန်မာပညာရှင်များ၊ ကျွမ်းကျင်လုပ်သားများနှင့် လူထုအတွက် စိစစ်ထားသော အလုပ်အကိုင်များ။',
+    jobsHeroSub: 'ထိုင်းနိုင်ငံနှင့် အဝေးရောက် ပညာရှင်များ၊ ကျွမ်းကျင်လုပ်သားများနှင့် လူထုအတွက် စိစစ်ထားသော အလုပ်အကိုင်များ။',
     jobsSearchPlaceholder: 'ရာထူး၊ ကုမ္ပဏီ သို့မဟုတ် ကျွမ်းကျင်မှုဖြင့် ရှာရန်…',
     jobsAllTypes: 'အလုပ်အမျိုးအစား အားလုံး',
     jobsFullTime: 'အချိန်ပြည့် (Full Time)',
@@ -436,8 +436,8 @@ const translations = {
     jobsNoJobs: 'သင်ရှာဖွေသော အလုပ်အကိုင် မတွေ့ရှိပါ။',
 
     // ── Food Guide Page ──
-    foodHeroTitle: 'မြန်မာနှင့် ဒေသန္တရ အစားအသောက်လမ်းညွှန်',
-    foodHeroSub: 'ထိုင်းနိုင်ငံရောက် မြန်မာစစ်စစ် စားသောက်ဆိုင်များ၊ ရှမ်းအစားအစာ၊ လမ်းဘေးအစားအစာများနှင့် ကော်ဖီဆိုင်များ။',
+    foodHeroTitle: 'ဒေသန္တရ အစားအသောက်လမ်းညွှန်',
+    foodHeroSub: 'ထိုင်းနိုင်ငံရောက် ဒေသန္တရ စားသောက်ဆိုင်များ၊ ရှမ်းအစားအစာ၊ လမ်းဘေးအစားအစာများနှင့် ကော်ဖီဆိုင်များ။',
     foodSearchPlaceholder: 'ဆိုင်အမည်၊ အစားအစာအမျိုးအစား၊ တည်နေရာ ရှာရန်…',
     foodAllCategories: 'အစားအစာအားလုံး',
     foodOpenHours: 'ဖွင့်ချိန်',
@@ -447,11 +447,11 @@ const translations = {
 
     // ── News Page ──
     newsHeroTitle: 'သတင်းများနှင့် အသိုက်အဝန်းဆောင်းပါးများ',
-    newsHeroSub: 'မြန်မာနိုင်ငံ၊ ထိုင်း-မြန်မာနယ်စပ်နှင့် ပြည်ပရောက် မြန်မာပြည်သူများအတွက် နောက်ဆုံးရ သတင်းအချက်အလက်များ။',
+    newsHeroSub: 'ဒေသတွင်း၊ နယ်စပ်နှင့် ပြည်ပရောက် ပြည်သူများအတွက် နောက်ဆုံးရ သတင်းအချက်အလက်များ။',
     newsAllCategories: 'သတင်းအားလုံး',
-    newsCatThailand: 'မြန်မာ-ထိုင်း သတင်း',
-    newsCatAbroad: 'ပြည်ပရောက် မြန်မာသတင်း',
-    newsCatLocal: 'မြန်မာပြည်တွင်း သတင်း',
+    newsCatThailand: 'ဒေသတွင်း-ထိုင်း သတင်း',
+    newsCatAbroad: 'ပြည်ပရောက် သတင်း',
+    newsCatLocal: 'ဒေသန္တရ သတင်း',
     newsPublishedOn: 'ဖော်ပြသည့်ရက်စွဲ',
     newsBy: 'ရေးသားသူ',
     newsReadFullArticle: 'ဆောင်းပါး အပြည့်အစုံဖတ်ရန် →',
@@ -460,7 +460,7 @@ const translations = {
 
     // ── Stay Page ──
     stayPageTitle: 'တည်းခိုခန်းလမ်းညွှန်',
-    stayPageSubtitle: 'မြန်မာပြည်နှင့် အခြားဒေသများရှိ ဟိုတယ်၊ တိုက်ခန်း၊ အင်ဒိုပန်း နှင့် အခြားတည်းခိုခန်းများ ရှာဖွေပါ။',
+    stayPageSubtitle: 'ဒေသတွင်းရှိ ဟိုတယ်၊ တိုက်ခန်း၊ အင်ဒိုပန်း နှင့် အခြားတည်းခိုခန်းများ ရှာဖွေပါ။',
     staySearchPlaceholder: 'နာမည် သို့မဟုတ် တည်နေရာ ရှာရန်…',
     stayAllTypes: 'အမျိုးအစားအားလုံး',
     stayNoListings: 'တည်းခိုခန်းများ မတွေ့ရှိပါ။',
@@ -492,8 +492,8 @@ const translations = {
     footerJobs: 'အလုပ်အကိုင်',
     footerFoodGuide: 'အစားအသောက်လမ်းညွှန်',
     footerStay: 'တည်းခိုရန်နေရာများ',
-    footerMyanmarInThailand: 'ထိုင်းရောက် မြန်မာများ',
-    footerMyanmarAbroad: 'ပြည်ပရောက် မြန်မာများ',
+    footerMyanmarInThailand: 'ထိုင်းရောက် လူမှုအသိုက်အဝန်း',
+    footerMyanmarAbroad: 'ပြည်ပရောက် လူမှုအသိုက်အဝန်း',
     footerRefugeeSupport: 'စစ်ဘေးရှောင်များ ကူညီရေး',
     footerScholarships: 'ပညာသင်ဆုများ',
     footerCulturalEvents: 'ယဉ်ကျေးမှုပွဲတော်များ',
@@ -532,7 +532,7 @@ const translations = {
     foodCatSeafood: 'ပင်လယ်စာနှင့် အကင်',
     foodCatStreet: 'လမ်းဘေး အစားအစာ',
     foodCatShan: 'ရှမ်းနှင့် မြောက်ပိုင်းအစားအစာ',
-    foodCatMyanmar: 'မြန်မာရိုးရာ အစားအစာ',
+    foodCatMyanmar: 'ရိုးရာ အစားအစာ',
     foodCatAsian: 'အာရှနှင့် ဂျပန်အစားအစာ',
     foodCatCafe: 'ကဖေးနှင့် အအေးဆိုင်များ',
     foodCatDessert: 'မုန့်မျိုးစုံနှင့် မုန့်ဖုတ်လုပ်ငန်း',
@@ -593,11 +593,11 @@ const translations = {
     slide1Highlight: 'สร้างโอกาส',
     slide1Sub: 'แพลตฟอร์มที่น่าเชื่อถือซึ่งเชื่อมต่อธุรกิจ ชุมชน ผู้สร้างสรรค์ ผู้หางาน และโครงการเพื่อสังคม เพื่อสร้างโอกาสและผลกระทบเชิงบวก',
     slide2Headline: 'สนับสนุนชุมชน',
-    slide2Highlight: 'ชาวเมียนมาร์ในต่างแดน',
-    slide2Sub: 'แหล่งข้อมูลที่น่าเชื่อถือสำหรับข่าวสาร งาน ศิลปะ และการสนับสนุนชุมชนชาวเมียนมาร์ในประเทศไทยและทั่วโลก',
+    slide2Highlight: 'ในต่างแดน',
+    slide2Sub: 'แหล่งข้อมูลที่น่าเชื่อถือสำหรับข่าวสาร งาน ศิลปะ และการสนับสนุนชุมชนในประเทศไทยและทั่วโลก',
     slide3Headline: 'เสริมพลังศิลปิน &',
     slide3Highlight: 'เสียงแห่งความคิดสร้างสรรค์',
-    slide3Sub: 'ค้นพบและชื่นชมผลงานศิลปะจากศิลปินชาวเมียนมาร์ที่มีความสามารถ และสนับสนุนนักสร้างสรรค์รุ่นใหม่',
+    slide3Sub: 'ค้นพบและชื่นชมผลงานศิลปะจากศิลปินที่มีความสามารถ และสนับสนุนนักสร้างสรรค์รุ่นใหม่',
 
     // ── Home Quick Access ──
     qaShop: 'ร้านค้า',
@@ -631,14 +631,14 @@ const translations = {
 
     // ── Shop Page ──
     shopHeroTitle: 'ตลาดร้านค้าของเรา',
-    shopHeroSub: 'ค้นพบสินค้าพิเศษจากตลาดชุมชนชาวเมียนมาร์ของเรา ราคาทั้งหมดเป็นบาทไทย (THB)',
+    shopHeroSub: 'ค้นพบสินค้าพิเศษจากตลาดชุมชนของเรา ราคาทั้งหมดเป็นบาทไทย (THB)',
     shopSearchPlaceholder: 'ค้นหาสินค้าตามชื่อหรือหมวดหมู่…',
     shopBuyInquireFacebook: 'ซื้อ / สอบถามทาง Facebook Page',
     shopNoProducts: 'ไม่พบสินค้าที่ตรงกับการค้นหาของคุณ',
 
     // ── Business Directory (Rent) Page ──
     rentHeroTitle: 'ไดเรกทอรีธุรกิจและการเช่า',
-    rentHeroSub: 'พื้นที่เชิงพาณิชย์ สำนักงาน ร้านค้า และอสังหาริมทรัพย์สำหรับชุมชนชาวเมียนมาร์ในประเทศไทยและต่างประเทศ',
+    rentHeroSub: 'พื้นที่เชิงพาณิชย์ สำนักงาน ร้านค้า และอสังหาริมทรัพย์สำหรับชุมชนในประเทศไทยและต่างประเทศ',
     rentSearchPlaceholder: 'ค้นหาพื้นที่ตามชื่อ ที่ตั้ง หรือคุณสมบัติ…',
     rentTabAll: 'พื้นที่ทั้งหมด',
     rentTabAvailable: 'ว่างให้เช่าเดี๋ยวนี้',
@@ -651,7 +651,7 @@ const translations = {
 
     // ── Art Gallery Page ──
     galleryHeroTitle: 'แกลเลอรี่ศิลปะ',
-    galleryHeroSub: 'จัดแสดงผลงานจากศิลปินชาวเมียนมาร์ที่มีชื่อเสียงและกำลังเติบโต',
+    galleryHeroSub: 'จัดแสดงผลงานจากศิลปินที่มีชื่อเสียงและกำลังเติบโต',
     galleryBuyInquire: 'สอบถาม / ซื้อทาง Facebook',
     galleryForSale: 'ขายอยู่',
     galleryNotForSale: 'จัดแสดงเท่านั้น',
@@ -659,13 +659,13 @@ const translations = {
 
     // ── Donate Page ──
     donateHeroTitle: 'สนับสนุนสาเหตุที่มีความหมาย',
-    donateHeroSub: '100% ของเงินบริจาคชุมชนมอบให้ตรงๆ แก่การบรรเทาทุกข์ฉุกเฉิน ทุนการศึกษา และการสนับสนุนครอบครัวชาวเมียนมาร์ที่พลัดถิ่น',
+    donateHeroSub: '100% ของเงินบริจาคชุมชนมอบให้ตรงๆ แก่การบรรเทาทุกข์ฉุกเฉิน ทุนการศึกษา และการสนับสนุนครอบครัวที่พลัดถิ่น',
     donateTabSupportPlatform: 'สนับสนุนแพลตฟอร์ม',
     donateTabSupportPlatformSub: 'ช่วยให้ 3SGate ออนไลน์และฟรี',
     donateTabSupportPlatformDesc: 'การสนับสนุนของคุณช่วยการพัฒนา โฮสติ้ง และการบำรุงรักษาแพลตฟอร์ม 3SGate — ทำให้ทรัพยากรชุมชนนี้ฟรีและเข้าถึงได้สำหรับทุกคน',
     donateTabRefugee: 'สนับสนุนผู้ลี้ภัย',
     donateTabRefugeeSub: 'ความช่วยเหลือฉุกเฉินสำหรับครอบครัวที่พลัดถิ่น',
-    donateTabRefugeeDesc: 'ให้การบรรเทาทุกข์ที่จำเป็นแก่ผู้ลี้ภัยชาวเมียนมาร์ในพื้นที่ชายแดน — อาหาร น้ำสะอาด ที่พักชั่วคราว และการดูแลทางการแพทย์สำหรับครอบครัวที่เปราะบางที่สุด',
+    donateTabRefugeeDesc: 'ให้การบรรเทาทุกข์ที่จำเป็นแก่ผู้ลี้ภัยในพื้นที่ชายแดน — อาหาร น้ำสะอาด ที่พักชั่วคราว และการดูแลทางการแพทย์สำหรับครอบครัวที่เปราะบางที่สุด',
     donateTabScholarship: 'ทุนการศึกษา',
     donateTabScholarshipSub: 'ลงทุนในรุ่นต่อไป',
     donateTabScholarshipDesc: 'สนับสนุนการศึกษาของเด็กและนักเรียนที่ขาดโอกาสทางการศึกษา ทุกการบริจาคช่วยให้คนหนุ่มสาวสร้างอนาคตที่สดใส',
@@ -687,7 +687,7 @@ const translations = {
 
     // ── Jobs Page ──
     jobsHeroTitle: 'โอกาสในการทำงาน',
-    jobsHeroSub: 'ค้นหาตำแหน่งงานที่ผ่านการตรวจสอบสำหรับผู้เชี่ยวชาญ แรงงานทักษะ และสมาชิกชุมชนชาวเมียนมาร์ในประเทศไทยและทางไกล',
+    jobsHeroSub: 'ค้นหาตำแหน่งงานที่ผ่านการตรวจสอบสำหรับผู้เชี่ยวชาญ แรงงานทักษะ และสมาชิกชุมชนในประเทศไทยและทางไกล',
     jobsSearchPlaceholder: 'ค้นหางานตามตำแหน่ง บริษัท ทักษะ…',
     jobsAllTypes: 'ประเภทงานทั้งหมด',
     jobsFullTime: 'เต็มเวลา',
@@ -702,8 +702,8 @@ const translations = {
     jobsNoJobs: 'ไม่พบรายการงานที่ตรงกับการค้นหาของคุณ',
 
     // ── Food Guide Page ──
-    foodHeroTitle: 'คู่มืออาหารเมียนมาร์ & อาหารท้องถิ่น',
-    foodHeroSub: 'ค้นพบร้านอาหารเมียนมาร์แท้ อาหารไทยใหญ่ อาหารริมทาง และคาเฟ่ในประเทศไทย',
+    foodHeroTitle: 'คู่มืออาหารท้องถิ่น',
+    foodHeroSub: 'ค้นพบร้านอาหารท้องถิ่น อาหารไทยใหญ่ อาหารริมทาง และคาเฟ่ในประเทศไทย',
     foodSearchPlaceholder: 'ค้นหาร้านอาหาร อาหาร สถานที่…',
     foodAllCategories: 'ทุกประเภทอาหาร',
     foodOpenHours: 'เวลาเปิด',
@@ -713,11 +713,11 @@ const translations = {
 
     // ── News Page ──
     newsHeroTitle: 'ข่าวสารและเรื่องราวของชุมชน',
-    newsHeroSub: 'ติดตามข้อมูลอัปเดตล่าสุดจากเมียนมาร์ ชุมชนชายแดนไทย-เมียนมาร์ และชาวเมียนมาร์ในต่างแดน',
+    newsHeroSub: 'ติดตามข้อมูลอัปเดตล่าสุดจากภูมิภาค ชุมชนชายแดน และชุมชนในต่างแดน',
     newsAllCategories: 'ข่าวทั้งหมด',
-    newsCatThailand: 'เมียนมาร์-ไทย',
-    newsCatAbroad: 'เมียนมาร์ในต่างแดน',
-    newsCatLocal: 'เมียนมาร์ในประเทศ',
+    newsCatThailand: 'ภูมิภาค-ไทย',
+    newsCatAbroad: 'ในต่างแดน',
+    newsCatLocal: 'ข่าวท้องถิ่น',
     newsPublishedOn: 'เผยแพร่เมื่อ',
     newsBy: 'โดย',
     newsReadFullArticle: 'อ่านบทความเต็ม →',
@@ -726,7 +726,7 @@ const translations = {
 
     // ── Stay Page ──
     stayPageTitle: 'ไดเรกทอรีที่พัก',
-    stayPageSubtitle: 'ค้นหาโรงแรม อพาร์ตเมนต์ เกสต์เฮ้าส์ และอื่นๆ สำหรับการพักของคุณในเมียนมาร์',
+    stayPageSubtitle: 'ค้นหาโรงแรม อพาร์ตเมนต์ เกสต์เฮ้าส์ และอื่นๆ สำหรับการพักของคุณ',
     staySearchPlaceholder: 'ค้นหาตามชื่อหรือที่ตั้ง…',
     stayAllTypes: 'ทุกประเภท',
     stayNoListings: 'ไม่พบรายการที่พัก',
@@ -758,8 +758,8 @@ const translations = {
     footerJobs: 'งาน',
     footerFoodGuide: 'คู่มืออาหาร',
     footerStay: 'ไดเรกทอรีที่พัก',
-    footerMyanmarInThailand: 'ชาวเมียนมาร์ในไทย',
-    footerMyanmarAbroad: 'ชาวเมียนมาร์ในต่างแดน',
+    footerMyanmarInThailand: 'ชุมชนในไทย',
+    footerMyanmarAbroad: 'ชุมชนในต่างแดน',
     footerRefugeeSupport: 'สนับสนุนผู้ลี้ภัย',
     footerScholarships: 'ทุนการศึกษา',
     footerCulturalEvents: 'งานวัฒนธรรม',
@@ -798,7 +798,7 @@ const translations = {
     foodCatSeafood: 'ซีฟู้ด & บาร์บีคิว',
     foodCatStreet: 'สตรีทฟู้ด',
     foodCatShan: 'อาหารไทใหญ่ & อาหารเหนือ',
-    foodCatMyanmar: 'อาหารเมียนมาร์',
+    foodCatMyanmar: 'อาหารท้องถิ่น',
     foodCatAsian: 'อาหารเอเชีย & ญี่ปุ่น',
     foodCatCafe: 'คาเฟ่ & เครื่องดื่ม',
     foodCatDessert: 'ของหวาน & เบเกอรี่',

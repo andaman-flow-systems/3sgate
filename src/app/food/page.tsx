@@ -7,7 +7,7 @@ import { isSupabaseConfigured } from '@/lib/supabase';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Utensils, MapPin, Star, Phone, Clock, Search, X, PhoneCall } from 'lucide-react';
 
-const CATEGORIES = ['All', 'Thai Cuisine', 'Seafood & BBQ', 'Street Food', 'Shan & Northern', 'Myanmar Cuisine', 'Asian & Japanese', 'Cafés & Drinks', 'Desserts & Bakery'];
+const CATEGORIES = ['All', 'Thai Cuisine', 'Seafood & BBQ', 'Street Food', 'Shan & Northern', 'Traditional Cuisine', 'Asian & Japanese', 'Cafés & Drinks', 'Desserts & Bakery'];
 
 export default function FoodPage() {
   const { t } = useLanguage();
@@ -43,7 +43,7 @@ export default function FoodPage() {
 
   useEffect(() => {
     let result = places;
-    if (category !== 'All') result = result.filter(p => p.category === category);
+    if (category !== 'All') result = result.filter(p => p.category === category || (category === 'Traditional Cuisine' && p.category === 'Myanmar Cuisine'));
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(p =>
@@ -62,6 +62,7 @@ export default function FoodPage() {
       case 'Seafood & BBQ': return t('foodCatSeafood');
       case 'Street Food': return t('foodCatStreet');
       case 'Shan & Northern': return t('foodCatShan');
+      case 'Traditional Cuisine':
       case 'Myanmar Cuisine': return t('foodCatMyanmar');
       case 'Asian & Japanese': return t('foodCatAsian');
       case 'Cafés & Drinks': return t('foodCatCafe');

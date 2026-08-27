@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     template: '%s | 3SGates',
   },
   description:
-    'A trusted gateway that connects Myanmar communities with opportunities, knowledge, businesses, and meaningful social impact.',
-  keywords: ['Myanmar', 'Thailand', 'social enterprise', 'community', 'jobs', 'art', 'donations', 'food guide'],
+    'A trusted gateway that connects communities with opportunities, knowledge, businesses, and meaningful social impact.',
+  keywords: ['Thailand', 'social enterprise', 'community', 'jobs', 'art', 'donations', 'food guide'],
   openGraph: {
     title: '3SGates – Social Enterprise Platform',
     description: 'Connecting Communities. Creating Opportunities.',

@@ -454,6 +454,7 @@ tr:hover td { background: var(--bg-card-hover); color: var(--text-primary); }
 .nav-fb-btn { display: inline-flex !important; }
 .mobile-menu-btn { display: none !important; }
 .mobile-search-btn { display: none !important; }
+.mobile-lang-btn { display: none !important; }
 
 /* ─── Admin Layout Classes ───────────────────────────────────── */
 .admin-sidebar {
@@ -551,6 +552,8 @@ tr:hover td { background: var(--bg-card-hover); color: var(--text-primary); }
   .nav-search { display: none !important; }
   .mobile-search-btn { display: flex !important; }
   .nav-fb-btn { display: none !important; }
+  .nav-lang-btn { display: none !important; }
+  .mobile-lang-btn { display: flex !important; }
 
   /* Modal */
   .modal {
