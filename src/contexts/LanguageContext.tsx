@@ -106,7 +106,7 @@ const translations = {
 
     // ── Business Directory (Rent) Page ──
     rentHeroTitle: 'Business & Rental Directory',
-    rentHeroSub: 'Commercial spaces, offices, shops, and properties for the community in Thailand and beyond.',
+    rentHeroSub: 'Commercial spaces, offices, shops, and properties for the community and beyond.',
     rentSearchPlaceholder: 'Search spaces by name, location, or features…',
     rentTabAll: 'All Spaces',
     rentTabAvailable: 'Available Now',
@@ -171,7 +171,7 @@ const translations = {
 
     // ── Food Guide Page ──
     foodHeroTitle: 'Regional Food Guide',
-    foodHeroSub: 'Discover authentic local restaurants, Shan cuisine, street food, and cafés in Thailand.',
+    foodHeroSub: 'Discover authentic local restaurants, Shan cuisine, street food, and cafés.',
     foodSearchPlaceholder: 'Search restaurants, cuisines, locations…',
     foodAllCategories: 'All Cuisines',
     foodOpenHours: 'Open Hours',
@@ -373,7 +373,7 @@ const translations = {
 
     // ── Business Directory (Rent) Page ──
     rentHeroTitle: 'စီးပွားရေးနှင့် နေရာငှားရမ်းခြင်း လမ်းညွှန်',
-    rentHeroSub: 'ထိုင်းနိုင်ငံနှင့် အခြားဒေသများရှိ စီးပွားရေးလုပ်ငန်းများအတွက် ဆိုင်ခန်းများ၊ ရုံးခန်းများနှင့် နေရာများ။',
+    rentHeroSub: 'စီးပွားရေးလုပ်ငန်းများအတွက် ဆိုင်ခန်းများ၊ ရုံးခန်းများနှင့် နေရာများ။',
     rentSearchPlaceholder: 'နာမည်၊ တည်နေရာ သို့မဟုတ် အချက်အလက်ဖြင့် ရှာရန်…',
     rentTabAll: 'နေရာအားလုံး',
     rentTabAvailable: 'ယခုငှားရန်ရှိသည်',
@@ -438,7 +438,7 @@ const translations = {
 
     // ── Food Guide Page ──
     foodHeroTitle: 'ဒေသန္တရ အစားအသောက်လမ်းညွှန်',
-    foodHeroSub: 'ထိုင်းနိုင်ငံရောက် ဒေသန္တရ စားသောက်ဆိုင်များ၊ ရှမ်းအစားအစာ၊ လမ်းဘေးအစားအစာများနှင့် ကော်ဖီဆိုင်များ။',
+    foodHeroSub: 'ဒေသန္တရ စားသောက်ဆိုင်များ၊ ရှမ်းအစားအစာ၊ လမ်းဘေးအစားအစာများနှင့် ကော်ဖီဆိုင်များ။',
     foodSearchPlaceholder: 'ဆိုင်အမည်၊ အစားအစာအမျိုးအစား၊ တည်နေရာ ရှာရန်…',
     foodAllCategories: 'အစားအစာအားလုံး',
     foodOpenHours: 'ဖွင့်ချိန်',
@@ -640,7 +640,7 @@ const translations = {
 
     // ── Business Directory (Rent) Page ──
     rentHeroTitle: 'ไดเรกทอรีธุรกิจและการเช่า',
-    rentHeroSub: 'พื้นที่เชิงพาณิชย์ สำนักงาน ร้านค้า และอสังหาริมทรัพย์สำหรับชุมชนในประเทศไทยและต่างประเทศ',
+    rentHeroSub: 'พื้นที่เชิงพาณิชย์ สำนักงาน ร้านค้า และอสังหาริมทรัพย์สำหรับชุมชนและต่างประเทศ',
     rentSearchPlaceholder: 'ค้นหาพื้นที่ตามชื่อ ที่ตั้ง หรือคุณสมบัติ…',
     rentTabAll: 'พื้นที่ทั้งหมด',
     rentTabAvailable: 'ว่างให้เช่าเดี๋ยวนี้',
@@ -705,7 +705,7 @@ const translations = {
 
     // ── Food Guide Page ──
     foodHeroTitle: 'คู่มืออาหารท้องถิ่น',
-    foodHeroSub: 'ค้นพบร้านอาหารท้องถิ่น อาหารไทยใหญ่ อาหารริมทาง และคาเฟ่ในประเทศไทย',
+    foodHeroSub: 'ค้นพบร้านอาหารท้องถิ่น อาหารไทยใหญ่ อาหารริมทาง และคาเฟ่',
     foodSearchPlaceholder: 'ค้นหาร้านอาหาร อาหาร สถานที่…',
     foodAllCategories: 'ทุกประเภทอาหาร',
     foodOpenHours: 'เวลาเปิด',
