@@ -123,11 +123,77 @@ export default function Footer() {
           <p style={{ fontSize: '0.8rem', color: '#6b7280' }}>
             © {year} 3SGates. {t('footerAllRightsReserved')}
           </p>
-          <p style={{ fontSize: '0.8rem', color: '#4b5563' }}>
-            {t('footerPoweredBy')}
-          </p>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>
+              {t('footerPoweredByPrefix') || 'Powered by'}
+            </span>
+            <a
+              href="https://andamanflow.systems/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="andamanflow-pill"
+              aria-label="Visit AndamanFlow Systems"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '4px 12px 4px 6px',
+                borderRadius: '9999px',
+                background: '#141414',
+                border: '1px solid #2a2a2a',
+                color: '#e5e7eb',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor: 'pointer',
+              }}
+            >
+              <img
+                src="/andamanflow-logo.png"
+                alt="AndamanFlow Systems"
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  flexShrink: 0,
+                }}
+              />
+              <span>AndamanFlow Systems</span>
+              <svg
+                width="11"
+                height="11"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="andamanflow-arrow"
+                style={{ opacity: 0.5, marginLeft: '1px', transition: 'opacity 0.2s, stroke 0.2s' }}
+              >
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
+
+      <style>{`
+        .andamanflow-pill:hover {
+          border-color: #00A3FF !important;
+          background: rgba(0, 163, 255, 0.08) !important;
+          color: #ffffff !important;
+          box-shadow: 0 0 16px rgba(0, 163, 255, 0.45), 0 0 30px rgba(0, 163, 255, 0.2) !important;
+          transform: translateY(-1px);
+        }
+        .andamanflow-pill:hover .andamanflow-arrow {
+          opacity: 1 !important;
+          stroke: #00A3FF !important;
+        }
+      `}</style>
     </footer>
   );
 }

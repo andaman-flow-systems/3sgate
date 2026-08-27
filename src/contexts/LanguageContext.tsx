@@ -231,6 +231,7 @@ const translations = {
     footerRefugeeSupport: 'Refugee Support',
     footerScholarships: 'Scholarships',
     footerCulturalEvents: 'Cultural Events',
+    footerPoweredByPrefix: 'Powered by',
     footerPoweredBy: 'Powered by AndamanFlow Systems',
     footerAllRightsReserved: 'All rights reserved.',
     // ── Additional UI / Category / Component Strings ──
@@ -497,6 +498,7 @@ const translations = {
     footerRefugeeSupport: 'စစ်ဘေးရှောင်များ ကူညီရေး',
     footerScholarships: 'ပညာသင်ဆုများ',
     footerCulturalEvents: 'ယဉ်ကျေးမှုပွဲတော်များ',
+    footerPoweredByPrefix: 'Powered by',
     footerPoweredBy: 'AndamanFlow Systems မှ ဝန်ဆောင်မှုပေးပါသည်',
     footerAllRightsReserved: 'မူပိုင်ခွင့်များ ရယူထားပြီး ဖြစ်ပါသည်။',
     // ── Additional UI / Category / Component Strings ──
@@ -763,6 +765,7 @@ const translations = {
     footerRefugeeSupport: 'สนับสนุนผู้ลี้ภัย',
     footerScholarships: 'ทุนการศึกษา',
     footerCulturalEvents: 'งานวัฒนธรรม',
+    footerPoweredByPrefix: 'ขับเคลื่อนโดย',
     footerPoweredBy: 'ขับเคลื่อนโดย AndamanFlow Systems',
     footerAllRightsReserved: 'สงวนลิขสิทธิ์ทั้งหมด',
     // ── Additional UI / Category / Component Strings ──
