@@ -77,7 +77,7 @@
 - Instant PromptPay QR code generation and direct bank transfer instructions.
 
 ### 8. 💼 Job Opportunities (`/jobs`)
-- Verified job listings for professionals, skilled technicians, and community workers in Thailand and remotely.
+- Verified job listings for professionals, skilled technicians, and community members and remotely.
 - Filtering by employment type (Full-time, Part-time, Remote, Contract).
 - Direct application workflows via email and telephone.
 

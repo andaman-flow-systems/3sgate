@@ -155,7 +155,7 @@ const translations = {
 
     // ── Jobs Page ──
     jobsHeroTitle: 'Job Opportunities',
-    jobsHeroSub: 'Find verified job openings for professionals, skilled workers, and community members in Thailand and remotely.',
+    jobsHeroSub: 'Find verified job openings for professionals, skilled workers, and community members and remotely.',
     jobsSearchPlaceholder: 'Search jobs by title, company, skills…',
     jobsAllTypes: 'All Job Types',
     jobsFullTime: 'Full Time',
@@ -422,7 +422,7 @@ const translations = {
 
     // ── Jobs Page ──
     jobsHeroTitle: 'အလုပ်အကိုင် အခွင့်အလမ်းများ',
-    jobsHeroSub: 'ထိုင်းနိုင်ငံနှင့် အဝေးရောက် ပညာရှင်များ၊ ကျွမ်းကျင်လုပ်သားများနှင့် လူထုအတွက် စိစစ်ထားသော အလုပ်အကိုင်များ။',
+    jobsHeroSub: 'ပညာရှင်များ၊ ကျွမ်းကျင်လုပ်သားများနှင့် လူထုအတွက် စိစစ်ထားသော အလုပ်အကိုင်များနှင့် အဝေးရောက် အလုပ်အကိုင်များ။',
     jobsSearchPlaceholder: 'ရာထူး၊ ကုမ္ပဏီ သို့မဟုတ် ကျွမ်းကျင်မှုဖြင့် ရှာရန်…',
     jobsAllTypes: 'အလုပ်အမျိုးအစား အားလုံး',
     jobsFullTime: 'အချိန်ပြည့် (Full Time)',
@@ -689,7 +689,7 @@ const translations = {
 
     // ── Jobs Page ──
     jobsHeroTitle: 'โอกาสในการทำงาน',
-    jobsHeroSub: 'ค้นหาตำแหน่งงานที่ผ่านการตรวจสอบสำหรับผู้เชี่ยวชาญ แรงงานทักษะ และสมาชิกชุมชนในประเทศไทยและทางไกล',
+    jobsHeroSub: 'ค้นหาตำแหน่งงานที่ผ่านการตรวจสอบสำหรับผู้เชี่ยวชาญ แรงงานทักษะ และสมาชิกชุมชนและทางไกล',
     jobsSearchPlaceholder: 'ค้นหางานตามตำแหน่ง บริษัท ทักษะ…',
     jobsAllTypes: 'ประเภทงานทั้งหมด',
     jobsFullTime: 'เต็มเวลา',
