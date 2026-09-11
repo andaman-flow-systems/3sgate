@@ -144,16 +144,24 @@ function toDonation(row: Record<string, unknown>): DonationRecord {
 }
 
 function toEducation(row: Record<string, unknown>): EducationPost {
-  // images stored as JSON array or comma-separated string in the 'images' column
+  // images stored as JSON array or string in 'images' or 'image' column
   let images: string[] = [];
   if (Array.isArray(row.images)) {
     images = row.images as string[];
   } else if (typeof row.images === 'string' && row.images) {
     try { images = JSON.parse(row.images); } catch { images = row.images.split(',').map((s: string) => s.trim()).filter(Boolean); }
+  } else if (Array.isArray(row.image)) {
+    images = row.image as string[];
   } else if (typeof row.image === 'string' && row.image) {
-    // backwards compat: single image column
-    images = [row.image];
+    try {
+      const parsed = JSON.parse(row.image);
+      if (Array.isArray(parsed)) images = parsed;
+      else images = [row.image];
+    } catch {
+      images = [row.image];
+    }
   }
+
   return {
     id:           row.id as string,
     title:        row.title as string,
@@ -165,8 +173,8 @@ function toEducation(row: Record<string, unknown>): EducationPost {
     deadline:     row.deadline as string | undefined,
     fee:          (row.fee as string) ?? 'Free',
     currency:     (row.currency as EducationPost['currency']) ?? 'THB',
-    size:         row.size as string | undefined,
-    rating:       row.rating as number | undefined,
+    size:         (row.size as string | undefined) ?? (row.level as string | undefined),
+    rating:       row.rating !== undefined && row.rating !== null ? Number(row.rating) : undefined,
     websiteUrl:   row.website_url as string | undefined,
     facebookUrl:  row.facebook_url as string | undefined,
     contactEmail: row.contact_email as string | undefined,
@@ -898,25 +906,29 @@ export const sbEducationDB = {
   },
 
   create: async (e: Omit<EducationPost, 'id' | 'createdAt'>): Promise<EducationPost> => {
+    const feeStr = e.currency && e.fee && !e.fee.toLowerCase().includes(e.currency.toLowerCase()) && !e.fee.toLowerCase().includes('free')
+      ? `${e.fee} (${e.currency})`
+      : (e.fee || 'Free');
+
+    const payload: Record<string, unknown> = {
+      title:         e.title,
+      institution:   e.institution,
+      category:      e.category,
+      image:         JSON.stringify(e.images ?? []),
+      description:   e.description,
+      location:      e.location,
+      deadline:      e.deadline,
+      fee:           feeStr,
+      level:         e.size,
+      website_url:   e.websiteUrl,
+      facebook_url:  e.facebookUrl,
+      contact_email: e.contactEmail,
+      status:        e.status,
+    };
+
     const { data, error } = await supabase
       .from('education')
-      .insert({
-        title:         e.title,
-        institution:   e.institution,
-        category:      e.category,
-        images:        JSON.stringify(e.images ?? []),
-        description:   e.description,
-        location:      e.location,
-        deadline:      e.deadline,
-        fee:           e.fee,
-        currency:      e.currency,
-        size:          e.size,
-        rating:        e.rating,
-        website_url:   e.websiteUrl,
-        facebook_url:  e.facebookUrl,
-        contact_email: e.contactEmail,
-        status:        e.status,
-      })
+      .insert(payload)
       .select()
       .single();
     if (error) throw new Error(error.message);
@@ -928,14 +940,16 @@ export const sbEducationDB = {
     if (e.title         !== undefined) patch.title         = e.title;
     if (e.institution   !== undefined) patch.institution   = e.institution;
     if (e.category      !== undefined) patch.category      = e.category;
-    if (e.images        !== undefined) patch.images        = JSON.stringify(e.images);
+    if (e.images        !== undefined) patch.image         = JSON.stringify(e.images);
     if (e.description   !== undefined) patch.description   = e.description;
     if (e.location      !== undefined) patch.location      = e.location;
     if (e.deadline      !== undefined) patch.deadline      = e.deadline;
-    if (e.fee           !== undefined) patch.fee           = e.fee;
-    if (e.currency      !== undefined) patch.currency      = e.currency;
-    if (e.size          !== undefined) patch.size          = e.size;
-    if (e.rating        !== undefined) patch.rating        = e.rating;
+    if (e.fee           !== undefined) {
+      patch.fee = e.currency && e.fee && !e.fee.toLowerCase().includes(e.currency.toLowerCase()) && !e.fee.toLowerCase().includes('free')
+        ? `${e.fee} (${e.currency})`
+        : e.fee;
+    }
+    if (e.size          !== undefined) patch.level         = e.size;
     if (e.websiteUrl    !== undefined) patch.website_url   = e.websiteUrl;
     if (e.facebookUrl   !== undefined) patch.facebook_url  = e.facebookUrl;
     if (e.contactEmail  !== undefined) patch.contact_email = e.contactEmail;

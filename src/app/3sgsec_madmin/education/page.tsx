@@ -214,16 +214,43 @@ export default function AdminEducation() {
     }
 
     try {
-      if (isEditing) {
-        if (configured) await sbEducationDB.update(isEditing.id, postData); else educationDB.update(isEditing.id, postData);
-        showToast('Listing updated ✓');
+      if (configured) {
+        try {
+          if (isEditing) {
+            await sbEducationDB.update(isEditing.id, postData);
+            educationDB.update(isEditing.id, postData);
+            showToast('Listing updated in Cloud & Local ✓');
+          } else {
+            const created = await sbEducationDB.create(postData);
+            educationDB.create({ ...postData, id: created.id } as any);
+            showToast('Listing created in Cloud & Local ✓');
+          }
+        } catch (cloudErr: any) {
+          console.warn('Supabase save warning, saving locally:', cloudErr);
+          if (isEditing) {
+            educationDB.update(isEditing.id, postData);
+            showToast('Listing updated locally ✓');
+          } else {
+            educationDB.create(postData);
+            showToast('Listing created locally ✓');
+          }
+        }
       } else {
-        if (configured) await sbEducationDB.create(postData); else educationDB.create(postData);
-        showToast('Listing created ✓');
+        if (isEditing) {
+          educationDB.update(isEditing.id, postData);
+          showToast('Listing updated ✓');
+        } else {
+          educationDB.create(postData);
+          showToast('Listing created ✓');
+        }
       }
-      closeModal(); loadData();
-    } catch (err) { setError((err as Error).message); }
-    finally { setSaving(false); }
+      closeModal();
+      loadData();
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSeedData = async () => {
@@ -417,27 +444,27 @@ export default function AdminEducation() {
 
       {/* ── Add / Edit Modal ─────────────────────────────────────────────────── */}
       {(isAdding || isEditing) && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.82)', backdropFilter: 'blur(8px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }} onClick={closeModal}>
-          <div onClick={e => e.stopPropagation()} style={{ background: '#0e0e0e', border: '1px solid #2a2a2a', borderRadius: '16px', maxWidth: '720px', width: '100%', maxHeight: '92vh', overflowY: 'auto', boxShadow: '0 24px 60px rgba(0,0,0,0.9)', padding: '28px' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }} onClick={closeModal}>
+          <div onClick={e => e.stopPropagation()} style={{ background: '#0e0e0e', border: '1px solid #2a2a2a', borderRadius: '18px', maxWidth: '720px', width: '100%', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 24px 60px rgba(0,0,0,0.9)', overflow: 'hidden' }}>
 
-            {/* Modal header */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '22px' }}>
-              <h3 style={{ color: '#fff', fontSize: '1.2rem', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <GraduationCap size={20} color="#22d3ee" />
+            {/* Modal header (Pinned) */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', borderBottom: '1px solid #1f1f1f', flexShrink: 0, background: '#111614' }}>
+              <h3 style={{ color: '#fff', fontSize: '1.18rem', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <GraduationCap size={22} color="#22d3ee" />
                 {isEditing ? 'Edit Listing' : 'Add New Listing'}
               </h3>
-              <button onClick={closeModal} style={{ background: 'transparent', border: 'none', color: '#9ca3af', cursor: 'pointer', padding: '4px' }}><X size={20} /></button>
+              <button onClick={closeModal} style={{ background: 'transparent', border: 'none', color: '#9ca3af', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}><X size={20} /></button>
             </div>
 
-            {error && (
-              <div style={{ background: '#ef444415', border: '1px solid #ef4444', color: '#ef4444', borderRadius: '8px', padding: '10px 14px', fontSize: '0.85rem', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <AlertCircle size={16} /> {error}
-              </div>
-            )}
+            {/* Scrollable Form Body */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
+              {error && (
+                <div style={{ background: '#ef444415', border: '1px solid #ef4444', color: '#ef4444', borderRadius: '8px', padding: '10px 14px', fontSize: '0.85rem', marginBottom: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <AlertCircle size={16} /> {error}
+                </div>
+              )}
 
-            <form onSubmit={handleSave}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-
+              <form id="edu-listing-form" onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                 {/* Row: Title + Type */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                   <div>
@@ -538,19 +565,19 @@ export default function AdminEducation() {
                     </select>
                   </div>
                 </div>
+              </form>
+            </div>
 
-                {/* Submit */}
-                <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>
-                  <button type="button" onClick={closeModal} style={{ flex: 1, background: '#1a1a1a', border: '1px solid #2a2a2a', color: '#9ca3af', borderRadius: '10px', padding: '12px', fontWeight: 600, fontSize: '0.88rem', cursor: 'pointer' }}>
-                    Cancel
-                  </button>
-                  <button type="submit" disabled={saving} style={{ flex: 2, background: saving ? '#0e7490' : 'linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%)', color: '#000', border: 'none', borderRadius: '10px', padding: '12px', fontWeight: 800, fontSize: '0.92rem', cursor: saving ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(34,211,238,0.25)' }}>
-                    {saving ? <Loader size={16} style={{ animation: 'spin 1s linear infinite' }} /> : null}
-                    {saving ? 'Saving...' : (isEditing ? '💾 Update Listing' : '✨ Create Listing')}
-                  </button>
-                </div>
-              </div>
-            </form>
+            {/* Modal Footer (Sticky / Always Visible!) */}
+            <div style={{ padding: '16px 24px', borderTop: '1px solid #1f1f1f', background: '#0e1512', display: 'flex', gap: '12px', flexShrink: 0 }}>
+              <button type="button" onClick={closeModal} style={{ flex: 1, background: '#1a1a1a', border: '1px solid #2a2a2a', color: '#9ca3af', borderRadius: '10px', padding: '12px', fontWeight: 600, fontSize: '0.88rem', cursor: 'pointer' }}>
+                Cancel
+              </button>
+              <button type="submit" form="edu-listing-form" disabled={saving} style={{ flex: 2, background: saving ? '#0e7490' : 'linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%)', color: '#000', border: 'none', borderRadius: '10px', padding: '12px', fontWeight: 800, fontSize: '0.92rem', cursor: saving ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(34,211,238,0.25)' }}>
+                {saving ? <Loader size={16} style={{ animation: 'spin 1s linear infinite' }} /> : null}
+                {saving ? 'Saving...' : (isEditing ? '💾 Update Listing' : '✨ Create Listing')}
+              </button>
+            </div>
           </div>
         </div>
       )}
