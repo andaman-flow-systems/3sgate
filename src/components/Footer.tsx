@@ -64,7 +64,8 @@ export default function Footer() {
               { href: '/donate', label: t('footerDonations') },
               { href: '/jobs',   label: t('footerJobs') },
               { href: '/food',   label: t('footerFoodGuide') },
-              { href: '/stay',   label: t('footerStay') },
+              { href: '/stay',      label: t('footerStay') },
+              { href: '/education', label: t('footerEducation') },
             ].map((l) => (
               <Link key={l.href} href={l.href} style={{
                 display: 'block', color: '#9ca3af', fontSize: '0.88rem',

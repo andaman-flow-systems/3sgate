@@ -8,7 +8,7 @@ import Logo from '@/components/Logo';
 import {
   LayoutDashboard, ShoppingBag, Store, Newspaper, Image as ImageIcon,
   Heart, Briefcase, UtensilsCrossed, Users, Megaphone, Settings,
-  Database, LogOut, ChevronRight, Menu, X, BedDouble
+  Database, LogOut, ChevronRight, Menu, X, BedDouble, GraduationCap
 } from 'lucide-react';
 
 const NAV = [
@@ -16,6 +16,7 @@ const NAV = [
   { href: '/3sgsec_madmin/shop',      label: 'Shop',               Icon: ShoppingBag },
   { href: '/3sgsec_madmin/rent',      label: 'Business Directory', Icon: Store },
   { href: '/3sgsec_madmin/stay',      label: 'Stay',               Icon: BedDouble },
+  { href: '/3sgsec_madmin/education', label: 'Education',          Icon: GraduationCap },
   { href: '/3sgsec_madmin/news',      label: 'News',               Icon: Newspaper },
   { href: '/3sgsec_madmin/gallery',   label: 'Gallery',            Icon: ImageIcon },
   { href: '/3sgsec_madmin/donate',    label: 'Donations',          Icon: Heart },

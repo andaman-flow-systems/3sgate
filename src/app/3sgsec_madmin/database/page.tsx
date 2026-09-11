@@ -4,14 +4,17 @@ import { useState } from 'react';
 import { AlertTriangle, Database, RotateCcw } from 'lucide-react';
 
 const KEYS = [
-  '3sg_products', '3sg_rentals', '3sg_news', '3sg_gallery',
-  '3sg_donations', '3sg_jobs', '3sg_food', '3sg_banners',
-  '3sg_users', '3sg_settings', '3sg_stats', '3sg_seeded',
+  '3sg_products', '3sg_rentals', '3sg_stays', '3sg_education',
+  '3sg_news', '3sg_gallery', '3sg_donations', '3sg_jobs',
+  '3sg_food', '3sg_banners', '3sg_users', '3sg_settings',
+  '3sg_stats', '3sg_seeded',
 ];
 
 const KEY_LABELS: Record<string, string> = {
   '3sg_products': 'Products',
   '3sg_rentals': 'Rental Spaces',
+  '3sg_stays': 'Accommodation (Stays)',
+  '3sg_education': 'Education & Scholarships',
   '3sg_news': 'News Posts',
   '3sg_gallery': 'Gallery Artworks',
   '3sg_donations': 'Donation Records',

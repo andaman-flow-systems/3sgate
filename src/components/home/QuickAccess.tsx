@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { BedDouble } from 'lucide-react';
+import { BedDouble, GraduationCap } from 'lucide-react';
 
 export default function QuickAccess() {
   const { t } = useLanguage();
@@ -28,6 +28,10 @@ export default function QuickAccess() {
     {
       href: '/stay',    label: t('qaStay'),       sub: t('qaStaySub'),       color: '#ec4899',
       icon: <BedDouble size={26} />,
+    },
+    {
+      href: '/education', label: t('qaEducation'), sub: t('qaEducationSub'), color: '#06b6d4',
+      icon: <GraduationCap size={26} />,
     },
     {
       href: '/news',    label: t('qaNews'),       sub: t('qaNewsSub'),       color: '#3b82f6',

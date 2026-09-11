@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { sbNewsDB } from '@/lib/supabase-db';
 import { newsDB, type NewsPost } from '@/lib/db';
 import { isSupabaseConfigured } from '@/lib/supabase';
-import { Loader, CheckCircle, AlertCircle, X } from 'lucide-react';
+import { Loader, CheckCircle, AlertCircle, X, Edit, Trash2 } from 'lucide-react';
 import ImageUploadInput from '@/components/admin/ImageUploadInput';
 
 export default function AdminNews() {
@@ -189,7 +189,9 @@ export default function AdminNews() {
                       {n.title}
                     </p>
                   </td>
-                  <td style={{ padding: '16px', color: '#9ca3af', fontSize: '0.85rem' }}>{n.category.replace('myanmar-', '')}</td>
+                  <td style={{ padding: '16px', color: '#9ca3af', fontSize: '0.85rem' }}>
+                    {n.category === 'myanmar-thailand' ? 'Regional' : n.category === 'myanmar-abroad' ? 'Global' : 'Community'}
+                  </td>
                   <td style={{ padding: '16px', color: '#9ca3af', fontSize: '0.85rem' }}>
                     {new Date(n.publishedAt).toLocaleDateString()}
                   </td>
@@ -203,10 +205,10 @@ export default function AdminNews() {
                       {n.status === 'published' ? 'Published' : 'Draft'}
                     </span>
                   </td>
-                  <td style={{ padding: '16px' }}>
+                  <td style={{ padding: '16px', textAlign: 'right' }}>
                     <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-                      <button onClick={() => openEdit(n)} style={{ background: 'transparent', border: '1px solid #444', color: '#fff', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Edit</button>
-                      <button onClick={() => handleDelete(n.id)} style={{ background: '#ef444420', border: '1px solid #ef4444', color: '#ef4444', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Delete</button>
+                      <button onClick={() => openEdit(n)} style={{ background: '#2a2a2a', border: 'none', borderRadius: '6px', padding: '6px', color: '#9ca3af', cursor: 'pointer' }}><Edit size={16} /></button>
+                      <button onClick={() => handleDelete(n.id)} style={{ background: '#ef444420', border: 'none', borderRadius: '6px', padding: '6px', color: '#ef4444', cursor: 'pointer' }}><Trash2 size={16} /></button>
                     </div>
                   </td>
                 </tr>
@@ -239,9 +241,9 @@ export default function AdminNews() {
                 <div className="form-group">
                   <label className="label">Category</label>
                   <select name="category" defaultValue={isEditing?.category || 'myanmar-news'} className="input" required>
-                    <option value="myanmar-news">Local News</option>
-                    <option value="myanmar-thailand">In Thailand</option>
-                    <option value="myanmar-abroad">Abroad</option>
+                    <option value="myanmar-news">Community & Society</option>
+                    <option value="myanmar-thailand">Regional News</option>
+                    <option value="myanmar-abroad">Global & International</option>
                   </select>
                 </div>
                 <div className="form-group">

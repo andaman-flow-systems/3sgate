@@ -4,14 +4,14 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import Logo from '@/components/Logo';
-import { productsDB, rentalsDB, newsDB, galleryDB, jobsDB, foodDB } from '@/lib/db';
+import { productsDB, rentalsDB, newsDB, galleryDB, jobsDB, foodDB, staysDB, educationDB } from '@/lib/db';
 import { useLanguage, type Language } from '@/contexts/LanguageContext';
 
 interface SearchResultItem {
   id: string;
   title: string;
   subtitle: string;
-  type: 'Shop' | 'Directory' | 'News' | 'Gallery' | 'Jobs' | 'Food' | 'Stay';
+  type: 'Shop' | 'Directory' | 'News' | 'Gallery' | 'Jobs' | 'Food' | 'Stay' | 'Education';
   href: string;
   image?: string;
   badgeColor: string;
@@ -31,14 +31,15 @@ export default function Navbar() {
   const mobileSearchRef = useRef<HTMLDivElement>(null);
 
   const NAV_LINKS = useMemo(() => [
-    { href: '/',        label: t('home') },
-    { href: '/shop',    label: t('shop') },
-    { href: '/rent',    label: t('businessDirectory') },
-    { href: '/gallery', label: t('gallery') },
-    { href: '/donate',  label: t('donate') },
-    { href: '/jobs',    label: t('jobs') },
-    { href: '/food',    label: t('foodGuide') },
-    { href: '/stay',    label: t('stay') },
+    { href: '/',          label: t('home') },
+    { href: '/shop',      label: t('shop') },
+    { href: '/rent',      label: t('businessDirectory') },
+    { href: '/gallery',   label: t('gallery') },
+    { href: '/donate',    label: t('donate') },
+    { href: '/jobs',      label: t('jobs') },
+    { href: '/food',      label: t('foodGuide') },
+    { href: '/stay',      label: t('stay') },
+    { href: '/education', label: t('education') },
   ], [t]);
 
   // Close mobile menu on route change
@@ -118,6 +119,22 @@ export default function Navbar() {
       foodDB.getAll().forEach(f => {
         if (f.name.toLowerCase().includes(q) || f.category.toLowerCase().includes(q) || f.location.toLowerCase().includes(q)) {
           results.push({ id: `food-${f.id}`, title: f.name, subtitle: `${f.category} · ${f.location}`, type: 'Food', href: '/food', image: f.image, badgeColor: '#ef4444', extra: f.priceRange });
+        }
+      });
+    } catch (_) {}
+
+    try {
+      staysDB.getAll().forEach(s => {
+        if (s.title.toLowerCase().includes(q) || s.companyName?.toLowerCase().includes(q) || s.location.toLowerCase().includes(q)) {
+          results.push({ id: `stay-${s.id}`, title: s.title, subtitle: `${s.companyName || s.accommodationType} · ${s.location}`, type: 'Stay', href: '/stay', image: s.images?.[0], badgeColor: '#ec4899', extra: s.price ? `฿${s.price.toLocaleString()}/night` : undefined });
+        }
+      });
+    } catch (_) {}
+
+    try {
+      educationDB.getAll().forEach(e => {
+        if (e.title.toLowerCase().includes(q) || e.institution.toLowerCase().includes(q) || e.category.toLowerCase().includes(q) || e.description.toLowerCase().includes(q)) {
+          results.push({ id: `edu-${e.id}`, title: e.title, subtitle: `${e.institution} · ${e.category}`, type: 'Education', href: '/education', image: e.images?.[0], badgeColor: '#06b6d4', extra: e.fee });
         }
       });
     } catch (_) {}

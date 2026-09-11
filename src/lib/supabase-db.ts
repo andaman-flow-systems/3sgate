@@ -23,6 +23,8 @@ import type {
   VisitorStat,
   StayListing,
   AccommodationType,
+  EducationPost,
+  EducationCategory,
 } from './db';
 
 // ─── Helper: map DB row → TypeScript shape ─────────────────────────────────────
@@ -138,6 +140,38 @@ function toDonation(row: Record<string, unknown>): DonationRecord {
     amount:    row.amount as number,
     message:   row.message as string | undefined,
     createdAt: row.created_at as string,
+  };
+}
+
+function toEducation(row: Record<string, unknown>): EducationPost {
+  // images stored as JSON array or comma-separated string in the 'images' column
+  let images: string[] = [];
+  if (Array.isArray(row.images)) {
+    images = row.images as string[];
+  } else if (typeof row.images === 'string' && row.images) {
+    try { images = JSON.parse(row.images); } catch { images = row.images.split(',').map((s: string) => s.trim()).filter(Boolean); }
+  } else if (typeof row.image === 'string' && row.image) {
+    // backwards compat: single image column
+    images = [row.image];
+  }
+  return {
+    id:           row.id as string,
+    title:        row.title as string,
+    institution:  (row.institution as string) ?? '',
+    category:     row.category as EducationCategory,
+    images,
+    description:  (row.description as string) ?? '',
+    location:     (row.location as string) ?? '',
+    deadline:     row.deadline as string | undefined,
+    fee:          (row.fee as string) ?? 'Free',
+    currency:     (row.currency as EducationPost['currency']) ?? 'THB',
+    size:         row.size as string | undefined,
+    rating:       row.rating as number | undefined,
+    websiteUrl:   row.website_url as string | undefined,
+    facebookUrl:  row.facebook_url as string | undefined,
+    contactEmail: row.contact_email as string | undefined,
+    status:       (row.status as EducationPost['status']) ?? 'published',
+    createdAt:    row.created_at as string,
   };
 }
 
@@ -841,3 +875,86 @@ export const sbStaysDB = {
     return true;
   },
 };
+
+// ─── Education ─────────────────────────────────────────────────────────────────
+export const sbEducationDB = {
+  getAll: async (): Promise<EducationPost[]> => {
+    const { data, error } = await supabase
+      .from('education')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw new Error(error.message);
+    return (data ?? []).map(toEducation);
+  },
+
+  getById: async (id: string): Promise<EducationPost | null> => {
+    const { data, error } = await supabase
+      .from('education')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+    if (error || !data) return null;
+    return toEducation(data);
+  },
+
+  create: async (e: Omit<EducationPost, 'id' | 'createdAt'>): Promise<EducationPost> => {
+    const { data, error } = await supabase
+      .from('education')
+      .insert({
+        title:         e.title,
+        institution:   e.institution,
+        category:      e.category,
+        images:        JSON.stringify(e.images ?? []),
+        description:   e.description,
+        location:      e.location,
+        deadline:      e.deadline,
+        fee:           e.fee,
+        currency:      e.currency,
+        size:          e.size,
+        rating:        e.rating,
+        website_url:   e.websiteUrl,
+        facebook_url:  e.facebookUrl,
+        contact_email: e.contactEmail,
+        status:        e.status,
+      })
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return toEducation(data);
+  },
+
+  update: async (id: string, e: Partial<EducationPost>): Promise<EducationPost> => {
+    const patch: Record<string, unknown> = {};
+    if (e.title         !== undefined) patch.title         = e.title;
+    if (e.institution   !== undefined) patch.institution   = e.institution;
+    if (e.category      !== undefined) patch.category      = e.category;
+    if (e.images        !== undefined) patch.images        = JSON.stringify(e.images);
+    if (e.description   !== undefined) patch.description   = e.description;
+    if (e.location      !== undefined) patch.location      = e.location;
+    if (e.deadline      !== undefined) patch.deadline      = e.deadline;
+    if (e.fee           !== undefined) patch.fee           = e.fee;
+    if (e.currency      !== undefined) patch.currency      = e.currency;
+    if (e.size          !== undefined) patch.size          = e.size;
+    if (e.rating        !== undefined) patch.rating        = e.rating;
+    if (e.websiteUrl    !== undefined) patch.website_url   = e.websiteUrl;
+    if (e.facebookUrl   !== undefined) patch.facebook_url  = e.facebookUrl;
+    if (e.contactEmail  !== undefined) patch.contact_email = e.contactEmail;
+    if (e.status        !== undefined) patch.status        = e.status;
+
+    const { data, error } = await supabase
+      .from('education')
+      .update(patch)
+      .eq('id', id)
+      .select()
+      .single();
+    if (error) throw new Error(error.message);
+    return toEducation(data);
+  },
+
+  delete: async (id: string): Promise<boolean> => {
+    const { error } = await supabase.from('education').delete().eq('id', id);
+    if (error) throw new Error(error.message);
+    return true;
+  },
+};
+
