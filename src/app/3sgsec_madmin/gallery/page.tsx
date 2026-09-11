@@ -82,7 +82,7 @@ export default function AdminGallery() {
     setError(null);
 
     const formData = new FormData(e.currentTarget);
-    const art: Omit<ArtworkItem, 'id' | 'createdAt' | 'updatedAt'> = {
+    const art: Omit<ArtworkItem, 'id' | 'createdAt'> = {
       title: formData.get('title') as string,
       artist: formData.get('artist') as string,
       image: imageUrl,
@@ -117,7 +117,13 @@ export default function AdminGallery() {
       closeModal();
       loadArtworks();
     } catch (err) {
-      setError((err as Error).message);
+      const message = (err as Error).message || 'Unknown error occurred';
+      console.error('[Gallery Admin] Save failed:', message, err);
+      setError(
+        configured
+          ? `Save failed: ${message}. This is usually a Supabase RLS policy issue — run the SQL setup in supabase-gallery-setup.sql in your Supabase SQL Editor.`
+          : `Save failed: ${message}`
+      );
     } finally {
       setSaving(false);
     }

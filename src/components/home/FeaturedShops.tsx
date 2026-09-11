@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { sbProductsDB } from '@/lib/supabase-db';
 import { productsDB, type Product } from '@/lib/db';
+import { isSupabaseConfigured } from '@/lib/supabase';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function FeaturedShops() {
@@ -10,7 +12,23 @@ export default function FeaturedShops() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    setProducts(productsDB.getAll().slice(0, 4));
+    const load = async () => {
+      try {
+        if (isSupabaseConfigured()) {
+          const data = await sbProductsDB.getAll();
+          setProducts(data.slice(0, 4));
+        } else {
+          setProducts(productsDB.getAll().slice(0, 4));
+        }
+      } catch {
+        if (!isSupabaseConfigured()) {
+          setProducts(productsDB.getAll().slice(0, 4));
+        } else {
+          setProducts([]);
+        }
+      }
+    };
+    load();
   }, []);
 
   return (

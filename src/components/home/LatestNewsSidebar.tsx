@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { sbNewsDB } from '@/lib/supabase-db';
 import { newsDB, type NewsPost } from '@/lib/db';
+import { isSupabaseConfigured } from '@/lib/supabase';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function LatestNewsSidebar() {
@@ -10,7 +12,23 @@ export default function LatestNewsSidebar() {
   const [news, setNews] = useState<NewsPost[]>([]);
 
   useEffect(() => {
-    setNews(newsDB.getPublished().slice(0, 4));
+    const load = async () => {
+      try {
+        if (isSupabaseConfigured()) {
+          const data = await sbNewsDB.getPublished();
+          setNews(data.slice(0, 4));
+        } else {
+          setNews(newsDB.getPublished().slice(0, 4));
+        }
+      } catch {
+        if (!isSupabaseConfigured()) {
+          setNews(newsDB.getPublished().slice(0, 4));
+        } else {
+          setNews([]);
+        }
+      }
+    };
+    load();
   }, []);
 
   const catLabel = (cat: NewsPost['category']) => {

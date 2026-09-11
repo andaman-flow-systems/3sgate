@@ -1,18 +1,41 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { sbGalleryDB } from '@/lib/supabase-db';
 import { galleryDB, type ArtworkItem } from '@/lib/db';
-import { Palette } from 'lucide-react';
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { Palette, Loader } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function GalleryPage() {
   const { t } = useLanguage();
   const [artworks, setArtworks] = useState<ArtworkItem[]>([]);
   const [selected, setSelected] = useState<ArtworkItem | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const loadArtworks = useCallback(async () => {
+    setLoading(true);
+    try {
+      if (isSupabaseConfigured()) {
+        const data = await sbGalleryDB.getAll();
+        setArtworks(data);
+      } else {
+        setArtworks(galleryDB.getAll());
+      }
+    } catch {
+      if (!isSupabaseConfigured()) {
+        setArtworks(galleryDB.getAll());
+      } else {
+        setArtworks([]);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    setArtworks(galleryDB.getAll());
-  }, []);
+    loadArtworks();
+  }, [loadArtworks]);
 
   return (
     <div>
@@ -36,71 +59,80 @@ export default function GalleryPage() {
       </div>
 
       <div className="container section-sm">
-        {/* Masonry Grid */}
-        <div className="gallery-masonry">
-          {artworks.map((art) => (
-            <div
-              key={art.id}
-              onClick={() => setSelected(art)}
-              style={{
-                breakInside: 'avoid',
-                marginBottom: '20px',
-                background: '#111111',
-                border: '1px solid #2a2a2a',
-                borderRadius: '14px',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget;
-                el.style.transform = 'translateY(-4px)';
-                el.style.borderColor = '#a855f7';
-                el.style.boxShadow = '0 8px 30px rgba(168,85,247,0.15)';
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget;
-                el.style.transform = 'translateY(0)';
-                el.style.borderColor = '#2a2a2a';
-                el.style.boxShadow = 'none';
-              }}
-            >
-              <div style={{ position: 'relative', overflow: 'hidden' }}>
-                <img
-                  src={art.image}
-                  alt={art.title}
-                  style={{ width: '100%', display: 'block', objectFit: 'cover' }}
-                />
-                {art.forSale && art.price && (
-                  <div style={{
-                    position: 'absolute', bottom: '10px', right: '10px',
-                    background: '#a855f7', color: '#fff',
-                    padding: '4px 10px', borderRadius: '6px',
-                    fontSize: '0.75rem', fontWeight: 700,
-                  }}>
-                    ฿{art.price.toLocaleString()}
-                  </div>
-                )}
-              </div>
-              <div style={{ padding: '16px' }}>
-                <span style={{ color: '#a855f7', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>
-                  {art.category}
-                </span>
-                <h3 style={{ color: '#fff', fontSize: '1.05rem', fontWeight: 700, margin: '4px 0' }}>
-                  {art.title}
-                </h3>
-                <p style={{ color: '#9ca3af', fontSize: '0.82rem' }}>
-                  {t('artist')}: {art.artist}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {artworks.length === 0 && (
+        {loading ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
-            <p>{t('galleryNoArtworks')}</p>
+            <Loader size={32} className="spin" style={{ margin: '0 auto 12px', color: '#a855f7' }} />
+            <p style={{ fontSize: '0.9rem' }}>Loading artworks...</p>
           </div>
+        ) : (
+          <>
+            {/* Masonry Grid */}
+            <div className="gallery-masonry">
+              {artworks.map((art) => (
+                <div
+                  key={art.id}
+                  onClick={() => setSelected(art)}
+                  style={{
+                    breakInside: 'avoid',
+                    marginBottom: '20px',
+                    background: '#111111',
+                    border: '1px solid #2a2a2a',
+                    borderRadius: '14px',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget;
+                    el.style.transform = 'translateY(-4px)';
+                    el.style.borderColor = '#a855f7';
+                    el.style.boxShadow = '0 8px 30px rgba(168,85,247,0.15)';
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget;
+                    el.style.transform = 'translateY(0)';
+                    el.style.borderColor = '#2a2a2a';
+                    el.style.boxShadow = 'none';
+                  }}
+                >
+                  <div style={{ position: 'relative', overflow: 'hidden' }}>
+                    <img
+                      src={art.image}
+                      alt={art.title}
+                      style={{ width: '100%', display: 'block', objectFit: 'cover' }}
+                    />
+                    {art.forSale && art.price && (
+                      <div style={{
+                        position: 'absolute', bottom: '10px', right: '10px',
+                        background: '#a855f7', color: '#fff',
+                        padding: '4px 10px', borderRadius: '6px',
+                        fontSize: '0.75rem', fontWeight: 700,
+                      }}>
+                        ฿{art.price.toLocaleString()}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ padding: '16px' }}>
+                    <span style={{ color: '#a855f7', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>
+                      {art.category}
+                    </span>
+                    <h3 style={{ color: '#fff', fontSize: '1.05rem', fontWeight: 700, margin: '4px 0' }}>
+                      {art.title}
+                    </h3>
+                    <p style={{ color: '#9ca3af', fontSize: '0.82rem' }}>
+                      {t('artist')}: {art.artist}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {artworks.length === 0 && (
+              <div style={{ textAlign: 'center', padding: '80px 0', color: '#6b7280' }}>
+                <p>{t('galleryNoArtworks')}</p>
+              </div>
+            )}
+          </>
         )}
       </div>
 
